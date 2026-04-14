@@ -3,487 +3,1720 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VibeFlippers</title>
-  <meta name="description" content="A newsletter and marketplace for AI-generated digital assets — sites, tools, templates, and micro-SaaS. Find deals, get valuations, and flip with confidence.">
-  <style>:root {
-  --bg: #efe6da;
-  --panel: rgba(255, 250, 244, 0.86);
-  --ink: #181413;
-  --muted: #6d635c;
-  --line: rgba(55, 34, 18, 0.12);
-  --accent: #bb6127;
-  --hero: linear-gradient(135deg, #ca7231 0%, #efbc82 48%, #f7e9d0 100%);
-  --shadow: 0 24px 70px rgba(34, 22, 10, 0.14);
-  --radius-xl: 34px;
-  --radius-lg: 24px;
-  --radius-md: 18px;
+  <title>VibeFlippers — AI-Built Digital Asset Marketplace</title>
+  <meta name="description" content="Buy and sell AI-built digital assets — sites, tools, templates, and micro-SaaS. Valuations, escrow, and deal flow for the AI economy.">
+  <style>
+:root {
+  --bg: #0c0a14;
+  --bg2: #13102a;
+  --panel: rgba(28, 24, 58, 0.82);
+  --panel-solid: #1c1840;
+  --ink: #eae6f8;
+  --ink-bright: #fff;
+  --muted: #9b93c0;
+  --line: rgba(140, 120, 200, 0.18);
+  --accent: #6c3caf;
+  --accent-light: #9b6dd7;
+  --accent-glow: rgba(108, 60, 175, 0.35);
+  --green: #34d399;
+  --green-bg: rgba(52, 211, 153, 0.12);
+  --red: #f87171;
+  --yellow: #fbbf24;
+  --blue: #60a5fa;
+  --hero: linear-gradient(135deg, #4a2888 0%, #8b5cd0 44%, #d8ccf0 100%);
+  --glass: rgba(28, 24, 58, 0.65);
+  --glass-border: rgba(140, 120, 200, 0.22);
+  --shadow: 0 24px 70px rgba(10, 6, 30, 0.5);
+  --radius-xl: 28px;
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
   --radius-pill: 999px;
   --font-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
-  --font-body: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-mono: "SF Mono", ui-monospace, monospace;
+  --font-body: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "SF Mono", ui-monospace, "Cascadia Code", monospace;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-html,
+html { scroll-behavior: smooth; }
+
 body {
-  margin: 0;
-  min-height: 100%;
-  background:
-    radial-gradient(circle at top left, rgba(255,255,255,0.58), transparent 28%),
-    radial-gradient(circle at 85% 10%, rgba(255,255,255,0.34), transparent 18%),
-    linear-gradient(180deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 90%, white 10%) 100%);
+  min-height: 100vh;
+  background: var(--bg);
   color: var(--ink);
   font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
 }
 
-body {
-  padding: 20px;
-}
-
-.frame {
-  width: min(1440px, 100%);
-  margin: 0 auto;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 42px;
-  box-shadow: var(--shadow);
-  overflow: hidden;
-}
-
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 18px 24px;
-  border-bottom: 1px solid var(--line);
-  background: rgba(255,255,255,0.3);
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.brand-mark {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  background: var(--hero);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
-}
-
-.brand-copy strong,
-.hero-title,
-.card-title,
-.section-title {
-  font-family: var(--font-display);
-}
-
-.brand-copy strong {
-  display: block;
-  font-size: 23px;
-  letter-spacing: -0.04em;
-}
-
-.brand-copy span {
-  display: block;
-  margin-top: 5px;
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.topbar-badges,
-.pill-row,
-.stats-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.pill,
-.badge,
-.stat-label {
-  font: 700 11px/1 var(--font-mono);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.badge,
-.pill {
-  padding: 9px 12px;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--line);
-  background: rgba(255,255,255,0.56);
-  color: var(--muted);
-}
-
-.shell {
-  display: grid;
-  grid-template-columns: 1.3fr 0.92fr;
-  gap: 22px;
-  padding: 24px;
-}
-
-.hero {
-  min-height: 360px;
-  border-radius: 30px;
-  background: var(--hero);
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero::after {
+body::before {
   content: "";
-  position: absolute;
-  width: 280px;
-  height: 280px;
-  right: -70px;
-  top: -50px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,255,255,0.52), transparent 66%);
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(108,60,175,0.15), transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(90,50,160,0.1), transparent 40%),
+    radial-gradient(ellipse at 50% 100%, rgba(60,30,120,0.08), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
 }
 
+a { color: var(--accent-light); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.container { max-width: 1280px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+/* ====== NAV ====== */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  background: rgba(12,10,20,0.82);
+  border-bottom: 1px solid var(--line);
+}
+.nav .container {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px; gap: 16px;
+}
+.nav-brand {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-display); font-size: 22px; font-weight: 700;
+  color: var(--ink-bright); letter-spacing: -0.03em; cursor: pointer;
+}
+.nav-brand .mark {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--hero);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+.nav-links { display: flex; gap: 6px; flex-wrap: wrap; }
+.nav-links a {
+  padding: 7px 14px; border-radius: var(--radius-pill);
+  font-size: 13px; font-weight: 600; color: var(--muted);
+  transition: all 0.2s;
+}
+.nav-links a:hover, .nav-links a.active {
+  color: var(--ink-bright); background: rgba(108,60,175,0.2);
+  text-decoration: none;
+}
+.nav-mobile { display: none; background: none; border: none; color: var(--ink); font-size: 24px; cursor: pointer; padding: 8px; }
+
+/* ====== SECTION BASE ====== */
+.section { padding: 80px 0; position: relative; z-index: 1; }
+.section-header { text-align: center; margin-bottom: 48px; }
+.section-header h2 {
+  font-family: var(--font-display); font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700; letter-spacing: -0.04em; color: var(--ink-bright);
+  margin-bottom: 12px;
+}
+.section-header p { color: var(--muted); max-width: 600px; margin: 0 auto; font-size: 16px; }
+
+/* ====== GLASS CARD ====== */
+.glass {
+  background: var(--glass); border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl); padding: 24px;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+
+/* ====== BUTTONS ====== */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 24px; border-radius: var(--radius-pill);
+  font-weight: 700; font-size: 13px; letter-spacing: 0.04em;
+  text-transform: uppercase; border: none; cursor: pointer;
+  transition: all 0.25s; font-family: var(--font-mono);
+}
+.btn-primary { background: var(--accent); color: #fff; box-shadow: 0 4px 20px var(--accent-glow); }
+.btn-primary:hover { background: var(--accent-light); transform: translateY(-1px); text-decoration: none; }
+.btn-outline { background: transparent; color: var(--accent-light); border: 1px solid var(--accent); }
+.btn-outline:hover { background: rgba(108,60,175,0.15); text-decoration: none; }
+.btn-sm { padding: 8px 16px; font-size: 11px; }
+.btn-ghost { background: rgba(255,255,255,0.06); color: var(--muted); border: 1px solid var(--line); }
+.btn-ghost:hover { color: var(--ink-bright); background: rgba(255,255,255,0.1); text-decoration: none; }
+
+/* ====== BADGE ====== */
+.badge {
+  display: inline-block; padding: 5px 10px; border-radius: var(--radius-pill);
+  font: 700 10px/1 var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em;
+}
+.badge-saas { background: rgba(96,165,250,0.15); color: var(--blue); }
+.badge-content { background: rgba(52,211,153,0.15); color: var(--green); }
+.badge-tool { background: rgba(251,191,36,0.15); color: var(--yellow); }
+.badge-template { background: rgba(248,113,113,0.15); color: var(--red); }
+.badge-shopify { background: rgba(108,60,175,0.2); color: var(--accent-light); }
+.badge-app { background: rgba(168,85,247,0.15); color: #a855f7; }
+
+/* ====== HERO ====== */
+#hero { padding: 100px 0 80px; }
+.hero-inner {
+  display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center;
+}
 .hero-kicker {
-  margin: 0 0 12px;
-  position: relative;
-  z-index: 1;
-  font: 700 12px/1 var(--font-mono);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  opacity: 0.74;
+  font: 700 12px/1 var(--font-mono); letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--accent-light); margin-bottom: 16px;
 }
-
 .hero-title {
-  position: relative;
-  z-index: 1;
-  margin: 0;
-  max-width: 12ch;
-  font-size: clamp(42px, 5.6vw, 82px);
-  line-height: 0.92;
-  letter-spacing: -0.06em;
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5vw, 64px);
+  line-height: 1; letter-spacing: -0.05em;
+  color: var(--ink-bright); margin-bottom: 20px;
 }
-
-.hero-copy {
-  position: relative;
-  z-index: 1;
-  max-width: 52ch;
-  font-size: 16px;
-  line-height: 1.58;
-  opacity: 0.88;
+.hero-title span { color: var(--accent-light); }
+.hero-copy { font-size: 17px; color: var(--muted); line-height: 1.65; margin-bottom: 32px; max-width: 520px; }
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero-stats {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
 }
+.hero-stat {
+  background: var(--glass); border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg); padding: 24px;
+  backdrop-filter: blur(12px);
+}
+.hero-stat .label { font: 700 10px/1 var(--font-mono); text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+.hero-stat .value { font-size: 28px; font-weight: 700; color: var(--ink-bright); margin-top: 8px; display: block; }
+.hero-stat .sub { font-size: 12px; color: var(--green); margin-top: 4px; display: block; }
 
-.stat-card {
+/* ====== MARKETPLACE ====== */
+.filter-bar {
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+  padding: 20px 24px; margin-bottom: 32px;
+}
+.filter-bar select, .filter-bar input[type="number"] {
+  padding: 10px 14px; border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.06); border: 1px solid var(--line);
+  color: var(--ink); font-size: 13px; font-family: var(--font-body);
   min-width: 140px;
-  padding: 12px 14px;
-  border-radius: 18px;
-  background: rgba(255,255,255,0.4);
-  border: 1px solid rgba(0,0,0,0.08);
+}
+.filter-bar select option { background: var(--bg2); color: var(--ink); }
+.filter-bar label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.filter-group { display: flex; flex-direction: column; gap: 4px; }
+.sort-bar {
+  display: flex; gap: 8px; margin-left: auto; align-items: flex-end;
+}
+.sort-bar button {
+  padding: 8px 14px; border-radius: var(--radius-pill);
+  background: rgba(255,255,255,0.04); border: 1px solid var(--line);
+  color: var(--muted); font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: all 0.2s;
+}
+.sort-bar button:hover, .sort-bar button.active { background: rgba(108,60,175,0.2); color: var(--ink-bright); border-color: var(--accent); }
+
+.listings-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+.listing-card {
+  background: var(--glass); border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl); padding: 24px;
+  backdrop-filter: blur(12px); transition: all 0.3s; cursor: pointer;
+}
+.listing-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 12px 40px var(--accent-glow); }
+.listing-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+.listing-card-header h3 { font-size: 18px; font-weight: 700; color: var(--ink-bright); font-family: var(--font-display); letter-spacing: -0.02em; }
+.listing-card .price { font-size: 24px; font-weight: 700; color: var(--ink-bright); margin: 12px 0 4px; }
+.listing-card .revenue { font-size: 14px; color: var(--green); font-weight: 600; }
+.listing-card .meta-row {
+  display: flex; gap: 16px; margin-top: 14px; padding-top: 14px;
+  border-top: 1px solid var(--line); font-size: 12px; color: var(--muted);
+}
+.listing-card .meta-row span { display: flex; flex-direction: column; gap: 2px; }
+.listing-card .meta-row .mlabel { font: 700 9px/1 var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.7; }
+.listing-card .meta-row .mval { font-weight: 600; color: var(--ink); }
+.listing-card .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.listing-card .tags span {
+  padding: 3px 8px; border-radius: var(--radius-pill);
+  background: rgba(255,255,255,0.06); border: 1px solid var(--line);
+  font-size: 10px; color: var(--muted); font-weight: 600;
+}
+.listing-card .card-btn { margin-top: 16px; width: 100%; text-align: center; }
+
+/* ====== MODAL ====== */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+  overflow-y: auto; padding: 40px 20px;
+}
+.modal-overlay.open { display: flex; justify-content: center; align-items: flex-start; }
+.modal {
+  background: var(--bg2); border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl); max-width: 800px; width: 100%;
+  padding: 40px; position: relative;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+}
+.modal-close {
+  position: absolute; top: 16px; right: 20px;
+  background: none; border: none; color: var(--muted); font-size: 28px;
+  cursor: pointer; line-height: 1;
+}
+.modal-close:hover { color: var(--ink-bright); }
+.modal h2 { font-family: var(--font-display); font-size: 28px; color: var(--ink-bright); letter-spacing: -0.03em; margin-bottom: 8px; }
+.modal .modal-badge { margin-bottom: 16px; }
+.modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+.modal-stat {
+  background: rgba(255,255,255,0.04); border: 1px solid var(--line);
+  border-radius: var(--radius-md); padding: 16px;
+}
+.modal-stat .ms-label { font: 700 10px/1 var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+.modal-stat .ms-value { font-size: 22px; font-weight: 700; color: var(--ink-bright); margin-top: 6px; display: block; }
+.modal h3 { font-size: 16px; font-weight: 700; color: var(--ink-bright); margin: 24px 0 12px; }
+.modal p, .modal li { color: var(--muted); line-height: 1.6; }
+.modal ul { list-style: none; padding: 0; }
+.modal ul li { padding: 6px 0; padding-left: 20px; position: relative; }
+.modal ul li::before { content: "-->"; position: absolute; left: 0; color: var(--accent-light); font-size: 12px; }
+.traffic-chart { display: flex; align-items: flex-end; gap: 6px; height: 120px; margin: 16px 0; padding: 12px; background: rgba(255,255,255,0.03); border-radius: var(--radius-md); border: 1px solid var(--line); }
+.traffic-bar { flex: 1; background: linear-gradient(to top, var(--accent), var(--accent-light)); border-radius: 4px 4px 0 0; min-width: 20px; position: relative; }
+.traffic-bar::after { content: attr(data-label); position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); font-size: 9px; color: var(--muted); white-space: nowrap; }
+.dd-checklist { margin: 16px 0; }
+.dd-checklist label { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--radius-sm); cursor: pointer; transition: background 0.2s; font-size: 14px; color: var(--muted); }
+.dd-checklist label:hover { background: rgba(255,255,255,0.04); }
+.dd-checklist input[type="checkbox"] { accent-color: var(--accent); width: 18px; height: 18px; }
+
+/* ====== SELL FORM ====== */
+.form-steps { display: flex; gap: 8px; margin-bottom: 32px; flex-wrap: wrap; }
+.form-step {
+  padding: 8px 16px; border-radius: var(--radius-pill);
+  font: 700 11px/1 var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--line);
+  color: var(--muted); cursor: pointer; transition: all 0.2s;
+}
+.form-step.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.form-step.done { background: var(--green-bg); color: var(--green); border-color: rgba(52,211,153,0.3); }
+.form-panel { display: none; }
+.form-panel.active { display: block; }
+.form-group { margin-bottom: 20px; }
+.form-group label {
+  display: block; margin-bottom: 6px;
+  font-size: 13px; font-weight: 600; color: var(--ink);
+}
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%; padding: 12px 16px; border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.06); border: 1px solid var(--line);
+  color: var(--ink); font-size: 14px; font-family: var(--font-body);
+  transition: border-color 0.2s;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  outline: none; border-color: var(--accent);
+}
+.form-group textarea { min-height: 100px; resize: vertical; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-nav { display: flex; justify-content: space-between; margin-top: 32px; }
+.form-confirmation {
+  text-align: center; padding: 60px 20px;
+}
+.form-confirmation .check-icon { font-size: 64px; margin-bottom: 16px; }
+
+/* ====== VALUATION TOOL ====== */
+.valuation-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.val-result {
+  text-align: center; padding: 40px; display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+}
+.val-range { font-size: 36px; font-weight: 700; color: var(--ink-bright); margin: 16px 0 8px; font-family: var(--font-display); }
+.val-multiple { font-size: 14px; color: var(--accent-light); font-weight: 600; }
+.val-bar {
+  width: 100%; height: 12px; border-radius: 6px;
+  background: rgba(255,255,255,0.06); margin: 24px 0 8px; overflow: hidden;
   position: relative;
-  z-index: 1;
+}
+.val-bar-fill {
+  height: 100%; border-radius: 6px;
+  background: linear-gradient(90deg, var(--accent), var(--green));
+  transition: width 0.5s ease;
+}
+.val-comps { margin-top: 24px; width: 100%; }
+.val-comp {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 14px; border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.03); border: 1px solid var(--line);
+  margin-bottom: 8px; font-size: 13px;
+}
+.val-comp .comp-name { color: var(--ink); font-weight: 600; }
+.val-comp .comp-price { color: var(--green); font-weight: 700; }
+
+/* ====== HOW IT WORKS ====== */
+.hiw-tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 40px; }
+.hiw-tab {
+  padding: 10px 24px; border-radius: var(--radius-pill);
+  font-weight: 700; font-size: 14px; cursor: pointer;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--line);
+  color: var(--muted); transition: all 0.2s;
+}
+.hiw-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.hiw-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+.hiw-step {
+  text-align: center; padding: 32px 20px;
+  background: var(--glass); border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl); position: relative;
+}
+.hiw-step .step-num {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 16px; margin: 0 auto 16px;
+}
+.hiw-step .step-icon { font-size: 32px; margin-bottom: 12px; }
+.hiw-step h4 { font-size: 16px; font-weight: 700; color: var(--ink-bright); margin-bottom: 8px; }
+.hiw-step p { font-size: 13px; color: var(--muted); }
+.hiw-connector {
+  display: none; /* simplified for mobile */
 }
 
-.stat-label {
-  display: block;
-  opacity: 0.66;
+/* ====== PIPELINE ====== */
+.pipeline-board {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
 }
-
-.stat-value {
-  display: block;
-  margin-top: 8px;
-  font-size: 22px;
-  line-height: 1;
+.pipeline-col {
+  background: rgba(255,255,255,0.03); border: 1px solid var(--line);
+  border-radius: var(--radius-lg); padding: 16px; min-height: 300px;
 }
-
-.stack {
-  display: grid;
-  gap: 18px;
+.pipeline-col-header {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 16px;
+  padding-bottom: 12px; border-bottom: 1px solid var(--line);
 }
-
-.card {
-  border-radius: 26px;
-  border: 1px solid var(--line);
-  background: rgba(255,255,255,0.54);
-  padding: 22px;
+.pipeline-col-header .dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot-interested { background: var(--blue); }
+.dot-dd { background: var(--yellow); }
+.dot-escrow { background: var(--accent-light); }
+.dot-closed { background: var(--green); }
+.pipeline-col-header h4 { font-size: 13px; font-weight: 700; color: var(--ink); text-transform: uppercase; letter-spacing: 0.06em; }
+.pipeline-card {
+  background: rgba(255,255,255,0.05); border: 1px solid var(--line);
+  border-radius: var(--radius-md); padding: 14px; margin-bottom: 10px;
+  cursor: pointer; transition: all 0.2s;
 }
+.pipeline-card:hover { border-color: var(--accent); }
+.pipeline-card h5 { font-size: 14px; color: var(--ink-bright); margin-bottom: 4px; }
+.pipeline-card .pc-price { font-size: 13px; color: var(--green); font-weight: 600; }
+.pipeline-card .pc-status { font-size: 11px; color: var(--muted); margin-top: 6px; }
+.pipeline-empty { text-align: center; padding: 30px 10px; color: var(--muted); font-size: 13px; font-style: italic; }
 
-.section-title {
-  margin: 0;
-  font-size: 28px;
-  line-height: 0.96;
-  letter-spacing: -0.04em;
+/* ====== ESCROW ====== */
+.escrow-panel {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
 }
-
-.card-copy,
-.feature-item span,
-.action-item span,
-.footer-note {
-  color: var(--muted);
+.escrow-status-card {
+  background: rgba(255,255,255,0.04); border: 1px solid var(--line);
+  border-radius: var(--radius-lg); padding: 24px;
 }
-
-.card-copy {
-  margin-top: 10px;
-  line-height: 1.55;
-}
-
-.feature-list,
-.action-list,
-.custom-area {
-  margin-top: 18px;
-  display: grid;
-  gap: 12px;
-}
-
-.feature-item,
-.action-item,
-.custom-box {
-  border-radius: 18px;
-  border: 1px solid var(--line);
-  background: rgba(255,255,255,0.58);
-  padding: 16px;
-}
-
-.feature-item strong,
-.action-item strong,
-.custom-box strong {
-  display: block;
-  font-size: 16px;
-}
-
-.feature-item span,
-.action-item span,
-.custom-box span {
-  display: block;
-  margin-top: 6px;
-  line-height: 1.45;
+.escrow-status-card h4 { font-size: 16px; font-weight: 700; color: var(--ink-bright); margin-bottom: 16px; }
+.escrow-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 0; border-bottom: 1px solid var(--line);
   font-size: 14px;
 }
-
-.custom-grid {
-  display: grid;
-  gap: 12px;
+.escrow-item:last-child { border-bottom: none; }
+.escrow-item .ei-label { color: var(--muted); }
+.escrow-item .ei-value { font-weight: 600; color: var(--ink-bright); }
+.escrow-item .ei-status { padding: 4px 10px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 700; }
+.status-pending { background: rgba(251,191,36,0.15); color: var(--yellow); }
+.status-complete { background: var(--green-bg); color: var(--green); }
+.status-waiting { background: rgba(96,165,250,0.15); color: var(--blue); }
+.escrow-checklist label {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0; border-bottom: 1px solid var(--line);
+  font-size: 14px; color: var(--muted); cursor: pointer;
 }
+.escrow-checklist input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; }
 
-.custom-grid.two {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.selector-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.selector-pill {
-  padding: 8px 12px;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--line);
-  background: rgba(255,255,255,0.72);
-  font: 700 11px/1 var(--font-mono);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.footer {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-  padding: 18px 24px 24px;
+/* ====== FOOTER ====== */
+.site-footer {
   border-top: 1px solid var(--line);
+  padding: 60px 0 30px;
+  position: relative; z-index: 1;
+}
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+  margin-bottom: 40px;
+}
+.footer-brand h3 { font-family: var(--font-display); font-size: 22px; color: var(--ink-bright); margin-bottom: 10px; }
+.footer-brand p { color: var(--muted); font-size: 14px; max-width: 300px; }
+.footer-col h4 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink); margin-bottom: 14px; }
+.footer-col a { display: block; color: var(--muted); font-size: 14px; padding: 4px 0; transition: color 0.2s; }
+.footer-col a:hover { color: var(--ink-bright); text-decoration: none; }
+.footer-newsletter { margin-top: 20px; }
+.footer-newsletter form { display: flex; gap: 8px; }
+.footer-newsletter input {
+  flex: 1; padding: 10px 14px; border-radius: var(--radius-pill);
+  background: rgba(255,255,255,0.06); border: 1px solid var(--line);
+  color: var(--ink); font-size: 14px;
+}
+.footer-newsletter input:focus { outline: none; border-color: var(--accent); }
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 24px; border-top: 1px solid var(--line);
+  font-size: 13px; color: var(--muted);
 }
 
-.footer-note {
-  font: 700 12px/1.45 var(--font-mono);
+/* ====== HIDDEN SECTIONS ====== */
+.page-section { display: none; }
+.page-section.active { display: block; }
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 900px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-stats { grid-template-columns: 1fr 1fr; }
+  .valuation-layout { grid-template-columns: 1fr; }
+  .pipeline-board { grid-template-columns: 1fr 1fr; }
+  .escrow-panel { grid-template-columns: 1fr; }
+  .modal-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .form-row { grid-template-columns: 1fr; }
 }
-
-.gallery {
-  width: min(1440px, 100%);
-  margin: 0 auto;
+@media (max-width: 640px) {
+  .nav-links { display: none; }
+  .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: rgba(12,10,20,0.96); padding: 16px; border-bottom: 1px solid var(--line); }
+  .nav-mobile { display: block; }
+  .hero-stats { grid-template-columns: 1fr; }
+  .pipeline-board { grid-template-columns: 1fr; }
+  .hiw-steps { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .listings-grid { grid-template-columns: 1fr; }
+  .modal { padding: 24px; }
+  .modal-grid { grid-template-columns: 1fr; }
+  .filter-bar { flex-direction: column; align-items: stretch; }
+  .sort-bar { margin-left: 0; }
 }
-
-.gallery-header {
-  margin-bottom: 24px;
-}
-
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.gallery-card {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-  border-radius: 26px;
-  border: 1px solid var(--line);
-  background: var(--panel);
-  box-shadow: var(--shadow);
-  padding: 20px;
-}
-
-.gallery-card:hover {
-  transform: translateY(-2px);
-}
-
-.gallery-card h2 {
-  margin: 12px 0 0;
-  font: 700 30px/0.96 var(--font-display);
-  letter-spacing: -0.04em;
-}
-
-.gallery-card p {
-  margin: 10px 0 0;
-  color: var(--muted);
-  line-height: 1.5;
-}
-
-@media (max-width: 980px) {
-  .shell,
-  .custom-grid.two,
-  .gallery-grid {
-    grid-template-columns: 1fr;
-  }
-
-  body {
-    padding: 12px;
-  }
-
-  .frame {
-    border-radius: 26px;
-  }
-}
-</style>
+  </style>
 </head>
 <body>
-  <main class="frame" style="--bg:#f0f4f8;--panel:rgba(248, 250, 255, 0.86);--ink:#12101c;--muted:#5a5878;--line:rgba(30, 20, 60, 0.12);--accent:#6c3caf;--hero:linear-gradient(135deg, #4a2888 0%, #8b5cd0 44%, #d8ccf0 100%);--shadow:0 24px 70px rgba(44, 24, 80, 0.14);">
-    <header class="topbar">
-      <div class="brand">
-        <div class="brand-mark" aria-hidden="true"></div>
-        <div class="brand-copy">
-          <strong>VibeFlippers</strong>
-          <span>AI-built digital assets, flipped for profit.</span>
+
+<!-- ====== NAVIGATION ====== -->
+<nav class="nav">
+  <div class="container">
+    <div class="nav-brand" onclick="navigate('hero')">
+      <div class="mark"></div>
+      VibeFlippers
+    </div>
+    <div class="nav-links" id="navLinks">
+      <a href="#marketplace" onclick="navigate('marketplace')">Marketplace</a>
+      <a href="#sell" onclick="navigate('sell')">Sell Your Asset</a>
+      <a href="#valuations" onclick="navigate('valuations')">Valuations</a>
+      <a href="#pipeline" onclick="navigate('pipeline')">Deal Pipeline</a>
+      <a href="#how-it-works" onclick="navigate('how-it-works')">How It Works</a>
+      <a href="#about" onclick="navigate('about')">About</a>
+    </div>
+    <button class="nav-mobile" id="navToggle" onclick="document.getElementById('navLinks').classList.toggle('open')">&#9776;</button>
+  </div>
+</nav>
+
+<!-- ====== HERO ====== -->
+<section id="hero" class="section page-section active">
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <p class="hero-kicker">The AI Asset Marketplace</p>
+        <h1 class="hero-title">Buy & sell <span>AI-built</span> digital assets.</h1>
+        <p class="hero-copy">VibeFlippers is the premier marketplace for AI-generated digital properties. Sites, tools, templates, micro-SaaS -- vetted, valued, and ready for acquisition.</p>
+        <div class="hero-actions">
+          <a href="#marketplace" class="btn btn-primary" onclick="navigate('marketplace')">Browse Listings</a>
+          <a href="#sell" class="btn btn-outline" onclick="navigate('sell')">Sell Your Asset</a>
+          <a href="#valuations" class="btn btn-ghost" onclick="navigate('valuations')">Free Valuation</a>
         </div>
       </div>
-      <div class="topbar-badges">
-        <span class="badge">Digital Assets</span><span class="badge">Newsletter</span>
-      </div>
-    </header>
-    <section class="shell">
-      <section class="hero">
-        <div>
-          <p class="hero-kicker">vibeflippers.com</p>
-          <h1 class="hero-title">The marketplace where AI meets acquisition.</h1>
-          <p class="hero-copy">A newsletter and marketplace for AI-generated digital assets — sites, tools, templates, and micro-SaaS. Find deals, get valuations, and flip with confidence.</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="label">Total Deal Volume</span>
+          <strong class="value">$2.4M+</strong>
+          <span class="sub">+34% this quarter</span>
         </div>
-        <div class="stats-row">
-      <div class="stat-card">
-        <span class="stat-label">Focus</span>
-        <strong class="stat-value">AI Assets</strong>
-      </div>
-    
-      <div class="stat-card">
-        <span class="stat-label">Model</span>
-        <strong class="stat-value">Marketplace</strong>
-      </div>
-    
-      <div class="stat-card">
-        <span class="stat-label">Stage</span>
-        <strong class="stat-value">Newsletter</strong>
+        <div class="hero-stat">
+          <span class="label">Active Listings</span>
+          <strong class="value">47</strong>
+          <span class="sub">12 new this week</span>
+        </div>
+        <div class="hero-stat">
+          <span class="label">Avg. Multiple</span>
+          <strong class="value">3.2x</strong>
+          <span class="sub">Monthly revenue</span>
+        </div>
+        <div class="hero-stat">
+          <span class="label">Closed Deals</span>
+          <strong class="value">138</strong>
+          <span class="sub">98% success rate</span>
+        </div>
       </div>
     </div>
-      </section>
-      <section class="stack">
-        <article class="card">
-          <h2 class="section-title">What We Offer</h2>
-          <p class="card-copy">Weekly deal alerts, AI-powered valuations, and a growing community of builders who buy and sell digital assets.</p>
-          <div class="feature-list">
-      <article class="feature-item">
-        <strong>Deal Alerts</strong>
-        <span>Curated AI-built assets hitting the market each week.</span>
-      </article>
-    
-      <article class="feature-item">
-        <strong>AI Valuations</strong>
-        <span>Data-driven pricing for digital assets built with AI tools.</span>
-      </article>
-    
-      <article class="feature-item">
-        <strong>Market Analysis</strong>
-        <span>Trends, comps, and signals from the AI asset economy.</span>
-      </article>
-    
-      <article class="feature-item">
-        <strong>Buyer Community</strong>
-        <span>Connect with serious buyers and sellers of digital properties.</span>
-      </article>
+  </div>
+</section>
+
+<!-- ====== MARKETPLACE ====== -->
+<section id="marketplace" class="section page-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Marketplace</h2>
+      <p>Vetted AI-built digital assets. Every listing includes verified revenue, traffic data, and full tech-stack disclosure.</p>
     </div>
-        </article>
-        <article class="card">
-          <h2 class="section-title">Coming Soon</h2>
-          <p class="card-copy">We're building something worth waiting for.</p>
-          <div class="action-list">
-      <article class="action-item">
-        <strong>Newsletter Launch</strong>
-        <span>Weekly digest of deals, trends, and flip opportunities.</span>
-      </article>
-    
-      <article class="action-item">
-        <strong>Marketplace Beta</strong>
-        <span>List and discover AI-built assets for acquisition.</span>
-      </article>
-    
-      <article class="action-item">
-        <strong>Valuation Tool</strong>
-        <span>Get an instant estimate on any AI-built digital asset.</span>
-      </article>
+
+    <div class="glass filter-bar">
+      <div class="filter-group">
+        <label>Asset Type</label>
+        <select id="filterType" onchange="filterListings()">
+          <option value="">All Types</option>
+          <option value="SaaS">SaaS</option>
+          <option value="Content Site">Content Site</option>
+          <option value="Tool">Tool</option>
+          <option value="Template">Template</option>
+          <option value="Shopify Store">Shopify Store</option>
+          <option value="App">App</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Min Price</label>
+        <input type="number" id="filterMinPrice" placeholder="$0" onchange="filterListings()">
+      </div>
+      <div class="filter-group">
+        <label>Max Price</label>
+        <input type="number" id="filterMaxPrice" placeholder="No max" onchange="filterListings()">
+      </div>
+      <div class="filter-group">
+        <label>Min Revenue</label>
+        <input type="number" id="filterMinRev" placeholder="$0/mo" onchange="filterListings()">
+      </div>
+      <div class="filter-group">
+        <label>Niche</label>
+        <select id="filterNiche" onchange="filterListings()">
+          <option value="">All Niches</option>
+          <option value="AI/ML">AI/ML</option>
+          <option value="Food">Food</option>
+          <option value="E-commerce">E-commerce</option>
+          <option value="Productivity">Productivity</option>
+          <option value="Education">Education</option>
+          <option value="Marketing">Marketing</option>
+          <option value="Finance">Finance</option>
+          <option value="Health">Health</option>
+        </select>
+      </div>
+      <div class="sort-bar">
+        <button class="active" onclick="sortListings('price', this)">Price</button>
+        <button onclick="sortListings('revenue', this)">Revenue</button>
+        <button onclick="sortListings('multiple', this)">Multiple</button>
+        <button onclick="sortListings('newest', this)">Newest</button>
+      </div>
     </div>
-        </article>
-      </section>
-    </section>
-    <section class="shell" style="padding-top:0">
-      <section class="card">
-        <h2 class="section-title">Get Started</h2>
-        <p class="card-copy">AI-built digital assets, flipped for profit.</p>
-        
-        <div class="custom-area">
-          <article class="custom-box">
-            <strong>Join the Waitlist</strong>
-            <span>Be the first to know when we launch. No spam — just one email when it's live.</span>
-            <form action="#" method="POST" style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
-              <input type="email" name="email" placeholder="your@email.com" required style="flex:1;min-width:200px;padding:12px 16px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,0.78);font:600 15px/1 var(--font-body);color:var(--ink);outline:none">
-              <button type="submit" style="padding:12px 24px;border-radius:999px;border:none;background:var(--accent);color:#fff;font:700 13px/1 var(--font-mono);letter-spacing:0.08em;text-transform:uppercase;cursor:pointer">Notify Me</button>
-            </form>
-          </article>
-          <div class="custom-grid two">
-            <article class="custom-box">
-              <strong>For Builders</strong>
-              <span>Made by and for people who build with AI tools.</span>
-            </article>
-          
-            <article class="custom-box">
-              <strong>Deal Flow</strong>
-              <span>New listings, market signals, and flip opportunities weekly.</span>
-            </article>
+
+    <div class="listings-grid" id="listingsGrid"></div>
+  </div>
+</section>
+
+<!-- ====== SELL ====== -->
+<section id="sell" class="section page-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Sell Your Asset</h2>
+      <p>List your AI-built digital asset on the premier marketplace. Professional valuations, vetted buyers, and secure escrow.</p>
+    </div>
+
+    <div class="glass" style="max-width:720px;margin:0 auto;">
+      <div class="form-steps" id="formSteps">
+        <span class="form-step active" data-step="1">1. Asset Details</span>
+        <span class="form-step" data-step="2">2. Financials</span>
+        <span class="form-step" data-step="3">3. Traffic</span>
+        <span class="form-step" data-step="4">4. Tech & Growth</span>
+      </div>
+
+      <div id="sellFormContainer">
+        <!-- Step 1 -->
+        <div class="form-panel active" data-step="1">
+          <div class="form-group">
+            <label>Asset Name</label>
+            <input type="text" id="sf-name" placeholder="e.g., AI Recipe Blog">
+          </div>
+          <div class="form-group">
+            <label>URL</label>
+            <input type="url" id="sf-url" placeholder="https://yoursite.com">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Asset Type</label>
+              <select id="sf-type">
+                <option value="">Select type...</option>
+                <option>SaaS</option>
+                <option>Content Site</option>
+                <option>Tool</option>
+                <option>Template</option>
+                <option>Shopify Store</option>
+                <option>App</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Niche</label>
+              <select id="sf-niche">
+                <option value="">Select niche...</option>
+                <option>AI/ML</option>
+                <option>Food</option>
+                <option>E-commerce</option>
+                <option>Productivity</option>
+                <option>Education</option>
+                <option>Marketing</option>
+                <option>Finance</option>
+                <option>Health</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-nav">
+            <span></span>
+            <button class="btn btn-primary" onclick="sellFormNext(2)">Next: Financials</button>
           </div>
         </div>
-      
-      </section>
-      
-    </section>
-    <footer class="footer">
-      <span class="footer-note">© 2026 VibeFlippers</span>
-      <span class="footer-note">vibeflippers.com</span>
-    </footer>
-  </main>
+
+        <!-- Step 2 -->
+        <div class="form-panel" data-step="2">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Monthly Revenue ($)</label>
+              <input type="number" id="sf-revenue" placeholder="2400">
+            </div>
+            <div class="form-group">
+              <label>Monthly Profit ($)</label>
+              <input type="number" id="sf-profit" placeholder="1800">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Asking Price ($)</label>
+            <input type="number" id="sf-price" placeholder="72000">
+          </div>
+          <div class="form-group">
+            <label>Asset Age (months)</label>
+            <input type="number" id="sf-age" placeholder="18">
+          </div>
+          <div class="form-nav">
+            <button class="btn btn-ghost" onclick="sellFormNext(1)">Back</button>
+            <button class="btn btn-primary" onclick="sellFormNext(3)">Next: Traffic</button>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="form-panel" data-step="3">
+          <div class="form-group">
+            <label>Monthly Visitors</label>
+            <input type="number" id="sf-visitors" placeholder="45000">
+          </div>
+          <div class="form-group">
+            <label>Primary Traffic Sources</label>
+            <textarea id="sf-traffic" placeholder="e.g., 60% organic search, 25% social media, 15% direct"></textarea>
+          </div>
+          <div class="form-nav">
+            <button class="btn btn-ghost" onclick="sellFormNext(2)">Back</button>
+            <button class="btn btn-primary" onclick="sellFormNext(4)">Next: Tech & Growth</button>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="form-panel" data-step="4">
+          <div class="form-group">
+            <label>Tech Stack</label>
+            <textarea id="sf-tech" placeholder="e.g., Next.js, Supabase, Vercel, Stripe, OpenAI API"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Growth Opportunities</label>
+            <textarea id="sf-growth" placeholder="Describe untapped growth potential..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Reason for Selling</label>
+            <textarea id="sf-reason" placeholder="Why are you selling this asset?"></textarea>
+          </div>
+          <div class="form-nav">
+            <button class="btn btn-ghost" onclick="sellFormNext(3)">Back</button>
+            <button class="btn btn-primary" onclick="submitSellForm()">Submit Listing</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="sellConfirmation" class="form-confirmation" style="display:none;">
+        <div class="check-icon">&#10003;</div>
+        <h3 style="font-family:var(--font-display);font-size:24px;color:var(--ink-bright);margin-bottom:12px;">Listing Submitted</h3>
+        <p style="color:var(--muted);margin-bottom:24px;">Your asset has been submitted for review. Our team will reach out within 48 hours with a preliminary valuation.</p>
+        <button class="btn btn-primary" onclick="navigate('valuations')">Get a Free Valuation</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== VALUATIONS ====== -->
+<section id="valuations" class="section page-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Instant Valuation Tool</h2>
+      <p>Get an estimated valuation range for your AI-built digital asset based on industry multiples and comparable sales.</p>
+    </div>
+
+    <div class="valuation-layout">
+      <div class="glass">
+        <h3 style="font-size:18px;color:var(--ink-bright);margin-bottom:20px;">Enter Your Asset Details</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Monthly Revenue ($)</label>
+            <input type="number" id="val-revenue" placeholder="2400" oninput="calcValuation()">
+          </div>
+          <div class="form-group">
+            <label>Monthly Profit ($)</label>
+            <input type="number" id="val-profit" placeholder="1800" oninput="calcValuation()">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Asset Type</label>
+            <select id="val-type" onchange="calcValuation()">
+              <option value="SaaS">SaaS (3-5x multiple)</option>
+              <option value="Content Site">Content Site (2-3x)</option>
+              <option value="Tool">Tool (2-4x)</option>
+              <option value="Template">Template (2-3x)</option>
+              <option value="Shopify Store">Shopify Store (1.5-3x)</option>
+              <option value="App">App (3-5x)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Asset Age (months)</label>
+            <input type="number" id="val-age" placeholder="12" oninput="calcValuation()">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Monthly Traffic</label>
+          <input type="number" id="val-traffic" placeholder="45000" oninput="calcValuation()">
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px;" onclick="calcValuation()">Calculate Valuation</button>
+      </div>
+
+      <div class="glass val-result" id="valResult">
+        <p style="color:var(--muted);font-size:14px;">Enter your asset details to see an estimated valuation range.</p>
+        <div class="val-range" id="valRange">$0 - $0</div>
+        <div class="val-multiple" id="valMultiple">--</div>
+        <div class="val-bar"><div class="val-bar-fill" id="valBarFill" style="width:0%"></div></div>
+        <p style="font-size:11px;color:var(--muted);margin-top:4px;" id="valConfidence">Confidence: Enter data above</p>
+        <div class="val-comps" id="valComps">
+          <h4 style="font-size:14px;color:var(--ink-bright);margin-bottom:12px;text-align:left;">Comparable Recent Sales</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== HOW IT WORKS ====== -->
+<section id="how-it-works" class="section page-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>How It Works</h2>
+      <p>A simple, secure process for buying and selling AI-built digital assets.</p>
+    </div>
+
+    <div class="hiw-tabs">
+      <button class="hiw-tab active" onclick="switchHIW('buyers', this)">For Buyers</button>
+      <button class="hiw-tab" onclick="switchHIW('sellers', this)">For Sellers</button>
+    </div>
+
+    <div id="hiw-buyers" class="hiw-steps">
+      <div class="hiw-step">
+        <div class="step-num">1</div>
+        <div class="step-icon">&#128269;</div>
+        <h4>Browse</h4>
+        <p>Explore vetted listings with verified revenue, traffic data, and full financial disclosure.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="step-num">2</div>
+        <div class="step-icon">&#128172;</div>
+        <h4>Express Interest</h4>
+        <p>Found something promising? Express interest to unlock seller details and begin conversations.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="step-num">3</div>
+        <div class="step-icon">&#128270;</div>
+        <h4>Due Diligence</h4>
+        <p>Access analytics, verify revenue claims, review code quality, and assess growth potential.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="step-num">4</div>
+        <div class="step-icon">&#128274;</div>
+        <h4>Escrow</h4>
+        <p>Funds are held securely in escrow until all transfer conditions are met by both parties.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="step-num">5</div>
+        <div class="step-icon">&#127881;</div>
+        <h4>Transfer</h4>
+        <p>Assets are transferred, verified, and funds released. You now own a revenue-generating asset.</p>
+      </div>
+    </div>
+
+    <div id="hiw-sellers" class="hiw-steps" style="display:none;">
+      <div class="hiw-step">
+        <div class="step-num">1</div>
+        <div class="step-icon">&#128221;</div>
+        <h4>Submit</h4>
+        <p>Provide your asset details, financials, and traffic data through our submission form.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="step-num">2</div>
+        <div class="step-icon">&#128200;</div>
+        <h4>Valuation</h4>
+        <p>Our team assesses your asset using industry multiples and comparable sales data.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="step-num">3</div>
+        <div class="step-icon">&#128230;</div>
+        <h4>List</h4>
+        <p>Your listing goes live with professional presentation and verified metrics.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="step-num">4</div>
+        <div class="step-icon">&#129309;</div>
+        <h4>Buyer Matching</h4>
+        <p>We connect you with pre-qualified buyers interested in your asset type and niche.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="step-num">5</div>
+        <div class="step-icon">&#128274;</div>
+        <h4>Escrow</h4>
+        <p>Buyer deposits funds into secure escrow while you prepare the asset for transfer.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="step-num">6</div>
+        <div class="step-icon">&#128176;</div>
+        <h4>Payout</h4>
+        <p>Once the buyer confirms receipt and verifies the asset, funds are released to you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== DEAL PIPELINE ====== -->
+<section id="pipeline" class="section page-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Your Deal Pipeline</h2>
+      <p>Track your active deals from initial interest through closing. All data stored locally in your browser.</p>
+    </div>
+
+    <div style="margin-bottom:24px;display:flex;gap:12px;flex-wrap:wrap;">
+      <button class="btn btn-primary btn-sm" onclick="addToPipeline()">+ Add Deal to Pipeline</button>
+      <button class="btn btn-ghost btn-sm" onclick="clearPipeline()">Clear All</button>
+    </div>
+
+    <div class="pipeline-board" id="pipelineBoard">
+      <div class="pipeline-col">
+        <div class="pipeline-col-header"><div class="dot dot-interested"></div><h4>Interested</h4></div>
+        <div id="pipe-interested"></div>
+      </div>
+      <div class="pipeline-col">
+        <div class="pipeline-col-header"><div class="dot dot-dd"></div><h4>Due Diligence</h4></div>
+        <div id="pipe-dd"></div>
+      </div>
+      <div class="pipeline-col">
+        <div class="pipeline-col-header"><div class="dot dot-escrow"></div><h4>In Escrow</h4></div>
+        <div id="pipe-escrow"></div>
+      </div>
+      <div class="pipeline-col">
+        <div class="pipeline-col-header"><div class="dot dot-closed"></div><h4>Closed</h4></div>
+        <div id="pipe-closed"></div>
+      </div>
+    </div>
+
+    <!-- ESCROW UI (shown below pipeline) -->
+    <div style="margin-top:48px;">
+      <h3 style="font-family:var(--font-display);font-size:24px;color:var(--ink-bright);margin-bottom:20px;">Escrow Status</h3>
+      <div class="escrow-panel">
+        <div class="glass escrow-status-card">
+          <h4>Transaction Overview</h4>
+          <div class="escrow-item">
+            <span class="ei-label">Buyer Deposit</span>
+            <span class="ei-status status-pending" id="esc-deposit">Pending</span>
+          </div>
+          <div class="escrow-item">
+            <span class="ei-label">Seller Verification</span>
+            <span class="ei-status status-waiting" id="esc-verify">Awaiting</span>
+          </div>
+          <div class="escrow-item">
+            <span class="ei-label">Asset Transfer</span>
+            <span class="ei-status status-waiting" id="esc-transfer">Not Started</span>
+          </div>
+          <div class="escrow-item">
+            <span class="ei-label">Buyer Confirmation</span>
+            <span class="ei-status status-waiting" id="esc-confirm">Not Started</span>
+          </div>
+          <div class="escrow-item">
+            <span class="ei-label">Fund Release</span>
+            <span class="ei-status status-waiting" id="esc-release">Locked</span>
+          </div>
+          <div style="margin-top:16px;">
+            <button class="btn btn-outline btn-sm" onclick="advanceEscrow()">Advance Escrow Step</button>
+            <button class="btn btn-ghost btn-sm" onclick="resetEscrow()" style="margin-left:8px;">Reset</button>
+          </div>
+        </div>
+        <div class="glass escrow-status-card">
+          <h4>Asset Transfer Checklist</h4>
+          <div class="escrow-checklist">
+            <label><input type="checkbox" onchange="saveEscrowChecklist()"> Domain/URL transferred</label>
+            <label><input type="checkbox" onchange="saveEscrowChecklist()"> Hosting access provided</label>
+            <label><input type="checkbox" onchange="saveEscrowChecklist()"> Code repository transferred</label>
+            <label><input type="checkbox" onchange="saveEscrowChecklist()"> API keys & credentials handed over</label>
+            <label><input type="checkbox" onchange="saveEscrowChecklist()"> Analytics access shared</label>
+            <label><input type="checkbox" onchange="saveEscrowChecklist()"> Payment processor transferred</label>
+            <label><input type="checkbox" onchange="saveEscrowChecklist()"> Customer data exported</label>
+            <label><input type="checkbox" onchange="saveEscrowChecklist()"> Documentation provided</label>
+          </div>
+          <div style="margin-top:16px;">
+            <a href="#" class="btn btn-ghost btn-sm" onclick="event.preventDefault();alert('Escrow account connection will be available when the platform launches. This is currently in demo mode.')">Connect Escrow Account</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== ABOUT ====== -->
+<section id="about" class="section page-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>About VibeFlippers</h2>
+      <p>The first marketplace built specifically for AI-generated digital assets.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:900px;margin:0 auto;">
+      <div class="glass">
+        <h3 style="font-size:18px;color:var(--ink-bright);margin-bottom:12px;">Why VibeFlippers?</h3>
+        <p style="color:var(--muted);font-size:14px;line-height:1.7;">
+          The AI economy is creating a new class of digital assets -- sites, tools, and products built faster than ever before. But buying and selling them requires trust, transparency, and a marketplace that understands what makes an AI-built asset valuable.
+        </p>
+        <p style="color:var(--muted);font-size:14px;line-height:1.7;margin-top:12px;">
+          VibeFlippers bridges that gap. We vet every listing, verify revenue, and provide industry-standard valuations so you can buy and sell with confidence.
+        </p>
+      </div>
+      <div class="glass">
+        <h3 style="font-size:18px;color:var(--ink-bright);margin-bottom:12px;">Our Principles</h3>
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:8px 0;color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);display:flex;gap:10px;">
+            <span style="color:var(--accent-light);font-weight:700;">01</span> Verified revenue on every listing
+          </li>
+          <li style="padding:8px 0;color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);display:flex;gap:10px;">
+            <span style="color:var(--accent-light);font-weight:700;">02</span> Transparent valuations using real comps
+          </li>
+          <li style="padding:8px 0;color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);display:flex;gap:10px;">
+            <span style="color:var(--accent-light);font-weight:700;">03</span> Secure escrow for every transaction
+          </li>
+          <li style="padding:8px 0;color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);display:flex;gap:10px;">
+            <span style="color:var(--accent-light);font-weight:700;">04</span> Full tech-stack disclosure
+          </li>
+          <li style="padding:8px 0;color:var(--muted);font-size:14px;display:flex;gap:10px;">
+            <span style="color:var(--accent-light);font-weight:700;">05</span> Built by builders, for builders
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== FOOTER ====== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>VibeFlippers</h3>
+        <p>The premier marketplace for AI-built digital assets. Buy, sell, and flip with confidence.</p>
+        <div class="footer-newsletter">
+          <p style="font-size:13px;color:var(--muted);margin-bottom:8px;">Subscribe for weekly deal alerts:</p>
+          <form onsubmit="event.preventDefault();this.querySelector('input').value='';alert('Subscribed! You will receive weekly deal alerts.');">
+            <input type="email" placeholder="you@email.com" required>
+            <button type="submit" class="btn btn-primary btn-sm">Subscribe</button>
+          </form>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <a href="#marketplace" onclick="navigate('marketplace')">Marketplace</a>
+        <a href="#sell" onclick="navigate('sell')">Sell Your Asset</a>
+        <a href="#valuations" onclick="navigate('valuations')">Valuations</a>
+        <a href="#pipeline" onclick="navigate('pipeline')">Deal Pipeline</a>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="#how-it-works" onclick="navigate('how-it-works')">How It Works</a>
+        <a href="#about" onclick="navigate('about')">About Us</a>
+        <a href="#" onclick="event.preventDefault()">Blog</a>
+        <a href="#" onclick="event.preventDefault()">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="#" onclick="event.preventDefault()">Terms of Service</a>
+        <a href="#" onclick="event.preventDefault()">Privacy Policy</a>
+        <a href="#" onclick="event.preventDefault()">Escrow Terms</a>
+        <a href="#" onclick="event.preventDefault()">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 VibeFlippers. All rights reserved.</span>
+      <span>vibeflippers.com</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ====== LISTING DETAIL MODAL ====== -->
+<div class="modal-overlay" id="listingModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- ====== ADD TO PIPELINE MODAL ====== -->
+<div class="modal-overlay" id="pipelineModal">
+  <div class="modal" style="max-width:480px;">
+    <button class="modal-close" onclick="closePipelineModal()">&times;</button>
+    <h2 style="margin-bottom:20px;">Add Deal to Pipeline</h2>
+    <div class="form-group">
+      <label>Deal Name</label>
+      <input type="text" id="pipe-name" placeholder="e.g., AI Recipe Blog acquisition">
+    </div>
+    <div class="form-group">
+      <label>Deal Value ($)</label>
+      <input type="number" id="pipe-value" placeholder="72000">
+    </div>
+    <div class="form-group">
+      <label>Stage</label>
+      <select id="pipe-stage">
+        <option value="interested">Interested</option>
+        <option value="dd">Due Diligence</option>
+        <option value="escrow">In Escrow</option>
+        <option value="closed">Closed</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Notes</label>
+      <textarea id="pipe-notes" placeholder="Quick notes about this deal..."></textarea>
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="savePipelineDeal()">Add to Pipeline</button>
+  </div>
+</div>
+
+<script>
+// ====== SAMPLE LISTINGS DATA ======
+const LISTINGS = [
+  {
+    id: 1, name: "AI Recipe Blog", type: "Content Site", niche: "Food",
+    monthlyRevenue: 2400, monthlyProfit: 1920, askingPrice: 72000,
+    multiple: 30, traffic: 68000, age: 22, created: "2024-06-15",
+    techStack: ["Next.js", "MDX", "Vercel", "AdSense", "GPT-4"],
+    trafficSources: "72% Organic, 18% Pinterest, 10% Direct",
+    trafficHistory: [45,52,55,60,58,63,65,62,64,67,68,68],
+    description: "Fully AI-generated recipe blog with 1,200+ posts. Monetized via display ads and affiliate links. Consistent organic traffic growth over 22 months.",
+    growthNotes: "Untapped: YouTube shorts, email list monetization, sponsored posts from kitchenware brands.",
+    sellerNotes: "Built as a portfolio project, now generating real revenue. Selling to focus on SaaS products.",
+    pnl: { revenue: 2400, adRevenue: 1800, affiliates: 600, hosting: -120, api: -280, tools: -80, profit: 1920 }
+  },
+  {
+    id: 2, name: "PromptVault", type: "SaaS", niche: "AI/ML",
+    monthlyRevenue: 5800, monthlyProfit: 4200, askingPrice: 210000,
+    multiple: 36, traffic: 42000, age: 14, created: "2025-02-10",
+    techStack: ["React", "Node.js", "PostgreSQL", "Stripe", "OpenAI API", "AWS"],
+    trafficSources: "45% Organic, 30% Twitter/X, 15% Product Hunt, 10% Direct",
+    trafficHistory: [8,12,18,22,28,30,33,36,38,40,41,42],
+    description: "Prompt management SaaS for teams. 340+ paying users on monthly plans ($12-49/mo). Built with AI assistance, managed by one founder. Strong retention.",
+    growthNotes: "Enterprise tier ($99/mo) untapped. API marketplace could 3x revenue. SEO blog not started.",
+    sellerNotes: "Relocating internationally and need to simplify operations. Product is stable and growing.",
+    pnl: { revenue: 5800, subscriptions: 5200, apiAccess: 600, hosting: -480, api: -720, support: -400, profit: 4200 }
+  },
+  {
+    id: 3, name: "ShopifyGPT Theme", type: "Template", niche: "E-commerce",
+    monthlyRevenue: 1200, monthlyProfit: 1080, askingPrice: 30000,
+    multiple: 25, traffic: 15000, age: 10, created: "2025-06-20",
+    techStack: ["Liquid", "Shopify", "Tailwind CSS", "Alpine.js"],
+    trafficSources: "55% Shopify App Store, 30% Organic, 15% Referral",
+    trafficHistory: [3,5,8,9,10,11,12,13,14,14,15,15],
+    description: "Premium Shopify theme with AI-powered product descriptions, smart collections, and conversion-optimized checkout. 180+ active installs.",
+    growthNotes: "Could expand to other platforms (WooCommerce, BigCommerce). Upsell premium support packages.",
+    sellerNotes: "Side project that became profitable. Selling because I'm moving to full-time employment.",
+    pnl: { revenue: 1200, themeSales: 1200, hosting: -20, tools: -100, profit: 1080 }
+  },
+  {
+    id: 4, name: "CodeSnap.ai", type: "Tool", niche: "Productivity",
+    monthlyRevenue: 3200, monthlyProfit: 2560, askingPrice: 112000,
+    multiple: 35, traffic: 89000, age: 18, created: "2024-10-05",
+    techStack: ["SvelteKit", "Cloudflare Workers", "D1", "Stripe", "Claude API"],
+    trafficSources: "60% Organic, 20% GitHub, 12% Twitter, 8% Direct",
+    trafficHistory: [20,28,35,42,50,58,62,68,74,80,85,89],
+    description: "Code screenshot and sharing tool with AI explanations. Freemium model with Pro tier ($8/mo). 400+ Pro subscribers, 12K+ free users.",
+    growthNotes: "VS Code extension would drive huge adoption. Team plans not yet built. Embedding feature requested by 200+ users.",
+    sellerNotes: "Great product with strong organic growth. Selling to fund a new venture in a different space.",
+    pnl: { revenue: 3200, proSubs: 3200, hosting: -180, api: -340, infra: -120, profit: 2560 }
+  },
+  {
+    id: 5, name: "FitTrack AI", type: "App", niche: "Health",
+    monthlyRevenue: 4100, monthlyProfit: 2870, askingPrice: 164000,
+    multiple: 40, traffic: 32000, age: 12, created: "2025-04-15",
+    techStack: ["React Native", "Firebase", "Node.js", "OpenAI", "RevenueCat"],
+    trafficSources: "50% App Store Organic, 25% Instagram, 15% TikTok, 10% Word of Mouth",
+    trafficHistory: [5,8,12,16,20,22,25,27,28,30,31,32],
+    description: "AI fitness coaching app with personalized workout plans, meal tracking, and progress analytics. 820+ paying subscribers at $4.99/mo.",
+    growthNotes: "Android version in beta. Wearable integrations (Apple Watch, Fitbit) would increase retention. B2B gym partnerships untapped.",
+    sellerNotes: "Solo developer moving to a larger startup. App runs autonomously with minimal maintenance.",
+    pnl: { revenue: 4100, subscriptions: 4100, appStoreFees: -615, hosting: -320, api: -295, profit: 2870 }
+  },
+  {
+    id: 6, name: "NicheNews AI", type: "Content Site", niche: "Marketing",
+    monthlyRevenue: 1800, monthlyProfit: 1440, askingPrice: 45000,
+    multiple: 25, traffic: 52000, age: 16, created: "2025-01-10",
+    techStack: ["Astro", "Markdown", "Cloudflare Pages", "Mailchimp", "GPT-4"],
+    trafficSources: "65% Organic, 20% Email Newsletter, 15% Social",
+    trafficHistory: [15,18,22,28,32,35,38,40,42,45,48,52],
+    description: "AI-curated niche news aggregator covering digital marketing trends. 8,200 newsletter subscribers. Revenue from ads and sponsored content.",
+    growthNotes: "Premium newsletter tier would add recurring revenue. Podcast integration. White-label for agencies.",
+    sellerNotes: "Built as a content experiment. Proven model but I want to focus on my agency work.",
+    pnl: { revenue: 1800, ads: 1100, sponsored: 500, affiliates: 200, hosting: -40, api: -220, email: -100, profit: 1440 }
+  },
+  {
+    id: 7, name: "InvoiceBot Pro", type: "SaaS", niche: "Finance",
+    monthlyRevenue: 7200, monthlyProfit: 5040, askingPrice: 280000,
+    multiple: 39, traffic: 28000, age: 20, created: "2024-08-20",
+    techStack: ["Next.js", "Supabase", "Stripe", "Resend", "Claude API", "Vercel"],
+    trafficSources: "40% Organic, 25% Google Ads, 20% Referral, 15% Direct",
+    trafficHistory: [10,12,15,17,19,20,22,23,24,25,27,28],
+    description: "AI-powered invoicing SaaS for freelancers and small businesses. Auto-generates invoices from project data, tracks payments, sends reminders. 580+ paying users.",
+    growthNotes: "Accounting integrations (QuickBooks, Xero) would unlock SMB market. Multi-currency support requested. Mobile app in demand.",
+    sellerNotes: "Co-founder is leaving and remaining partner wants to exit. Product is mature and stable.",
+    pnl: { revenue: 7200, subscriptions: 6800, addons: 400, hosting: -380, api: -580, ads: -900, support: -300, profit: 5040 }
+  },
+  {
+    id: 8, name: "LearnLoop", type: "SaaS", niche: "Education",
+    monthlyRevenue: 3600, monthlyProfit: 2520, askingPrice: 130000,
+    multiple: 36, traffic: 38000, age: 15, created: "2025-03-01",
+    techStack: ["Vue.js", "Django", "PostgreSQL", "Stripe", "Whisper", "GPT-4"],
+    trafficSources: "50% Organic, 20% YouTube, 15% Referral, 15% Ads",
+    trafficHistory: [8,12,16,20,24,27,29,31,33,35,37,38],
+    description: "AI tutoring platform that generates personalized lesson plans, quizzes, and explanations. 290+ paying subscribers ($12.99/mo). Targets homeschooling parents and self-learners.",
+    growthNotes: "School district partnerships could 10x revenue. Content licensing model. SAT/ACT prep vertical.",
+    sellerNotes: "Built by two teachers-turned-developers. Moving to build a different ed-tech product.",
+    pnl: { revenue: 3600, subscriptions: 3600, hosting: -280, api: -520, ads: -280, profit: 2520 }
+  },
+  {
+    id: 9, name: "DropShipRadar", type: "Shopify Store", niche: "E-commerce",
+    monthlyRevenue: 8500, monthlyProfit: 3400, askingPrice: 170000,
+    multiple: 20, traffic: 95000, age: 24, created: "2024-04-10",
+    techStack: ["Shopify", "Oberlo", "Klaviyo", "Meta Ads", "ChatGPT"],
+    trafficSources: "45% Paid (Meta/TikTok), 30% Organic, 15% Email, 10% Direct",
+    trafficHistory: [40,48,55,60,65,70,75,78,82,88,92,95],
+    description: "Established dropshipping store in the home gadgets niche. AI-generated product descriptions and ad copy. 2,400+ customers. Fully systematized with virtual assistant.",
+    growthNotes: "Google Shopping not utilized. Subscription box model for recurring revenue. Private label opportunity on top 5 SKUs.",
+    sellerNotes: "Running three stores and need to consolidate. This one runs on autopilot but I can't scale all three.",
+    pnl: { revenue: 8500, productSales: 8500, cogs: -3400, ads: -1200, apps: -200, va: -300, profit: 3400 }
+  },
+  {
+    id: 10, name: "AICopyDesk", type: "Tool", niche: "Marketing",
+    monthlyRevenue: 2800, monthlyProfit: 2240, askingPrice: 84000,
+    multiple: 30, traffic: 54000, age: 11, created: "2025-05-15",
+    techStack: ["Next.js", "Tailwind", "Supabase", "OpenAI", "Stripe", "Vercel"],
+    trafficSources: "55% Organic, 25% Product Hunt, 10% Twitter, 10% Direct",
+    trafficHistory: [10,15,22,28,34,38,42,45,48,50,52,54],
+    description: "AI copywriting workspace for marketers. Generates ads, emails, landing pages, social posts with brand voice training. 230+ paying users ($9-29/mo).",
+    growthNotes: "Agency plan ($99/seat) requested by 40+ users. Chrome extension for in-page editing. Zapier integration.",
+    sellerNotes: "Built in a weekend hackathon, grew organically. Selling to pursue a VC-backed startup opportunity.",
+    pnl: { revenue: 2800, subscriptions: 2800, hosting: -140, api: -340, tools: -80, profit: 2240 }
+  }
+];
+
+// ====== NAVIGATION ======
+function navigate(sectionId) {
+  // Close mobile nav
+  document.getElementById('navLinks').classList.remove('open');
+
+  // Hide all page sections
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+
+  // Show target section
+  const target = document.getElementById(sectionId);
+  if (target) target.classList.add('active');
+
+  // Update nav active state
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  const navLink = document.querySelector(`.nav-links a[href="#${sectionId}"]`);
+  if (navLink) navLink.classList.add('active');
+
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Render dynamic content
+  if (sectionId === 'marketplace') renderListings();
+  if (sectionId === 'pipeline') renderPipeline();
+}
+
+// ====== MARKETPLACE RENDERING ======
+let currentSort = 'price';
+let sortDir = -1; // descending
+
+function getBadgeClass(type) {
+  const map = { 'SaaS': 'badge-saas', 'Content Site': 'badge-content', 'Tool': 'badge-tool', 'Template': 'badge-template', 'Shopify Store': 'badge-shopify', 'App': 'badge-app' };
+  return map[type] || 'badge-saas';
+}
+
+function fmt(n) {
+  if (n >= 1000) return '$' + (n/1000).toFixed(n >= 10000 ? 0 : 1) + 'K';
+  return '$' + n.toLocaleString();
+}
+
+function fmtFull(n) { return '$' + n.toLocaleString(); }
+
+function filterListings() {
+  renderListings();
+}
+
+function sortListings(key, btn) {
+  if (currentSort === key) { sortDir *= -1; }
+  else { currentSort = key; sortDir = -1; }
+  document.querySelectorAll('.sort-bar button').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderListings();
+}
+
+function getFilteredListings() {
+  let items = [...LISTINGS];
+  const type = document.getElementById('filterType')?.value;
+  const minPrice = parseInt(document.getElementById('filterMinPrice')?.value) || 0;
+  const maxPrice = parseInt(document.getElementById('filterMaxPrice')?.value) || Infinity;
+  const minRev = parseInt(document.getElementById('filterMinRev')?.value) || 0;
+  const niche = document.getElementById('filterNiche')?.value;
+
+  if (type) items = items.filter(l => l.type === type);
+  if (niche) items = items.filter(l => l.niche === niche);
+  items = items.filter(l => l.askingPrice >= minPrice && l.askingPrice <= maxPrice && l.monthlyRevenue >= minRev);
+
+  items.sort((a, b) => {
+    if (currentSort === 'price') return (a.askingPrice - b.askingPrice) * sortDir;
+    if (currentSort === 'revenue') return (a.monthlyRevenue - b.monthlyRevenue) * sortDir;
+    if (currentSort === 'multiple') return (a.multiple - b.multiple) * sortDir;
+    if (currentSort === 'newest') return (new Date(a.created) - new Date(b.created)) * sortDir;
+    return 0;
+  });
+  return items;
+}
+
+function renderListings() {
+  const grid = document.getElementById('listingsGrid');
+  if (!grid) return;
+  const items = getFilteredListings();
+
+  grid.innerHTML = items.map(l => `
+    <div class="listing-card" onclick="openListing(${l.id})">
+      <div class="listing-card-header">
+        <h3>${l.name}</h3>
+        <span class="badge ${getBadgeClass(l.type)}">${l.type}</span>
+      </div>
+      <div class="price">${fmtFull(l.askingPrice)}</div>
+      <div class="revenue">${fmtFull(l.monthlyRevenue)}/mo revenue</div>
+      <div class="meta-row">
+        <span><span class="mlabel">Multiple</span><span class="mval">${(l.multiple/10).toFixed(1)}x</span></span>
+        <span><span class="mlabel">Profit</span><span class="mval">${fmtFull(l.monthlyProfit)}/mo</span></span>
+        <span><span class="mlabel">Traffic</span><span class="mval">${(l.traffic/1000).toFixed(0)}K/mo</span></span>
+        <span><span class="mlabel">Age</span><span class="mval">${l.age}mo</span></span>
+      </div>
+      <div class="tags">${l.techStack.slice(0,4).map(t => `<span>${t}</span>`).join('')}</div>
+      <div class="card-btn"><button class="btn btn-outline btn-sm" style="width:100%;justify-content:center;">View Details</button></div>
+    </div>
+  `).join('');
+}
+
+// ====== LISTING DETAIL MODAL ======
+function openListing(id) {
+  const l = LISTINGS.find(x => x.id === id);
+  if (!l) return;
+
+  const maxTraffic = Math.max(...l.trafficHistory);
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const trafficBars = l.trafficHistory.map((v, i) =>
+    `<div class="traffic-bar" style="height:${(v/maxTraffic*100)}%" data-label="${months[i]}"></div>`
+  ).join('');
+
+  // Build P&L table
+  const pnlRows = Object.entries(l.pnl).map(([k, v]) => {
+    if (k === 'profit') return '';
+    const label = k.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase());
+    const isExpense = v < 0;
+    return `<div class="escrow-item"><span class="ei-label">${label}</span><span class="ei-value" style="color:${isExpense ? 'var(--red)' : 'var(--green)'}">${isExpense ? '-' : ''}${fmtFull(Math.abs(v))}</span></div>`;
+  }).join('');
+
+  const content = `
+    <span class="badge ${getBadgeClass(l.type)} modal-badge">${l.type}</span>
+    <h2>${l.name}</h2>
+    <p style="color:var(--muted);margin-bottom:8px;">${l.niche} &middot; ${l.age} months old</p>
+
+    <div class="modal-grid">
+      <div class="modal-stat"><span class="ms-label">Asking Price</span><span class="ms-value">${fmtFull(l.askingPrice)}</span></div>
+      <div class="modal-stat"><span class="ms-label">Monthly Revenue</span><span class="ms-value" style="color:var(--green)">${fmtFull(l.monthlyRevenue)}</span></div>
+      <div class="modal-stat"><span class="ms-label">Monthly Profit</span><span class="ms-value">${fmtFull(l.monthlyProfit)}</span></div>
+      <div class="modal-stat"><span class="ms-label">Revenue Multiple</span><span class="ms-value">${(l.multiple/10).toFixed(1)}x</span></div>
+    </div>
+
+    <h3>Description</h3>
+    <p>${l.description}</p>
+
+    <h3>Monthly Traffic (12-month trend)</h3>
+    <div class="traffic-chart" style="padding-bottom:28px;">${trafficBars}</div>
+    <p style="font-size:12px;color:var(--muted);">Sources: ${l.trafficSources}</p>
+
+    <h3>P&L Breakdown</h3>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid var(--line);border-radius:var(--radius-md);padding:4px 14px;">
+      ${pnlRows}
+      <div class="escrow-item" style="border-top:2px solid var(--accent);margin-top:4px;padding-top:12px;">
+        <span class="ei-label" style="font-weight:700;color:var(--ink-bright);">Net Profit</span>
+        <span class="ei-value" style="color:var(--green);font-size:18px;">${fmtFull(l.pnl.profit)}/mo</span>
+      </div>
+    </div>
+
+    <h3>Tech Stack</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+      ${l.techStack.map(t => `<span class="badge" style="background:rgba(255,255,255,0.06);color:var(--ink);border:1px solid var(--line);">${t}</span>`).join('')}
+    </div>
+
+    <h3>Growth Opportunities</h3>
+    <p>${l.growthNotes}</p>
+
+    <h3>Seller Notes</h3>
+    <p>${l.sellerNotes}</p>
+
+    <h3>Due Diligence Checklist</h3>
+    <div class="dd-checklist">
+      <label><input type="checkbox"> Revenue verified via Stripe/analytics</label>
+      <label><input type="checkbox"> Traffic verified via Google Analytics</label>
+      <label><input type="checkbox"> Code quality reviewed</label>
+      <label><input type="checkbox"> Tech stack dependencies assessed</label>
+      <label><input type="checkbox"> Customer data reviewed</label>
+      <label><input type="checkbox"> Growth claims validated</label>
+      <label><input type="checkbox"> Legal / IP clear</label>
+      <label><input type="checkbox"> Transfer plan agreed</label>
+    </div>
+
+    <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;">
+      <button class="btn btn-primary" onclick="expressInterest(${l.id})">Express Interest</button>
+      <button class="btn btn-outline" onclick="addListingToPipeline(${l.id})">Add to Pipeline</button>
+    </div>
+  `;
+
+  document.getElementById('modalContent').innerHTML = content;
+  document.getElementById('listingModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('listingModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function expressInterest(id) {
+  const l = LISTINGS.find(x => x.id === id);
+  alert(`Interest registered for "${l.name}". In a live environment, the seller would be notified and you'd receive next steps via email.`);
+}
+
+function addListingToPipeline(id) {
+  const l = LISTINGS.find(x => x.id === id);
+  const deals = JSON.parse(localStorage.getItem('vf_pipeline') || '[]');
+  deals.push({
+    id: Date.now(), name: l.name, value: l.askingPrice,
+    stage: 'interested', notes: `${l.type} - ${fmtFull(l.monthlyRevenue)}/mo revenue`,
+    date: new Date().toISOString().slice(0,10)
+  });
+  localStorage.setItem('vf_pipeline', JSON.stringify(deals));
+  closeModal();
+  alert(`"${l.name}" added to your deal pipeline.`);
+}
+
+// ====== SELL FORM ======
+function sellFormNext(step) {
+  document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.form-step').forEach(s => {
+    const sNum = parseInt(s.dataset.step);
+    s.classList.remove('active');
+    if (sNum < step) s.classList.add('done');
+    else s.classList.remove('done');
+  });
+  const panel = document.querySelector(`.form-panel[data-step="${step}"]`);
+  const stepEl = document.querySelector(`.form-step[data-step="${step}"]`);
+  if (panel) panel.classList.add('active');
+  if (stepEl) stepEl.classList.add('active');
+}
+
+function submitSellForm() {
+  const data = {
+    name: document.getElementById('sf-name').value,
+    url: document.getElementById('sf-url').value,
+    type: document.getElementById('sf-type').value,
+    niche: document.getElementById('sf-niche').value,
+    revenue: document.getElementById('sf-revenue').value,
+    profit: document.getElementById('sf-profit').value,
+    price: document.getElementById('sf-price').value,
+    age: document.getElementById('sf-age').value,
+    visitors: document.getElementById('sf-visitors').value,
+    traffic: document.getElementById('sf-traffic').value,
+    tech: document.getElementById('sf-tech').value,
+    growth: document.getElementById('sf-growth').value,
+    reason: document.getElementById('sf-reason').value,
+    submittedAt: new Date().toISOString()
+  };
+
+  // Save to localStorage
+  const submissions = JSON.parse(localStorage.getItem('vf_submissions') || '[]');
+  submissions.push(data);
+  localStorage.setItem('vf_submissions', JSON.stringify(submissions));
+
+  // Show confirmation
+  document.getElementById('sellFormContainer').style.display = 'none';
+  document.getElementById('sellConfirmation').style.display = 'block';
+  document.querySelector('.form-steps').style.display = 'none';
+}
+
+// ====== VALUATION TOOL ======
+const MULTIPLES = {
+  'SaaS': { low: 3, high: 5, label: '3-5x annual revenue' },
+  'Content Site': { low: 2, high: 3, label: '2-3x annual revenue' },
+  'Tool': { low: 2, high: 4, label: '2-4x annual revenue' },
+  'Template': { low: 2, high: 3, label: '2-3x annual revenue' },
+  'Shopify Store': { low: 1.5, high: 3, label: '1.5-3x annual revenue' },
+  'App': { low: 3, high: 5, label: '3-5x annual revenue' }
+};
+
+function calcValuation() {
+  const revenue = parseFloat(document.getElementById('val-revenue').value) || 0;
+  const profit = parseFloat(document.getElementById('val-profit').value) || 0;
+  const type = document.getElementById('val-type').value;
+  const age = parseInt(document.getElementById('val-age').value) || 0;
+  const traffic = parseInt(document.getElementById('val-traffic').value) || 0;
+
+  if (revenue <= 0) {
+    document.getElementById('valRange').textContent = '$0 - $0';
+    document.getElementById('valMultiple').textContent = '--';
+    document.getElementById('valBarFill').style.width = '0%';
+    document.getElementById('valConfidence').textContent = 'Confidence: Enter data above';
+    return;
+  }
+
+  const m = MULTIPLES[type] || MULTIPLES['SaaS'];
+  const annualRev = revenue * 12;
+
+  // Age bonus (older = more valuable)
+  let ageBonus = 1;
+  if (age >= 24) ageBonus = 1.15;
+  else if (age >= 12) ageBonus = 1.05;
+
+  // Traffic bonus
+  let trafficBonus = 1;
+  if (traffic >= 100000) trafficBonus = 1.1;
+  else if (traffic >= 50000) trafficBonus = 1.05;
+
+  // Margin bonus
+  const margin = profit / revenue;
+  let marginBonus = 1;
+  if (margin >= 0.8) marginBonus = 1.1;
+  else if (margin >= 0.6) marginBonus = 1.05;
+
+  const lowVal = Math.round(annualRev * m.low * ageBonus * trafficBonus * marginBonus);
+  const highVal = Math.round(annualRev * m.high * ageBonus * trafficBonus * marginBonus);
+
+  document.getElementById('valRange').textContent = `${fmtFull(lowVal)} - ${fmtFull(highVal)}`;
+  document.getElementById('valMultiple').textContent = `Based on ${m.label}`;
+
+  // Confidence bar
+  let confidence = 30;
+  if (revenue > 0) confidence += 20;
+  if (profit > 0) confidence += 15;
+  if (age > 0) confidence += 15;
+  if (traffic > 0) confidence += 20;
+  document.getElementById('valBarFill').style.width = confidence + '%';
+  document.getElementById('valConfidence').textContent = `Confidence: ${confidence}% (provide more data for accuracy)`;
+
+  // Show comparable sales
+  const comps = LISTINGS.filter(l => l.type === type).slice(0, 4);
+  const compsHTML = comps.map(c => `
+    <div class="val-comp">
+      <span class="comp-name">${c.name}</span>
+      <span style="color:var(--muted);font-size:12px;">${fmtFull(c.monthlyRevenue)}/mo</span>
+      <span class="comp-price">${fmtFull(c.askingPrice)}</span>
+    </div>
+  `).join('');
+
+  document.getElementById('valComps').innerHTML = `
+    <h4 style="font-size:14px;color:var(--ink-bright);margin-bottom:12px;text-align:left;">Comparable Sales (${type})</h4>
+    ${compsHTML || '<p style="color:var(--muted);font-size:13px;">No comparable listings found for this type.</p>'}
+  `;
+}
+
+// ====== HOW IT WORKS ======
+function switchHIW(tab, btn) {
+  document.querySelectorAll('.hiw-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('hiw-buyers').style.display = tab === 'buyers' ? 'grid' : 'none';
+  document.getElementById('hiw-sellers').style.display = tab === 'sellers' ? 'grid' : 'none';
+}
+
+// ====== DEAL PIPELINE ======
+function renderPipeline() {
+  const deals = JSON.parse(localStorage.getItem('vf_pipeline') || '[]');
+  const cols = { interested: 'pipe-interested', dd: 'pipe-dd', escrow: 'pipe-escrow', closed: 'pipe-closed' };
+
+  Object.values(cols).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = '';
+  });
+
+  const stages = { interested: [], dd: [], escrow: [], closed: [] };
+  deals.forEach(d => {
+    if (stages[d.stage]) stages[d.stage].push(d);
+  });
+
+  Object.entries(stages).forEach(([stage, items]) => {
+    const col = document.getElementById(cols[stage]);
+    if (!col) return;
+    if (items.length === 0) {
+      col.innerHTML = '<div class="pipeline-empty">No deals in this stage</div>';
+      return;
+    }
+    col.innerHTML = items.map(d => `
+      <div class="pipeline-card" onclick="movePipelineDeal(${d.id})">
+        <h5>${d.name}</h5>
+        <div class="pc-price">${fmtFull(d.value)}</div>
+        <div class="pc-status">${d.notes || ''}</div>
+        <div style="margin-top:8px;display:flex;gap:6px;">
+          <button class="btn btn-ghost btn-sm" style="padding:4px 8px;font-size:10px;" onclick="event.stopPropagation();movePipelineDeal(${d.id})">Advance</button>
+          <button class="btn btn-ghost btn-sm" style="padding:4px 8px;font-size:10px;color:var(--red);" onclick="event.stopPropagation();removePipelineDeal(${d.id})">Remove</button>
+        </div>
+      </div>
+    `).join('');
+  });
+
+  // Restore escrow checklist
+  loadEscrowChecklist();
+  loadEscrowState();
+}
+
+function addToPipeline() {
+  document.getElementById('pipelineModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePipelineModal() {
+  document.getElementById('pipelineModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function savePipelineDeal() {
+  const name = document.getElementById('pipe-name').value;
+  const value = parseInt(document.getElementById('pipe-value').value) || 0;
+  const stage = document.getElementById('pipe-stage').value;
+  const notes = document.getElementById('pipe-notes').value;
+
+  if (!name) { alert('Please enter a deal name.'); return; }
+
+  const deals = JSON.parse(localStorage.getItem('vf_pipeline') || '[]');
+  deals.push({ id: Date.now(), name, value, stage, notes, date: new Date().toISOString().slice(0,10) });
+  localStorage.setItem('vf_pipeline', JSON.stringify(deals));
+
+  // Reset form
+  document.getElementById('pipe-name').value = '';
+  document.getElementById('pipe-value').value = '';
+  document.getElementById('pipe-notes').value = '';
+
+  closePipelineModal();
+  renderPipeline();
+}
+
+function movePipelineDeal(id) {
+  const order = ['interested', 'dd', 'escrow', 'closed'];
+  const deals = JSON.parse(localStorage.getItem('vf_pipeline') || '[]');
+  const deal = deals.find(d => d.id === id);
+  if (!deal) return;
+  const idx = order.indexOf(deal.stage);
+  if (idx < order.length - 1) {
+    deal.stage = order[idx + 1];
+    localStorage.setItem('vf_pipeline', JSON.stringify(deals));
+    renderPipeline();
+  }
+}
+
+function removePipelineDeal(id) {
+  let deals = JSON.parse(localStorage.getItem('vf_pipeline') || '[]');
+  deals = deals.filter(d => d.id !== id);
+  localStorage.setItem('vf_pipeline', JSON.stringify(deals));
+  renderPipeline();
+}
+
+function clearPipeline() {
+  if (confirm('Clear all deals from your pipeline?')) {
+    localStorage.removeItem('vf_pipeline');
+    renderPipeline();
+  }
+}
+
+// ====== ESCROW MOCK ======
+let escrowStep = 0;
+const escrowSteps = [
+  { deposit: 'status-complete', verify: 'status-waiting', transfer: 'status-waiting', confirm: 'status-waiting', release: 'status-waiting',
+    depositT: 'Deposited', verifyT: 'Awaiting', transferT: 'Not Started', confirmT: 'Not Started', releaseT: 'Locked' },
+  { deposit: 'status-complete', verify: 'status-complete', transfer: 'status-pending', confirm: 'status-waiting', release: 'status-waiting',
+    depositT: 'Deposited', verifyT: 'Verified', transferT: 'In Progress', confirmT: 'Not Started', releaseT: 'Locked' },
+  { deposit: 'status-complete', verify: 'status-complete', transfer: 'status-complete', confirm: 'status-pending', release: 'status-waiting',
+    depositT: 'Deposited', verifyT: 'Verified', transferT: 'Complete', confirmT: 'Reviewing', releaseT: 'Locked' },
+  { deposit: 'status-complete', verify: 'status-complete', transfer: 'status-complete', confirm: 'status-complete', release: 'status-pending',
+    depositT: 'Deposited', verifyT: 'Verified', transferT: 'Complete', confirmT: 'Confirmed', releaseT: 'Processing' },
+  { deposit: 'status-complete', verify: 'status-complete', transfer: 'status-complete', confirm: 'status-complete', release: 'status-complete',
+    depositT: 'Deposited', verifyT: 'Verified', transferT: 'Complete', confirmT: 'Confirmed', releaseT: 'Released' }
+];
+
+function advanceEscrow() {
+  if (escrowStep < escrowSteps.length - 1) escrowStep++;
+  applyEscrowState();
+  localStorage.setItem('vf_escrow_step', escrowStep);
+}
+
+function resetEscrow() {
+  escrowStep = 0;
+  applyEscrowState();
+  localStorage.setItem('vf_escrow_step', 0);
+}
+
+function applyEscrowState() {
+  const s = escrowSteps[escrowStep] || escrowSteps[0];
+  const setStatus = (id, cls, text) => {
+    const el = document.getElementById(id);
+    if (el) { el.className = 'ei-status ' + cls; el.textContent = text; }
+  };
+  setStatus('esc-deposit', s.deposit, s.depositT);
+  setStatus('esc-verify', s.verify, s.verifyT);
+  setStatus('esc-transfer', s.transfer, s.transferT);
+  setStatus('esc-confirm', s.confirm, s.confirmT);
+  setStatus('esc-release', s.release, s.releaseT);
+}
+
+function loadEscrowState() {
+  escrowStep = parseInt(localStorage.getItem('vf_escrow_step') || '0');
+  applyEscrowState();
+}
+
+function saveEscrowChecklist() {
+  const checks = [];
+  document.querySelectorAll('.escrow-checklist input[type="checkbox"]').forEach((cb, i) => {
+    checks.push(cb.checked);
+  });
+  localStorage.setItem('vf_escrow_checklist', JSON.stringify(checks));
+}
+
+function loadEscrowChecklist() {
+  const checks = JSON.parse(localStorage.getItem('vf_escrow_checklist') || '[]');
+  document.querySelectorAll('.escrow-checklist input[type="checkbox"]').forEach((cb, i) => {
+    if (checks[i] !== undefined) cb.checked = checks[i];
+  });
+}
+
+// ====== MODAL CLOSE ON OVERLAY CLICK ======
+document.getElementById('listingModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+document.getElementById('pipelineModal').addEventListener('click', function(e) {
+  if (e.target === this) closePipelineModal();
+});
+
+// ====== KEYBOARD SHORTCUTS ======
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeModal();
+    closePipelineModal();
+  }
+});
+
+// ====== INIT ======
+renderListings();
+</script>
 </body>
 </html>
