@@ -417,6 +417,137 @@ a:hover { text-decoration: underline; }
 }
 .escrow-checklist input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; }
 
+/* ====== DOMAIN SERVICES ====== */
+.domain-search-box {
+  display: flex; gap: 12px; max-width: 600px; margin: 0 auto 24px;
+}
+.domain-search-box input {
+  flex: 1; padding: 14px 20px; border-radius: var(--radius-pill);
+  background: rgba(255,255,255,0.06); border: 1px solid var(--line);
+  color: var(--ink); font-size: 16px; font-family: var(--font-body);
+  transition: border-color 0.2s;
+}
+.domain-search-box input:focus { outline: none; border-color: var(--accent); }
+.tld-grid {
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 32px;
+}
+.tld-chip {
+  padding: 6px 14px; border-radius: var(--radius-pill);
+  background: rgba(255,255,255,0.06); border: 1px solid var(--line);
+  color: var(--muted); font-size: 12px; font-weight: 700; cursor: pointer;
+  transition: all 0.2s; font-family: var(--font-mono);
+}
+.tld-chip:hover, .tld-chip.active { background: rgba(108,60,175,0.2); color: var(--ink-bright); border-color: var(--accent); }
+.domain-results {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px; max-width: 900px; margin: 0 auto;
+}
+.domain-result {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px; border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.04); border: 1px solid var(--line);
+  transition: all 0.2s;
+}
+.domain-result:hover { border-color: var(--accent); }
+.domain-result .dr-name { font-weight: 600; color: var(--ink-bright); font-size: 14px; }
+.domain-result .dr-price { font-weight: 700; font-size: 14px; }
+.domain-result .dr-available { color: var(--green); }
+.domain-result .dr-taken { color: var(--red); opacity: 0.7; }
+.domain-result .dr-premium { color: var(--yellow); }
+.domain-result .dr-action { margin-left: 12px; }
+.service-tiers {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px; margin-bottom: 48px;
+}
+.tier-card {
+  background: var(--glass); border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl); padding: 32px 24px;
+  backdrop-filter: blur(12px); text-align: center;
+  transition: all 0.3s; position: relative;
+}
+.tier-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 12px 40px var(--accent-glow); }
+.tier-card.featured { border-color: var(--accent); box-shadow: 0 0 30px var(--accent-glow); }
+.tier-card.featured::before {
+  content: "MOST POPULAR"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  padding: 4px 16px; border-radius: var(--radius-pill);
+  background: var(--accent); color: #fff; font: 700 10px/1 var(--font-mono);
+  letter-spacing: 0.08em;
+}
+.tier-card .tier-icon { font-size: 36px; margin-bottom: 12px; }
+.tier-card h4 { font-family: var(--font-display); font-size: 20px; color: var(--ink-bright); margin-bottom: 8px; }
+.tier-card .tier-price { font-size: 28px; font-weight: 700; color: var(--accent-light); margin-bottom: 16px; }
+.tier-card .tier-price small { font-size: 13px; color: var(--muted); font-weight: 400; }
+.tier-card ul { list-style: none; padding: 0; text-align: left; margin-bottom: 20px; }
+.tier-card ul li { padding: 6px 0; color: var(--muted); font-size: 13px; display: flex; gap: 8px; align-items: flex-start; }
+.tier-card ul li::before { content: "->"; color: var(--accent-light); font-weight: 700; flex-shrink: 0; }
+.domain-branding-section {
+  background: rgba(255,255,255,0.03); border: 1px solid var(--line);
+  border-radius: var(--radius-lg); padding: 20px; margin-top: 24px;
+}
+.domain-branding-section h3 { font-size: 16px; font-weight: 700; color: var(--ink-bright); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.domain-suggestion {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 12px; border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.03); margin-bottom: 6px; font-size: 13px;
+}
+.domain-suggestion .ds-name { color: var(--ink); font-weight: 600; }
+.domain-suggestion .ds-meta { color: var(--muted); font-size: 11px; }
+.why-domains {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px; margin-top: 40px;
+}
+.why-domains .wd-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 16px; border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.03); border: 1px solid var(--line);
+}
+.why-domains .wd-icon { font-size: 24px; flex-shrink: 0; }
+.why-domains .wd-text h5 { font-size: 14px; color: var(--ink-bright); margin-bottom: 4px; }
+.why-domains .wd-text p { font-size: 12px; color: var(--muted); }
+
+/* ====== PAYMENT METHODS ====== */
+.payment-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px; margin: 16px 0 24px;
+}
+.payment-method {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 14px; border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.04); border: 1px solid var(--line);
+  font-size: 13px; color: var(--ink); font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.payment-method:hover, .payment-method.selected { border-color: var(--accent); background: rgba(108,60,175,0.12); }
+.payment-method .pm-icon { font-size: 20px; }
+.escrow-fee-calc {
+  background: rgba(255,255,255,0.03); border: 1px solid var(--line);
+  border-radius: var(--radius-lg); padding: 20px; margin: 20px 0;
+}
+.escrow-fee-calc h4 { font-size: 14px; font-weight: 700; color: var(--ink-bright); margin-bottom: 12px; }
+.fee-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid rgba(140,120,200,0.1);
+  font-size: 13px;
+}
+.fee-row:last-child { border-bottom: none; }
+.fee-row .fee-label { color: var(--muted); }
+.fee-row .fee-value { font-weight: 700; color: var(--ink-bright); }
+.fee-row .fee-pct { color: var(--accent-light); font-size: 11px; font-weight: 600; margin-left: 8px; }
+.fee-row.fee-total { border-top: 2px solid var(--accent); margin-top: 8px; padding-top: 12px; }
+.fee-row.fee-total .fee-label { color: var(--ink-bright); font-weight: 700; }
+.fee-row.fee-total .fee-value { color: var(--green); font-size: 16px; }
+.security-badges {
+  display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px;
+}
+.security-badge {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: var(--radius-pill);
+  background: var(--green-bg); border: 1px solid rgba(52,211,153,0.2);
+  font-size: 11px; font-weight: 700; color: var(--green);
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.security-badge .sb-icon { font-size: 14px; }
+
 /* ====== FOOTER ====== */
 .site-footer {
   border-top: 1px solid var(--line);
@@ -460,6 +591,9 @@ a:hover { text-decoration: underline; }
   .modal-grid { grid-template-columns: 1fr 1fr; }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
   .form-row { grid-template-columns: 1fr; }
+  .service-tiers { grid-template-columns: 1fr; }
+  .why-domains { grid-template-columns: 1fr 1fr; }
+  .payment-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
 }
 @media (max-width: 640px) {
   .nav-links { display: none; }
@@ -474,6 +608,10 @@ a:hover { text-decoration: underline; }
   .modal-grid { grid-template-columns: 1fr; }
   .filter-bar { flex-direction: column; align-items: stretch; }
   .sort-bar { margin-left: 0; }
+  .domain-results { grid-template-columns: 1fr; }
+  .domain-search-box { flex-direction: column; }
+  .why-domains { grid-template-columns: 1fr; }
+  .payment-grid { grid-template-columns: 1fr 1fr; }
 }
   </style>
 </head>
@@ -491,6 +629,7 @@ a:hover { text-decoration: underline; }
       <a href="#sell" onclick="navigate('sell')">Sell Your Asset</a>
       <a href="#valuations" onclick="navigate('valuations')">Valuations</a>
       <a href="#pipeline" onclick="navigate('pipeline')">Deal Pipeline</a>
+      <a href="#domains" onclick="navigate('domains')">Domains</a>
       <a href="#how-it-works" onclick="navigate('how-it-works')">How It Works</a>
       <a href="#about" onclick="navigate('about')">About</a>
     </div>
@@ -957,6 +1096,66 @@ a:hover { text-decoration: underline; }
           </div>
         </div>
       </div>
+
+      <!-- ENHANCED PAYMENT METHODS -->
+      <div style="margin-top:32px;">
+        <h3 style="font-family:var(--font-display);font-size:24px;color:var(--ink-bright);margin-bottom:8px;">Accepted Payment Methods</h3>
+        <p style="color:var(--muted);font-size:14px;margin-bottom:16px;">Choose your preferred payment method for escrow transactions. Fees vary by method.</p>
+        <div class="payment-grid" id="paymentGrid">
+          <div class="payment-method" onclick="selectPayment('card', this)" data-fee="2.9">
+            <span class="pm-icon">&#128179;</span> Credit/Debit
+          </div>
+          <div class="payment-method" onclick="selectPayment('bank', this)" data-fee="1.0">
+            <span class="pm-icon">&#127974;</span> Bank Transfer
+          </div>
+          <div class="payment-method" onclick="selectPayment('paypal', this)" data-fee="2.5">
+            <span class="pm-icon">&#128176;</span> PayPal
+          </div>
+          <div class="payment-method" onclick="selectPayment('venmo', this)" data-fee="1.9">
+            <span class="pm-icon">&#128177;</span> Venmo
+          </div>
+          <div class="payment-method" onclick="selectPayment('stripe', this)" data-fee="2.9">
+            <span class="pm-icon">&#9889;</span> Stripe
+          </div>
+          <div class="payment-method" onclick="selectPayment('mercury', this)" data-fee="0.8">
+            <span class="pm-icon">&#127757;</span> Mercury
+          </div>
+          <div class="payment-method" onclick="selectPayment('crypto', this)" data-fee="0.5">
+            <span class="pm-icon">&#129689;</span> Crypto
+          </div>
+        </div>
+
+        <div class="escrow-panel">
+          <div class="glass escrow-fee-calc" id="escrowFeeCalc">
+            <h4>Escrow Fee Calculator</h4>
+            <div class="form-group" style="margin-bottom:16px;">
+              <label style="font-size:12px;color:var(--muted);margin-bottom:4px;">Transaction Amount ($)</label>
+              <input type="number" id="escrowAmount" placeholder="e.g., 72000" oninput="calcEscrowFees()" style="padding:10px 14px;border-radius:var(--radius-md);background:rgba(255,255,255,0.06);border:1px solid var(--line);color:var(--ink);font-size:14px;width:100%;">
+            </div>
+            <div id="feeBreakdown">
+              <div class="fee-row"><span class="fee-label">Select a payment method above to see fees</span></div>
+            </div>
+          </div>
+
+          <div class="glass" style="display:flex;flex-direction:column;justify-content:center;">
+            <h4 style="font-size:16px;font-weight:700;color:var(--ink-bright);margin-bottom:16px;">Crypto Escrow Details</h4>
+            <p style="color:var(--muted);font-size:13px;margin-bottom:12px;">We support the following cryptocurrencies for escrow transactions:</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+              <span class="badge" style="background:rgba(247,147,26,0.15);color:#f7931a;">BTC</span>
+              <span class="badge" style="background:rgba(98,126,234,0.15);color:#627eea;">ETH</span>
+              <span class="badge" style="background:rgba(38,161,123,0.15);color:#26a17b;">USDC</span>
+              <span class="badge" style="background:rgba(153,69,255,0.15);color:#9945ff;">SOL</span>
+            </div>
+            <p style="color:var(--muted);font-size:12px;">Smart contract escrow available for crypto payments. Funds are locked in an audited multisig contract until both parties confirm.</p>
+
+            <div class="security-badges" style="margin-top:20px;">
+              <div class="security-badge"><span class="sb-icon">&#128274;</span> 256-bit Encryption</div>
+              <div class="security-badge"><span class="sb-icon">&#127974;</span> FDIC-Insured</div>
+              <div class="security-badge"><span class="sb-icon">&#128220;</span> Smart Contract Escrow</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1003,6 +1202,125 @@ a:hover { text-decoration: underline; }
   </div>
 </section>
 
+<!-- ====== PREMIUM DOMAIN SERVICES ====== -->
+<section id="domains" class="section page-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Scale Your Acquisition with the Right Domain</h2>
+      <p>Premium domain consulting to help buyers rebrand or unify multiple digital assets under one powerful domain. This is the VibeFlippers advantage.</p>
+    </div>
+
+    <!-- Service Tiers -->
+    <div class="service-tiers">
+      <div class="tier-card glass">
+        <div class="tier-icon">&#128269;</div>
+        <h4>Domain Scout</h4>
+        <div class="tier-price">Free <small>with any deal</small></div>
+        <ul>
+          <li>AI-powered domain suggestions based on your acquired asset</li>
+          <li>5 suggested domains with live availability status</li>
+          <li>TLD recommendations for your niche</li>
+          <li>Basic brandability scoring</li>
+          <li>Included with every VibeFlippers transaction</li>
+        </ul>
+        <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center;" onclick="alert('Domain Scout is automatically included with every VibeFlippers deal. Complete a purchase to unlock your suggestions.')">Included Free</button>
+      </div>
+      <div class="tier-card glass featured">
+        <div class="tier-icon">&#127760;</div>
+        <h4>Domain Bundle</h4>
+        <div class="tier-price">$499</div>
+        <ul>
+          <li>Premium domain acquisition and negotiation</li>
+          <li>DNS setup and configuration</li>
+          <li>SSL certificate provisioning</li>
+          <li>301 redirect mapping from old domain</li>
+          <li>Perfect for rebranding your new acquisition</li>
+        </ul>
+        <button class="btn btn-primary btn-sm" style="width:100%;justify-content:center;" onclick="alert('Domain Bundle selected. This will be added to your next escrow transaction.')">Get Domain Bundle</button>
+      </div>
+      <div class="tier-card glass">
+        <div class="tier-icon">&#127984;</div>
+        <h4>Domain Empire</h4>
+        <div class="tier-price">$1,499</div>
+        <ul>
+          <li>Multi-asset unification under one premium domain</li>
+          <li>Subdomain architecture planning</li>
+          <li>Consolidated branding strategy</li>
+          <li>Full SEO migration plan with redirect mapping</li>
+          <li>Ideal for portfolio builders acquiring multiple assets</li>
+        </ul>
+        <button class="btn btn-primary btn-sm" style="width:100%;justify-content:center;" onclick="alert('Domain Empire selected. Our team will reach out within 24 hours to plan your domain architecture.')">Get Domain Empire</button>
+      </div>
+    </div>
+
+    <!-- Domain Search Tool -->
+    <div class="glass" style="max-width:900px;margin:0 auto 40px;padding:32px;">
+      <h3 style="font-family:var(--font-display);font-size:22px;color:var(--ink-bright);margin-bottom:8px;text-align:center;">Domain Search Tool</h3>
+      <p style="color:var(--muted);font-size:14px;text-align:center;margin-bottom:20px;">Check domain availability and register through VibeFlippers for bulk pricing.</p>
+      <div class="domain-search-box">
+        <input type="text" id="domainSearchInput" placeholder="Enter a domain name (e.g., myawesomeapp)" onkeydown="if(event.key==='Enter')searchDomains()">
+        <button class="btn btn-primary" onclick="searchDomains()">Search</button>
+      </div>
+      <div class="tld-grid">
+        <span class="tld-chip active" data-tld=".com">.com</span>
+        <span class="tld-chip active" data-tld=".io">.io</span>
+        <span class="tld-chip active" data-tld=".ai">.ai</span>
+        <span class="tld-chip active" data-tld=".dev">.dev</span>
+        <span class="tld-chip active" data-tld=".app">.app</span>
+        <span class="tld-chip active" data-tld=".co">.co</span>
+        <span class="tld-chip active" data-tld=".xyz">.xyz</span>
+        <span class="tld-chip active" data-tld=".store">.store</span>
+        <span class="tld-chip active" data-tld=".tech">.tech</span>
+        <span class="tld-chip active" data-tld=".digital">.digital</span>
+      </div>
+      <div class="domain-results" id="domainResults"></div>
+    </div>
+
+    <!-- Why Buy Domains Through Us -->
+    <div style="max-width:900px;margin:0 auto;">
+      <h3 style="font-family:var(--font-display);font-size:22px;color:var(--ink-bright);margin-bottom:8px;text-align:center;">Why Buy Domains Through VibeFlippers?</h3>
+      <p style="color:var(--muted);font-size:14px;text-align:center;margin-bottom:24px;">Your domain strategy is part of your acquisition strategy.</p>
+      <div class="why-domains">
+        <div class="wd-item">
+          <span class="wd-icon">&#128184;</span>
+          <div class="wd-text">
+            <h5>Bulk Pricing</h5>
+            <p>Wholesale rates through our registrar partnerships. Save 20-40% vs retail.</p>
+          </div>
+        </div>
+        <div class="wd-item">
+          <span class="wd-icon">&#128274;</span>
+          <div class="wd-text">
+            <h5>Integrated Escrow</h5>
+            <p>Domain included in your asset transfer. One transaction, zero hassle.</p>
+          </div>
+        </div>
+        <div class="wd-item">
+          <span class="wd-icon">&#9881;</span>
+          <div class="wd-text">
+            <h5>DNS Pre-Configured</h5>
+            <p>DNS records set up for your new stack before transfer completes.</p>
+          </div>
+        </div>
+        <div class="wd-item">
+          <span class="wd-icon">&#128142;</span>
+          <div class="wd-text">
+            <h5>Premium Aftermarket</h5>
+            <p>Access to premium domains sourced at wholesale through our network.</p>
+          </div>
+        </div>
+        <div class="wd-item">
+          <span class="wd-icon">&#128187;</span>
+          <div class="wd-text">
+            <h5>Portfolio Ecosystem</h5>
+            <p>Part of our tool stack for scaling your digital asset portfolio.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ====== FOOTER ====== -->
 <footer class="site-footer">
   <div class="container">
@@ -1024,6 +1342,7 @@ a:hover { text-decoration: underline; }
         <a href="#sell" onclick="navigate('sell')">Sell Your Asset</a>
         <a href="#valuations" onclick="navigate('valuations')">Valuations</a>
         <a href="#pipeline" onclick="navigate('pipeline')">Deal Pipeline</a>
+        <a href="#domains" onclick="navigate('domains')">Domains</a>
       </div>
       <div class="footer-col">
         <h4>Resources</h4>
@@ -1233,6 +1552,7 @@ function navigate(sectionId) {
   // Render dynamic content
   if (sectionId === 'marketplace') renderListings();
   if (sectionId === 'pipeline') renderPipeline();
+  if (sectionId === 'domains') initDomainTLDs();
 }
 
 // ====== MARKETPLACE RENDERING ======
@@ -1367,6 +1687,32 @@ function openListing(id) {
 
     <h3>Seller Notes</h3>
     <p>${l.sellerNotes}</p>
+
+    <div class="domain-branding-section">
+      <h3>&#127760; Domain & Branding</h3>
+      <div class="escrow-item">
+        <span class="ei-label">Current Domain</span>
+        <span class="ei-value">${l.name.toLowerCase().replace(/\s+/g, '')}.com</span>
+      </div>
+      <div class="escrow-item">
+        <span class="ei-label">Domain Age</span>
+        <span class="ei-value">${l.age} months</span>
+      </div>
+      <div class="escrow-item">
+        <span class="ei-label">Authority Score</span>
+        <span class="ei-value" style="color:var(--green);">${Math.min(95, 20 + Math.floor(l.traffic / 1000) + l.age)}/100</span>
+      </div>
+      <div style="margin-top:12px;">
+        <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">Suggested premium domain alternatives:</p>
+        ${getDomainSuggestions(l).map(d => `
+          <div class="domain-suggestion">
+            <span class="ds-name">${d.name}</span>
+            <span class="ds-meta">${d.status}</span>
+          </div>
+        `).join('')}
+      </div>
+      <button class="btn btn-outline btn-sm" style="margin-top:12px;" onclick="closeModal();navigate('domains')">Upgrade Domain</button>
+    </div>
 
     <h3>Due Diligence Checklist</h3>
     <div class="dd-checklist">
@@ -1714,6 +2060,138 @@ document.addEventListener('keydown', function(e) {
     closePipelineModal();
   }
 });
+
+// ====== DOMAIN SUGGESTIONS FOR MODAL ======
+function getDomainSuggestions(listing) {
+  const base = listing.name.toLowerCase().replace(/\s+/g, '');
+  const niche = listing.niche.toLowerCase().replace(/[^a-z]/g, '');
+  return [
+    { name: `${base}.io`, status: 'Available - $39/yr' },
+    { name: `get${base}.com`, status: 'Available - $12/yr' },
+    { name: `${base}.ai`, status: 'Premium - $89/yr' }
+  ];
+}
+
+// ====== DOMAIN SEARCH ======
+function initDomainTLDs() {
+  document.querySelectorAll('.tld-chip').forEach(chip => {
+    chip.addEventListener('click', function() {
+      this.classList.toggle('active');
+    });
+  });
+}
+
+function searchDomains() {
+  const input = document.getElementById('domainSearchInput').value.trim().toLowerCase().replace(/[^a-z0-9-]/g, '');
+  if (!input) { alert('Please enter a domain name to search.'); return; }
+
+  const activeTLDs = [];
+  document.querySelectorAll('.tld-chip.active').forEach(c => activeTLDs.push(c.dataset.tld));
+  if (activeTLDs.length === 0) { alert('Select at least one TLD extension.'); return; }
+
+  // Mock availability data
+  const mockData = {
+    '.com': { available: Math.random() > 0.6, price: 12.99, premium: Math.random() > 0.7 },
+    '.io': { available: Math.random() > 0.4, price: 39.99, premium: false },
+    '.ai': { available: Math.random() > 0.5, price: 89.99, premium: Math.random() > 0.5 },
+    '.dev': { available: Math.random() > 0.3, price: 14.99, premium: false },
+    '.app': { available: Math.random() > 0.3, price: 16.99, premium: false },
+    '.co': { available: Math.random() > 0.5, price: 29.99, premium: false },
+    '.xyz': { available: true, price: 2.99, premium: false },
+    '.store': { available: true, price: 4.99, premium: false },
+    '.tech': { available: Math.random() > 0.3, price: 9.99, premium: false },
+    '.digital': { available: true, price: 7.99, premium: false }
+  };
+
+  const container = document.getElementById('domainResults');
+  container.innerHTML = activeTLDs.map(tld => {
+    const data = mockData[tld] || { available: true, price: 9.99, premium: false };
+    const domain = input + tld;
+    if (data.available) {
+      const priceLabel = data.premium ? `$${(data.price * 3).toFixed(2)}/yr` : `$${data.price.toFixed(2)}/yr`;
+      const cls = data.premium ? 'dr-premium' : 'dr-available';
+      const tag = data.premium ? 'PREMIUM' : 'AVAILABLE';
+      return `
+        <div class="domain-result">
+          <div>
+            <div class="dr-name">${domain}</div>
+            <div class="dr-price ${cls}">${tag} - ${priceLabel}</div>
+          </div>
+          <div class="dr-action">
+            <button class="btn btn-primary btn-sm" onclick="alert('Registration for ${domain} will be processed through our Porkbun integration. Coming soon!')">Register</button>
+          </div>
+        </div>`;
+    } else {
+      return `
+        <div class="domain-result" style="opacity:0.6;">
+          <div>
+            <div class="dr-name">${domain}</div>
+            <div class="dr-price dr-taken">TAKEN</div>
+          </div>
+          <div class="dr-action">
+            <button class="btn btn-ghost btn-sm" onclick="alert('We can attempt to acquire ${domain} through our aftermarket network. Contact us for a quote.')">Inquire</button>
+          </div>
+        </div>`;
+    }
+  }).join('');
+}
+
+// ====== PAYMENT METHOD SELECTION ======
+let selectedPayment = null;
+function selectPayment(method, el) {
+  document.querySelectorAll('.payment-method').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedPayment = method;
+  calcEscrowFees();
+}
+
+// ====== ESCROW FEE CALCULATOR ======
+const PAYMENT_FEES = {
+  card: { label: 'Credit/Debit Card', pct: 2.9, flat: 0.30 },
+  bank: { label: 'Bank Transfer (ACH/Wire)', pct: 1.0, flat: 0 },
+  paypal: { label: 'PayPal', pct: 2.5, flat: 0.30 },
+  venmo: { label: 'Venmo', pct: 1.9, flat: 0.10 },
+  stripe: { label: 'Stripe', pct: 2.9, flat: 0.30 },
+  mercury: { label: 'Mercury (Business)', pct: 0.8, flat: 0 },
+  crypto: { label: 'Crypto (BTC/ETH/USDC/SOL)', pct: 0.5, flat: 0 }
+};
+
+function calcEscrowFees() {
+  const amount = parseFloat(document.getElementById('escrowAmount')?.value) || 0;
+  const container = document.getElementById('feeBreakdown');
+  if (!selectedPayment || amount <= 0) {
+    container.innerHTML = '<div class="fee-row"><span class="fee-label">Select a payment method and enter an amount</span></div>';
+    return;
+  }
+  const fee = PAYMENT_FEES[selectedPayment];
+  const processingFee = (amount * fee.pct / 100) + fee.flat;
+  const escrowFee = amount * 0.01; // 1% platform escrow fee
+  const totalFees = processingFee + escrowFee;
+  const youPay = amount + totalFees;
+
+  container.innerHTML = `
+    <div class="fee-row">
+      <span class="fee-label">Transaction Amount</span>
+      <span class="fee-value">$${amount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+    </div>
+    <div class="fee-row">
+      <span class="fee-label">${fee.label} Fee<span class="fee-pct">${fee.pct}%${fee.flat > 0 ? ' + $' + fee.flat.toFixed(2) : ''}</span></span>
+      <span class="fee-value">$${processingFee.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+    </div>
+    <div class="fee-row">
+      <span class="fee-label">VibeFlippers Escrow Fee<span class="fee-pct">1.0%</span></span>
+      <span class="fee-value">$${escrowFee.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+    </div>
+    <div class="fee-row fee-total">
+      <span class="fee-label">Total (Amount + Fees)</span>
+      <span class="fee-value">$${youPay.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+    </div>
+    <div class="fee-row">
+      <span class="fee-label">You save vs. industry avg (3.5%)</span>
+      <span class="fee-value" style="color:var(--green);">$${Math.max(0, (amount * 0.035) - totalFees).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+    </div>
+  `;
+}
 
 // ====== INIT ======
 renderListings();
