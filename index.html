@@ -613,6 +613,116 @@ a:hover { text-decoration: underline; }
   .why-domains { grid-template-columns: 1fr; }
   .payment-grid { grid-template-columns: 1fr 1fr; }
 }
+/* ====== AI AGENT ====== */
+.agent-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.agent-log { max-height: 320px; overflow-y: auto; }
+.agent-log-entry { display: flex; gap: 10px; align-items: flex-start; padding: 10px 14px; border-radius: var(--radius-sm); background: rgba(255,255,255,0.03); margin-bottom: 6px; font-size: 13px; color: var(--muted); }
+.agent-log-entry .ale-time { font: 700 10px/1.4 var(--font-mono); color: var(--accent-light); white-space: nowrap; }
+.agent-log-entry .ale-msg { flex: 1; }
+.agent-control { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-radius: var(--radius-md); background: rgba(255,255,255,0.04); border: 1px solid var(--line); margin-bottom: 10px; }
+.agent-control label { font-size: 13px; font-weight: 600; color: var(--ink); }
+.toggle-switch { position: relative; width: 44px; height: 24px; }
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.toggle-slider { position: absolute; inset: 0; background: rgba(255,255,255,0.1); border-radius: 24px; cursor: pointer; transition: 0.3s; }
+.toggle-slider::before { content: ""; position: absolute; width: 18px; height: 18px; left: 3px; bottom: 3px; background: var(--muted); border-radius: 50%; transition: 0.3s; }
+.toggle-switch input:checked + .toggle-slider { background: var(--accent); }
+.toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); background: #fff; }
+.agent-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.agent-stat-card { text-align: center; padding: 16px; border-radius: var(--radius-md); background: rgba(255,255,255,0.04); border: 1px solid var(--line); }
+.agent-stat-card .asc-val { font-size: 28px; font-weight: 700; color: var(--ink-bright); display: block; }
+.agent-stat-card .asc-lbl { font: 700 10px/1 var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-top: 4px; display: block; }
+
+/* ====== BRAND BOX ====== */
+.brand-tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 48px; }
+.brand-builder-form { max-width: 700px; margin: 0 auto; }
+.brand-preview { margin-top: 24px; text-align: center; padding: 32px; border-radius: var(--radius-lg); background: rgba(255,255,255,0.04); border: 1px solid var(--line); }
+.brand-preview .bp-logo { width: 100px; height: 100px; border-radius: 20px; background: var(--hero); margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: 700; color: #fff; font-family: var(--font-display); }
+.brand-preview .bp-name { font-size: 24px; font-weight: 700; color: var(--ink-bright); margin-bottom: 8px; }
+.brand-preview .bp-handles { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 12px; }
+
+/* ====== HOT DEALS ====== */
+.deals-marquee { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 16px; margin-bottom: 40px; scroll-snap-type: x mandatory; }
+.deals-marquee::-webkit-scrollbar { height: 6px; }
+.deals-marquee::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+.deal-card { min-width: 280px; max-width: 320px; flex-shrink: 0; scroll-snap-align: start; background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius-xl); padding: 24px; backdrop-filter: blur(12px); position: relative; overflow: hidden; }
+.deal-card .deal-hot { position: absolute; top: 12px; right: 12px; padding: 4px 10px; border-radius: var(--radius-pill); background: var(--red); color: #fff; font: 700 10px/1 var(--font-mono); letter-spacing: 0.06em; }
+.deal-card .deal-orig { font-size: 14px; color: var(--muted); text-decoration: line-through; }
+.deal-card .deal-now { font-size: 28px; font-weight: 700; color: var(--green); }
+.deal-card .deal-save { font-size: 12px; color: var(--yellow); font-weight: 700; margin-top: 4px; }
+.deal-card .deal-countdown { font: 700 13px/1 var(--font-mono); color: var(--accent-light); margin-top: 12px; padding: 8px 12px; border-radius: var(--radius-sm); background: rgba(108,60,175,0.15); text-align: center; }
+.template-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+.template-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius-xl); padding: 24px; backdrop-filter: blur(12px); }
+.template-card h4 { font-size: 18px; font-weight: 700; color: var(--ink-bright); margin-bottom: 8px; font-family: var(--font-display); }
+.template-card .tc-price { font-size: 22px; font-weight: 700; color: var(--accent-light); margin-bottom: 12px; }
+.template-card ul { list-style: none; padding: 0; margin-bottom: 16px; }
+.template-card ul li { padding: 4px 0; font-size: 13px; color: var(--muted); display: flex; gap: 6px; }
+.template-card ul li::before { content: "->"; color: var(--accent-light); font-weight: 700; }
+
+/* ====== RESELLER ====== */
+.reseller-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.reseller-stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+.reseller-stat { text-align: center; padding: 20px; border-radius: var(--radius-md); background: rgba(255,255,255,0.04); border: 1px solid var(--line); }
+.reseller-stat .rs-val { font-size: 24px; font-weight: 700; color: var(--ink-bright); display: block; }
+.reseller-stat .rs-lbl { font: 700 10px/1 var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-top: 4px; display: block; }
+.revenue-chart-mock { display: flex; align-items: flex-end; gap: 8px; height: 140px; padding: 16px; background: rgba(255,255,255,0.03); border-radius: var(--radius-md); border: 1px solid var(--line); margin-top: 16px; }
+.revenue-chart-mock .rcm-bar { flex: 1; background: linear-gradient(to top, var(--accent), var(--green)); border-radius: 4px 4px 0 0; position: relative; }
+.revenue-chart-mock .rcm-bar::after { content: attr(data-label); position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); font-size: 9px; color: var(--muted); white-space: nowrap; }
+.storefront-list { margin-top: 16px; }
+.storefront-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-radius: var(--radius-md); background: rgba(255,255,255,0.04); border: 1px solid var(--line); margin-bottom: 8px; }
+.storefront-item .sf-name { font-weight: 600; color: var(--ink-bright); font-size: 14px; }
+.storefront-item .sf-niche { font-size: 12px; color: var(--muted); }
+
+/* ====== NFT ====== */
+.nft-flow { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
+.nft-flow-step { text-align: center; padding: 20px 16px; min-width: 160px; border-radius: var(--radius-lg); background: var(--glass); border: 1px solid var(--glass-border); position: relative; }
+.nft-flow-step .nfs-icon { font-size: 32px; margin-bottom: 8px; }
+.nft-flow-step h4 { font-size: 14px; color: var(--ink-bright); }
+.nft-flow-step p { font-size: 11px; color: var(--muted); }
+.nft-flow-arrow { display: flex; align-items: center; font-size: 24px; color: var(--accent-light); }
+.nft-cert { max-width: 480px; margin: 0 auto 40px; padding: 32px; border-radius: var(--radius-xl); background: linear-gradient(135deg, rgba(108,60,175,0.2), rgba(52,211,153,0.1)); border: 2px solid var(--accent); position: relative; overflow: hidden; }
+.nft-cert::before { content: ""; position: absolute; top: -50%; right: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(108,60,175,0.08) 0%, transparent 60%); pointer-events: none; }
+.nft-cert h4 { font-family: var(--font-display); font-size: 20px; color: var(--ink-bright); margin-bottom: 16px; text-align: center; }
+.nft-cert .nft-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.nft-cert .nft-row:last-child { border-bottom: none; }
+.nft-cert .nft-row .nr-label { color: var(--muted); }
+.nft-cert .nft-row .nr-value { font-weight: 600; color: var(--ink-bright); }
+.nft-chains { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
+.nft-chain { padding: 10px 20px; border-radius: var(--radius-pill); background: rgba(255,255,255,0.06); border: 1px solid var(--line); font-size: 13px; font-weight: 700; color: var(--ink); }
+.nft-benefits { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.nft-benefit { display: flex; gap: 12px; align-items: flex-start; padding: 16px; border-radius: var(--radius-md); background: rgba(255,255,255,0.03); border: 1px solid var(--line); }
+.nft-benefit .nb-icon { font-size: 24px; flex-shrink: 0; }
+.nft-benefit h5 { font-size: 14px; color: var(--ink-bright); margin-bottom: 4px; }
+.nft-benefit p { font-size: 12px; color: var(--muted); }
+
+/* ====== ADMIN ====== */
+.admin-login { max-width: 400px; margin: 0 auto; text-align: center; }
+.admin-dash-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+.admin-dash-card { text-align: center; padding: 20px; border-radius: var(--radius-lg); background: var(--glass); border: 1px solid var(--glass-border); }
+.admin-dash-card .adc-val { font-size: 28px; font-weight: 700; color: var(--ink-bright); display: block; }
+.admin-dash-card .adc-lbl { font: 700 10px/1 var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-top: 6px; display: block; }
+.flow-list { margin-bottom: 24px; }
+.flow-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; border-radius: var(--radius-md); background: rgba(255,255,255,0.04); border: 1px solid var(--line); margin-bottom: 8px; }
+.flow-item .fi-name { font-weight: 600; color: var(--ink-bright); font-size: 14px; }
+.flow-item .fi-status { font: 700 11px/1 var(--font-mono); padding: 4px 10px; border-radius: var(--radius-pill); }
+.flow-active { background: var(--green-bg); color: var(--green); }
+.flow-inactive { background: rgba(248,113,113,0.12); color: var(--red); }
+.admin-agent-panel { padding: 24px; border-radius: var(--radius-lg); background: rgba(255,255,255,0.04); border: 1px solid var(--line); }
+.add-flow-form { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 12px; align-items: end; margin-top: 16px; }
+
+@media (max-width: 900px) {
+  .agent-grid, .reseller-grid { grid-template-columns: 1fr; }
+  .admin-dash-grid { grid-template-columns: 1fr 1fr; }
+  .reseller-stat-row { grid-template-columns: 1fr 1fr; }
+  .add-flow-form { grid-template-columns: 1fr; }
+  .nft-flow { flex-direction: column; align-items: center; }
+  .nft-flow-arrow { transform: rotate(90deg); }
+}
+@media (max-width: 640px) {
+  .agent-stat-grid { grid-template-columns: 1fr; }
+  .admin-dash-grid { grid-template-columns: 1fr; }
+  .reseller-stat-row { grid-template-columns: 1fr; }
+  .brand-tiers { grid-template-columns: 1fr; }
+}
   </style>
 </head>
 <body>
@@ -632,6 +742,12 @@ a:hover { text-decoration: underline; }
       <a href="#domains" onclick="navigate('domains')">Domains</a>
       <a href="#how-it-works" onclick="navigate('how-it-works')">How It Works</a>
       <a href="#about" onclick="navigate('about')">About</a>
+      <a href="#agent" onclick="navigate('agent')">AI Agent</a>
+      <a href="#brand-box" onclick="navigate('brand-box')">Brand Box</a>
+      <a href="#hot-deals" onclick="navigate('hot-deals')">Hot Deals</a>
+      <a href="#reseller" onclick="navigate('reseller')">Reseller</a>
+      <a href="#nft" onclick="navigate('nft')">NFT</a>
+      <a href="#admin" onclick="navigate('admin')">Admin</a>
     </div>
     <button class="nav-mobile" id="navToggle" onclick="document.getElementById('navLinks').classList.toggle('open')">&#9776;</button>
   </div>
@@ -1321,6 +1437,398 @@ a:hover { text-decoration: underline; }
   </div>
 </section>
 
+<!-- ====== AI AGENT ====== -->
+<section id="agent" class="section page-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>AI Listing Agent</h2>
+      <p>Your autonomous AI agent monitors, reviews, and manages listings around the clock.</p>
+    </div>
+
+    <div class="agent-stat-grid" style="margin-bottom:32px;">
+      <div class="agent-stat-card"><span class="asc-val" id="agent-reviewed">24</span><span class="asc-lbl">Reviewed Today</span></div>
+      <div class="agent-stat-card"><span class="asc-val" id="agent-flagged" style="color:var(--yellow);">3</span><span class="asc-lbl">Flagged Items</span></div>
+      <div class="agent-stat-card"><span class="asc-val" id="agent-approved" style="color:var(--green);">18</span><span class="asc-lbl">Auto-Approved</span></div>
+      <div class="agent-stat-card"><span class="asc-val" id="agent-pending" style="color:var(--blue);">3</span><span class="asc-lbl">Pending Review</span></div>
+    </div>
+
+    <div class="agent-grid">
+      <div class="glass">
+        <h3 style="font-size:18px;color:var(--ink-bright);margin-bottom:16px;">Agent Controls</h3>
+        <div class="agent-control">
+          <label>Enable AI Agent</label>
+          <label class="toggle-switch"><input type="checkbox" id="agent-enabled" checked onchange="saveAgentConfig()"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="agent-control">
+          <label>Auto-Categorization</label>
+          <label class="toggle-switch"><input type="checkbox" id="agent-autocat" checked onchange="saveAgentConfig()"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="agent-control">
+          <label>Auto-Generate Descriptions</label>
+          <label class="toggle-switch"><input type="checkbox" id="agent-autodesc" onchange="saveAgentConfig()"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="agent-control">
+          <label>Suggest Pricing</label>
+          <label class="toggle-switch"><input type="checkbox" id="agent-pricing" checked onchange="saveAgentConfig()"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="agent-control">
+          <label>Flag Duplicates</label>
+          <label class="toggle-switch"><input type="checkbox" id="agent-dupes" checked onchange="saveAgentConfig()"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="form-group" style="margin-top:16px;">
+          <label>Review Frequency</label>
+          <select id="agent-freq" onchange="saveAgentConfig()">
+            <option value="realtime">Real-time</option>
+            <option value="hourly">Hourly</option>
+            <option value="daily" selected>Daily</option>
+            <option value="weekly">Weekly</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="glass">
+        <h3 style="font-size:18px;color:var(--ink-bright);margin-bottom:16px;">Agent Activity Log</h3>
+        <div class="agent-log" id="agentLog"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== BRAND-IN-A-BOX ====== -->
+<section id="brand-box" class="section page-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Brand-in-a-Box</h2>
+      <p>Launch a complete, market-ready brand in days, not months. Domain, logo, socials, theme, and content -- all included.</p>
+    </div>
+
+    <div class="brand-tiers">
+      <div class="tier-card glass">
+        <div class="tier-icon">&#127793;</div>
+        <h4>Starter Brand</h4>
+        <div class="tier-price">$2,499</div>
+        <ul>
+          <li>Premium domain registration</li>
+          <li>AI-generated logo (3 concepts)</li>
+          <li>3 social media profiles (IG, X, TikTok)</li>
+          <li>Basic Shopify theme setup</li>
+          <li>Brand color palette & fonts</li>
+        </ul>
+        <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center;" onclick="alert('Starter Brand package selected! Fill out the brand builder below to get started.')">Select Starter</button>
+      </div>
+      <div class="tier-card glass featured">
+        <div class="tier-icon">&#127793;</div>
+        <h4>Growth Brand</h4>
+        <div class="tier-price">$4,999</div>
+        <ul>
+          <li>Everything in Starter</li>
+          <li>Custom Shopify theme design</li>
+          <li>10-page content library</li>
+          <li>Email marketing templates (5)</li>
+          <li>Social media templates (15)</li>
+          <li>Brand voice guidelines</li>
+        </ul>
+        <button class="btn btn-primary btn-sm" style="width:100%;justify-content:center;" onclick="alert('Growth Brand package selected! Fill out the brand builder below to get started.')">Select Growth</button>
+      </div>
+      <div class="tier-card glass">
+        <div class="tier-icon">&#128081;</div>
+        <h4>Empire Brand</h4>
+        <div class="tier-price">$9,999</div>
+        <ul>
+          <li>Everything in Growth</li>
+          <li>Premium .com domain acquisition</li>
+          <li>Full brand guidelines document</li>
+          <li>30-day content calendar</li>
+          <li>SEO foundation setup</li>
+          <li>Competitor analysis report</li>
+          <li>Launch strategy playbook</li>
+        </ul>
+        <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center;" onclick="alert('Empire Brand package selected! Fill out the brand builder below to get started.')">Select Empire</button>
+      </div>
+    </div>
+
+    <div class="glass brand-builder-form">
+      <h3 style="font-family:var(--font-display);font-size:22px;color:var(--ink-bright);margin-bottom:8px;text-align:center;">Brand Builder</h3>
+      <p style="color:var(--muted);font-size:14px;text-align:center;margin-bottom:24px;">Enter your brand name to see a live preview of what we will build for you.</p>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Brand Name</label>
+          <input type="text" id="bb-name" placeholder="e.g., GlowPeak" oninput="updateBrandPreview()">
+        </div>
+        <div class="form-group">
+          <label>Industry/Niche</label>
+          <select id="bb-niche" onchange="updateBrandPreview()">
+            <option value="tech">Tech/SaaS</option>
+            <option value="ecommerce">E-commerce</option>
+            <option value="health">Health & Wellness</option>
+            <option value="education">Education</option>
+            <option value="finance">Finance</option>
+            <option value="creative">Creative/Design</option>
+          </select>
+        </div>
+      </div>
+      <div class="brand-preview" id="brandPreview">
+        <div class="bp-logo" id="bp-logo">?</div>
+        <div class="bp-name" id="bp-name">Your Brand</div>
+        <p style="color:var(--muted);font-size:13px;" id="bp-domain">yourbrand.com</p>
+        <div class="bp-handles" id="bp-handles">
+          <span class="badge badge-content">@yourbrand</span>
+          <span class="badge badge-saas">@yourbrand</span>
+          <span class="badge badge-tool">@yourbrand</span>
+        </div>
+        <p style="color:var(--muted);font-size:12px;margin-top:16px;" id="bp-avail">Enter a brand name above to check availability</p>
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:24px;" onclick="buildMyBrand()">Build My Brand</button>
+    </div>
+  </div>
+</section>
+
+<!-- ====== HOT DEALS ====== -->
+<section id="hot-deals" class="section page-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Hot Deals</h2>
+      <p>Time-limited deals on premium digital assets. Grab them before the clock runs out.</p>
+    </div>
+
+    <div class="deals-marquee" id="dealsMarquee"></div>
+
+    <div class="section-header" style="margin-top:48px;">
+      <h2>Pre-Built Templates</h2>
+      <p>Launch faster with our battle-tested starter kits. Each template pre-fills into the sell form so you can list immediately.</p>
+    </div>
+
+    <div class="template-grid" id="templateGrid"></div>
+  </div>
+</section>
+
+<!-- ====== RESELLER PLATFORM ====== -->
+<section id="reseller" class="section page-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Build on VibeFlippers</h2>
+      <p>Create your own storefront, resell assets, and earn commissions. The VibeFlippers reseller platform.</p>
+    </div>
+
+    <div class="reseller-stat-row" id="resellerStats">
+      <div class="reseller-stat"><span class="rs-val" id="rs-storefronts">0</span><span class="rs-lbl">My Storefronts</span></div>
+      <div class="reseller-stat"><span class="rs-val" id="rs-sales">0</span><span class="rs-lbl">Total Sales</span></div>
+      <div class="reseller-stat"><span class="rs-val" id="rs-revenue">$0</span><span class="rs-lbl">Revenue</span></div>
+      <div class="reseller-stat"><span class="rs-val" id="rs-commission">$0</span><span class="rs-lbl">Referral Earnings</span></div>
+    </div>
+
+    <div class="reseller-grid">
+      <div class="glass">
+        <h3 style="font-size:18px;color:var(--ink-bright);margin-bottom:16px;">Create a Storefront</h3>
+        <div class="form-group">
+          <label>Storefront Name</label>
+          <input type="text" id="rs-sf-name" placeholder="e.g., AI Tool Shop">
+        </div>
+        <div class="form-group">
+          <label>Niche</label>
+          <select id="rs-sf-niche">
+            <option value="SaaS">SaaS</option>
+            <option value="Templates">Templates</option>
+            <option value="Content">Content Sites</option>
+            <option value="Tools">Tools</option>
+            <option value="E-commerce">E-commerce</option>
+            <option value="Mixed">Mixed / General</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="rs-sf-desc" placeholder="Describe your storefront focus..."></textarea>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="createStorefront()">Create My Storefront</button>
+
+        <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--line);">
+          <h4 style="font-size:14px;font-weight:700;color:var(--ink-bright);margin-bottom:8px;">Referral Program</h4>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Earn <strong style="color:var(--green);">5% commission</strong> on every deal you refer to VibeFlippers.</p>
+          <div style="padding:12px 16px;border-radius:var(--radius-md);background:rgba(255,255,255,0.04);border:1px solid var(--line);display:flex;align-items:center;gap:12px;">
+            <input type="text" value="https://vibeflippers.com/ref/your-id" readonly style="flex:1;padding:8px 12px;border-radius:var(--radius-sm);background:rgba(255,255,255,0.06);border:1px solid var(--line);color:var(--ink);font-size:12px;font-family:var(--font-mono);">
+            <button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText('https://vibeflippers.com/ref/your-id');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1500);">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass">
+        <h3 style="font-size:18px;color:var(--ink-bright);margin-bottom:16px;">My Storefronts</h3>
+        <div class="storefront-list" id="storefrontList">
+          <div class="pipeline-empty">No storefronts created yet</div>
+        </div>
+
+        <h4 style="font-size:14px;font-weight:700;color:var(--ink-bright);margin:24px 0 8px;">Revenue Chart (Mock)</h4>
+        <div class="revenue-chart-mock">
+          <div class="rcm-bar" style="height:20%" data-label="Jan"></div>
+          <div class="rcm-bar" style="height:35%" data-label="Feb"></div>
+          <div class="rcm-bar" style="height:45%" data-label="Mar"></div>
+          <div class="rcm-bar" style="height:40%" data-label="Apr"></div>
+          <div class="rcm-bar" style="height:60%" data-label="May"></div>
+          <div class="rcm-bar" style="height:75%" data-label="Jun"></div>
+          <div class="rcm-bar" style="height:55%" data-label="Jul"></div>
+          <div class="rcm-bar" style="height:80%" data-label="Aug"></div>
+          <div class="rcm-bar" style="height:90%" data-label="Sep"></div>
+          <div class="rcm-bar" style="height:85%" data-label="Oct"></div>
+          <div class="rcm-bar" style="height:95%" data-label="Nov"></div>
+          <div class="rcm-bar" style="height:100%" data-label="Dec"></div>
+        </div>
+
+        <h4 style="font-size:14px;font-weight:700;color:var(--ink-bright);margin:24px 0 8px;">Commission Tracker</h4>
+        <div style="background:rgba(255,255,255,0.03);border:1px solid var(--line);border-radius:var(--radius-md);padding:12px 16px;">
+          <div class="fee-row"><span class="fee-label">Deals Referred</span><span class="fee-value">0</span></div>
+          <div class="fee-row"><span class="fee-label">Commission Rate</span><span class="fee-value" style="color:var(--green);">5%</span></div>
+          <div class="fee-row"><span class="fee-label">Pending Payout</span><span class="fee-value">$0.00</span></div>
+          <div class="fee-row fee-total"><span class="fee-label">Total Earned</span><span class="fee-value" style="color:var(--green);">$0.00</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== NFT OWNERSHIP ====== -->
+<section id="nft" class="section page-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>NFT Ownership Transfer</h2>
+      <p>Every asset transfer is secured by an NFT -- an immutable, on-chain proof of ownership.</p>
+    </div>
+
+    <h3 style="font-family:var(--font-display);font-size:20px;color:var(--ink-bright);text-align:center;margin-bottom:24px;">How NFT Ownership Works</h3>
+    <div class="nft-flow">
+      <div class="nft-flow-step">
+        <div class="nfs-icon">&#128176;</div>
+        <h4>Asset Purchased</h4>
+        <p>Deal closes via escrow</p>
+      </div>
+      <div class="nft-flow-arrow">&#8594;</div>
+      <div class="nft-flow-step">
+        <div class="nfs-icon">&#128737;</div>
+        <h4>NFT Minted</h4>
+        <p>Ownership token created</p>
+      </div>
+      <div class="nft-flow-arrow">&#8594;</div>
+      <div class="nft-flow-step">
+        <div class="nfs-icon">&#9989;</div>
+        <h4>Ownership Verified</h4>
+        <p>On-chain confirmation</p>
+      </div>
+      <div class="nft-flow-arrow">&#8594;</div>
+      <div class="nft-flow-step">
+        <div class="nfs-icon">&#127881;</div>
+        <h4>Transfer Complete</h4>
+        <p>NFT in your wallet</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--font-display);font-size:20px;color:var(--ink-bright);text-align:center;margin-bottom:16px;">Sample Ownership Certificate</h3>
+    <div class="nft-cert">
+      <h4>VibeFlippers Ownership NFT</h4>
+      <div class="nft-row"><span class="nr-label">Asset Name</span><span class="nr-value">PromptVault Pro</span></div>
+      <div class="nft-row"><span class="nr-label">Token ID</span><span class="nr-value" style="font-family:var(--font-mono);font-size:12px;">#VF-2026-00042</span></div>
+      <div class="nft-row"><span class="nr-label">Owner</span><span class="nr-value">0x7a3f...b8c2</span></div>
+      <div class="nft-row"><span class="nr-label">Blockchain</span><span class="nr-value">Ethereum (ERC-721)</span></div>
+      <div class="nft-row"><span class="nr-label">Date Minted</span><span class="nr-value">April 15, 2026</span></div>
+      <div class="nft-row"><span class="nr-label">Transaction Value</span><span class="nr-value" style="color:var(--green);">$210,000</span></div>
+    </div>
+
+    <h3 style="font-family:var(--font-display);font-size:20px;color:var(--ink-bright);text-align:center;margin-bottom:16px;">Supported Chains</h3>
+    <div class="nft-chains">
+      <div class="nft-chain" style="border-color:rgba(98,126,234,0.4);">&#9830; Ethereum</div>
+      <div class="nft-chain" style="border-color:rgba(153,69,255,0.4);">&#9830; Solana</div>
+      <div class="nft-chain" style="border-color:rgba(130,71,229,0.4);">&#9830; Polygon</div>
+      <div class="nft-chain" style="border-color:rgba(0,82,255,0.4);">&#9830; Base</div>
+    </div>
+
+    <h3 style="font-family:var(--font-display);font-size:20px;color:var(--ink-bright);text-align:center;margin-bottom:16px;">Benefits of NFT Ownership</h3>
+    <div class="nft-benefits">
+      <div class="nft-benefit">
+        <span class="nb-icon">&#128274;</span>
+        <div><h5>Immutable Record</h5><p>Ownership history permanently stored on-chain. No disputes, no ambiguity.</p></div>
+      </div>
+      <div class="nft-benefit">
+        <span class="nb-icon">&#9889;</span>
+        <div><h5>Instant Verification</h5><p>Anyone can verify asset ownership in seconds via blockchain explorer.</p></div>
+      </div>
+      <div class="nft-benefit">
+        <span class="nb-icon">&#128176;</span>
+        <div><h5>Royalty Tracking</h5><p>Smart contracts can enforce royalties on future resales of the asset.</p></div>
+      </div>
+      <div class="nft-benefit">
+        <span class="nb-icon">&#128196;</span>
+        <div><h5>Transfer History</h5><p>Full provenance chain visible on-chain. See every previous owner and transaction.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== ADMIN ====== -->
+<section id="admin" class="section page-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Admin Panel</h2>
+      <p>Platform administration, flow management, and AI review agent monitoring.</p>
+    </div>
+
+    <div id="adminLoginGate" class="admin-login glass">
+      <h3 style="font-family:var(--font-display);font-size:22px;color:var(--ink-bright);margin-bottom:16px;">Admin Access Required</h3>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="adminPwd" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')adminLogin()">
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="adminLogin()">Login</button>
+      <p style="color:var(--muted);font-size:12px;margin-top:12px;">Hint: password is "demo"</p>
+    </div>
+
+    <div id="adminDashboard" style="display:none;">
+      <div class="admin-dash-grid">
+        <div class="admin-dash-card"><span class="adc-val">47</span><span class="adc-lbl">Total Listings</span></div>
+        <div class="admin-dash-card"><span class="adc-val" style="color:var(--green);">12</span><span class="adc-lbl">Active Deals</span></div>
+        <div class="admin-dash-card"><span class="adc-val" style="color:var(--accent-light);">$2.4M</span><span class="adc-lbl">Total Revenue</span></div>
+        <div class="admin-dash-card"><span class="adc-val" style="color:var(--green);">Online</span><span class="adc-lbl">Agent Status</span></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.2fr 0.8fr;gap:24px;">
+        <div class="glass">
+          <h3 style="font-size:18px;color:var(--ink-bright);margin-bottom:16px;">Flow Manager</h3>
+          <div class="flow-list" id="flowList"></div>
+
+          <h4 style="font-size:14px;font-weight:700;color:var(--ink-bright);margin-top:24px;">Add Custom Flow</h4>
+          <div class="add-flow-form">
+            <div class="form-group" style="margin:0;"><label style="font-size:11px;">Flow Name</label><input type="text" id="flow-name" placeholder="My Flow"></div>
+            <div class="form-group" style="margin:0;"><label style="font-size:11px;">Trigger</label><input type="text" id="flow-trigger" placeholder="e.g., New listing"></div>
+            <div class="form-group" style="margin:0;"><label style="font-size:11px;">Action</label><input type="text" id="flow-action" placeholder="e.g., Send alert"></div>
+            <button class="btn btn-primary btn-sm" onclick="addAdminFlow()">Add</button>
+          </div>
+
+          <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--line);">
+            <button class="btn btn-outline btn-sm" onclick="alert('Make.com webhook URL will be configured here. Connect your Make.com account to automate VibeFlippers flows.')">&#9889; Connect to Make.com</button>
+          </div>
+        </div>
+
+        <div class="glass admin-agent-panel">
+          <h3 style="font-size:18px;color:var(--ink-bright);margin-bottom:16px;">AI Review Agent</h3>
+          <div style="text-align:center;padding:16px 0;">
+            <div style="width:60px;height:60px;border-radius:50%;background:var(--green-bg);border:2px solid var(--green);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:28px;">&#129302;</div>
+            <p style="color:var(--green);font-weight:700;font-size:14px;">Agent Active</p>
+          </div>
+          <div style="margin-top:16px;">
+            <div class="escrow-item"><span class="ei-label">Last Review</span><span class="ei-value" style="font-size:13px;">2 min ago</span></div>
+            <div class="escrow-item"><span class="ei-label">Items Reviewed (24h)</span><span class="ei-value">24</span></div>
+            <div class="escrow-item"><span class="ei-label">Confidence Score</span><span class="ei-value" style="color:var(--green);">94.2%</span></div>
+            <div class="escrow-item"><span class="ei-label">False Positive Rate</span><span class="ei-value">2.1%</span></div>
+            <div class="escrow-item"><span class="ei-label">Model Version</span><span class="ei-value" style="font-family:var(--font-mono);font-size:12px;">vf-agent-v3.1</span></div>
+          </div>
+          <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:16px;" onclick="alert('Agent manually triggered. Review cycle started.')">Force Review Cycle</button>
+        </div>
+      </div>
+
+      <div style="margin-top:16px;text-align:right;">
+        <button class="btn btn-ghost btn-sm" onclick="adminLogout()">Logout Admin</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ====== FOOTER ====== -->
 <footer class="site-footer">
   <div class="container">
@@ -1348,8 +1856,11 @@ a:hover { text-decoration: underline; }
         <h4>Resources</h4>
         <a href="#how-it-works" onclick="navigate('how-it-works')">How It Works</a>
         <a href="#about" onclick="navigate('about')">About Us</a>
-        <a href="#" onclick="event.preventDefault()">Blog</a>
-        <a href="#" onclick="event.preventDefault()">FAQ</a>
+        <a href="#agent" onclick="navigate('agent')">AI Agent</a>
+        <a href="#brand-box" onclick="navigate('brand-box')">Brand Box</a>
+        <a href="#hot-deals" onclick="navigate('hot-deals')">Hot Deals</a>
+        <a href="#reseller" onclick="navigate('reseller')">Reseller</a>
+        <a href="#nft" onclick="navigate('nft')">NFT</a>
       </div>
       <div class="footer-col">
         <h4>Legal</h4>
@@ -1553,6 +2064,10 @@ function navigate(sectionId) {
   if (sectionId === 'marketplace') renderListings();
   if (sectionId === 'pipeline') renderPipeline();
   if (sectionId === 'domains') initDomainTLDs();
+  if (sectionId === 'agent') { renderAgentLog(); loadAgentConfig(); }
+  if (sectionId === 'hot-deals') { renderHotDeals(); renderTemplates(); }
+  if (sectionId === 'reseller') loadResellerData();
+  if (sectionId === 'admin') checkAdminAuth();
 }
 
 // ====== MARKETPLACE RENDERING ======
@@ -2193,8 +2708,333 @@ function calcEscrowFees() {
   `;
 }
 
+// ====== AI AGENT ======
+const AGENT_LOG_ENTRIES = [
+  { time: '09:42 AM', msg: 'Agent reviewed listing #42 — PromptVault verified, revenue confirmed.' },
+  { time: '09:38 AM', msg: 'Agent flagged suspicious pricing on TechStack Pro — price 8x above comparable range.' },
+  { time: '09:35 AM', msg: 'Agent auto-categorized 3 new listings: 2 SaaS, 1 Content Site.' },
+  { time: '09:20 AM', msg: 'Agent auto-generated description for "QuickInvoice" — awaiting seller approval.' },
+  { time: '09:15 AM', msg: 'Agent suggested pricing $45,000-$52,000 for NicheNews AI based on comps.' },
+  { time: '09:02 AM', msg: 'Agent flagged duplicate: "AI Blog Generator" matches existing listing "AI Recipe Blog" (82% similarity).' },
+  { time: '08:50 AM', msg: 'Agent approved listing #39 — CodeSnap.ai, all metrics verified.' },
+  { time: '08:45 AM', msg: 'Agent reviewed listing #38 — FitTrack AI, revenue verification pending.' },
+  { time: '08:30 AM', msg: 'Agent auto-categorized 2 new listings: 1 Tool, 1 Template.' },
+  { time: '08:22 AM', msg: 'Agent flagged listing #36 — missing traffic verification data.' },
+  { time: '08:15 AM', msg: 'Daily review cycle started. 47 active listings queued.' },
+  { time: '08:00 AM', msg: 'Agent initialized. Model version vf-agent-v3.1 loaded.' }
+];
+
+function renderAgentLog() {
+  const log = document.getElementById('agentLog');
+  if (!log) return;
+  log.innerHTML = AGENT_LOG_ENTRIES.map(e => `
+    <div class="agent-log-entry">
+      <span class="ale-time">${e.time}</span>
+      <span class="ale-msg">${e.msg}</span>
+    </div>
+  `).join('');
+}
+
+function saveAgentConfig() {
+  const config = {
+    enabled: document.getElementById('agent-enabled')?.checked || false,
+    autoCat: document.getElementById('agent-autocat')?.checked || false,
+    autoDesc: document.getElementById('agent-autodesc')?.checked || false,
+    pricing: document.getElementById('agent-pricing')?.checked || false,
+    dupes: document.getElementById('agent-dupes')?.checked || false,
+    freq: document.getElementById('agent-freq')?.value || 'daily'
+  };
+  localStorage.setItem('vf_agent_config', JSON.stringify(config));
+}
+
+function loadAgentConfig() {
+  const config = JSON.parse(localStorage.getItem('vf_agent_config') || 'null');
+  if (!config) return;
+  const setCheck = (id, val) => { const el = document.getElementById(id); if (el) el.checked = val; };
+  setCheck('agent-enabled', config.enabled);
+  setCheck('agent-autocat', config.autoCat);
+  setCheck('agent-autodesc', config.autoDesc);
+  setCheck('agent-pricing', config.pricing);
+  setCheck('agent-dupes', config.dupes);
+  const freq = document.getElementById('agent-freq');
+  if (freq && config.freq) freq.value = config.freq;
+}
+
+// ====== BRAND-IN-A-BOX ======
+function updateBrandPreview() {
+  const name = document.getElementById('bb-name')?.value.trim() || '';
+  const niche = document.getElementById('bb-niche')?.value || 'tech';
+  const display = name || 'Your Brand';
+  const slug = name.toLowerCase().replace(/[^a-z0-9]/g, '') || 'yourbrand';
+  const initial = name ? name.charAt(0).toUpperCase() : '?';
+
+  document.getElementById('bp-logo').textContent = initial;
+  document.getElementById('bp-name').textContent = display;
+  document.getElementById('bp-domain').textContent = slug + '.com';
+  document.getElementById('bp-handles').innerHTML = `
+    <span class="badge badge-content">&#128247; @${slug}</span>
+    <span class="badge badge-saas">&#120143; @${slug}</span>
+    <span class="badge badge-tool">&#127909; @${slug}</span>
+  `;
+  if (name.length > 0) {
+    const avail = Math.random() > 0.4;
+    document.getElementById('bp-avail').innerHTML = `
+      <span style="color:${avail ? 'var(--green)' : 'var(--red)'};">${slug}.com is ${avail ? 'likely available' : 'possibly taken'}</span>
+      &middot; <span style="color:var(--green);">${slug}.io available</span>
+      &middot; <span style="color:var(--green);">${slug}.ai available</span>
+    `;
+  }
+}
+
+function buildMyBrand() {
+  const name = document.getElementById('bb-name')?.value.trim();
+  if (!name) { alert('Please enter a brand name first.'); return; }
+  const niche = document.getElementById('bb-niche')?.value || 'tech';
+  alert(`Brand package request submitted for "${name}" (${niche})!\n\nYou'll receive:\n- Domain registration\n- AI-generated logo concepts\n- Social media profiles\n- Shopify theme setup\n\nOur team will reach out within 24 hours.`);
+}
+
+// ====== HOT DEALS ======
+const HOT_DEALS = [
+  { name: 'PromptVault Pro', orig: 210000, now: 168000, endsIn: 3 * 3600 + 42 * 60, type: 'SaaS' },
+  { name: 'AI Recipe Empire', orig: 72000, now: 54000, endsIn: 7 * 3600 + 15 * 60, type: 'Content Site' },
+  { name: 'ShopifyGPT Theme', orig: 30000, now: 22500, endsIn: 1 * 3600 + 58 * 60, type: 'Template' },
+  { name: 'CodeSnap Bundle', orig: 112000, now: 89600, endsIn: 12 * 3600, type: 'Tool' },
+  { name: 'FitTrack AI App', orig: 164000, now: 131200, endsIn: 5 * 3600 + 30 * 60, type: 'App' }
+];
+
+const TEMPLATES = [
+  { name: 'SaaS Starter Kit', price: 499, items: ['Landing page with hero + pricing', 'Auth system (login/signup)', 'Stripe billing integration', 'Admin dashboard', 'User settings page'], desc: 'Everything you need to launch a SaaS product.' },
+  { name: 'Content Site Template', price: 299, items: ['Blog with MDX/Markdown', 'SEO meta tags & sitemap', 'Affiliate link management', 'Newsletter signup', 'Analytics integration'], desc: 'Start a content site that ranks and earns.' },
+  { name: 'Shopify Dropship Store', price: 799, items: ['Custom Shopify theme', 'Supplier integrations', '50 pre-loaded products', 'Email marketing setup', 'Facebook pixel installed'], desc: 'A complete dropshipping store ready to sell.' },
+  { name: 'AI Tool Bundle', price: 599, items: ['API wrapper with rate limiting', 'Clean UI with dark mode', 'API documentation', 'Usage dashboard', 'Stripe metered billing'], desc: 'Wrap any AI API into a sellable tool.' },
+  { name: 'Newsletter Business', price: 399, items: ['Substack-style template', '1000 subscriber playbook', 'Monetization strategy guide', 'Email sequence templates', 'Landing page with social proof'], desc: 'Build a profitable newsletter from scratch.' }
+];
+
+let dealTimers = [];
+
+function renderHotDeals() {
+  const container = document.getElementById('dealsMarquee');
+  if (!container) return;
+  // Clear previous timers
+  dealTimers.forEach(t => clearInterval(t));
+  dealTimers = [];
+
+  container.innerHTML = HOT_DEALS.map((d, i) => {
+    const savePct = Math.round((1 - d.now / d.orig) * 100);
+    return `
+      <div class="deal-card">
+        <span class="deal-hot">HOT DEAL</span>
+        <span class="badge ${getBadgeClass(d.type)}" style="margin-bottom:12px;">${d.type}</span>
+        <h4 style="font-size:18px;color:var(--ink-bright);font-family:var(--font-display);margin-bottom:8px;">${d.name}</h4>
+        <div class="deal-orig">${fmtFull(d.orig)}</div>
+        <div class="deal-now">${fmtFull(d.now)}</div>
+        <div class="deal-save">Save ${savePct}% (${fmtFull(d.orig - d.now)} off)</div>
+        <div class="deal-countdown" id="deal-timer-${i}">Loading...</div>
+        <button class="btn btn-primary btn-sm" style="width:100%;justify-content:center;margin-top:12px;" onclick="alert('Deal claimed for ${d.name}! In production, this would initiate the escrow process at the discounted price.')">Claim Deal</button>
+      </div>
+    `;
+  }).join('');
+
+  // Start countdown timers
+  HOT_DEALS.forEach((d, i) => {
+    let remaining = d.endsIn;
+    function updateTimer() {
+      if (remaining <= 0) { remaining = 0; }
+      const h = Math.floor(remaining / 3600);
+      const m = Math.floor((remaining % 3600) / 60);
+      const s = remaining % 60;
+      const el = document.getElementById(`deal-timer-${i}`);
+      if (el) el.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')} remaining`;
+      if (remaining > 0) remaining--;
+    }
+    updateTimer();
+    dealTimers.push(setInterval(updateTimer, 1000));
+  });
+}
+
+function renderTemplates() {
+  const container = document.getElementById('templateGrid');
+  if (!container) return;
+  container.innerHTML = TEMPLATES.map(t => `
+    <div class="template-card">
+      <h4>${t.name}</h4>
+      <div class="tc-price">$${t.price}</div>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:12px;">${t.desc}</p>
+      <ul>${t.items.map(item => `<li>${item}</li>`).join('')}</ul>
+      <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center;" onclick="useTemplate('${t.name}', ${t.price})">Use Template</button>
+    </div>
+  `).join('');
+}
+
+function useTemplate(name, price) {
+  // Pre-fill the sell form
+  const nameEl = document.getElementById('sf-name');
+  const priceEl = document.getElementById('sf-price');
+  if (nameEl) nameEl.value = name;
+  if (priceEl) priceEl.value = price;
+  navigate('sell');
+}
+
+// ====== RESELLER PLATFORM ======
+function loadResellerData() {
+  const data = JSON.parse(localStorage.getItem('vf_reseller') || '{"storefronts":[],"sales":0,"revenue":0,"commission":0}');
+  const sfEl = document.getElementById('rs-storefronts');
+  const salesEl = document.getElementById('rs-sales');
+  const revEl = document.getElementById('rs-revenue');
+  const commEl = document.getElementById('rs-commission');
+  if (sfEl) sfEl.textContent = data.storefronts.length;
+  if (salesEl) salesEl.textContent = data.sales;
+  if (revEl) revEl.textContent = '$' + data.revenue.toLocaleString();
+  if (commEl) commEl.textContent = '$' + data.commission.toLocaleString();
+  renderStorefronts(data.storefronts);
+}
+
+function renderStorefronts(storefronts) {
+  const list = document.getElementById('storefrontList');
+  if (!list) return;
+  if (storefronts.length === 0) {
+    list.innerHTML = '<div class="pipeline-empty">No storefronts created yet</div>';
+    return;
+  }
+  list.innerHTML = storefronts.map((sf, i) => `
+    <div class="storefront-item">
+      <div>
+        <div class="sf-name">${sf.name}</div>
+        <div class="sf-niche">${sf.niche} &middot; Created ${sf.date}</div>
+      </div>
+      <button class="btn btn-ghost btn-sm" style="color:var(--red);padding:4px 8px;font-size:10px;" onclick="removeStorefront(${i})">Delete</button>
+    </div>
+  `).join('');
+}
+
+function createStorefront() {
+  const name = document.getElementById('rs-sf-name')?.value.trim();
+  const niche = document.getElementById('rs-sf-niche')?.value;
+  const desc = document.getElementById('rs-sf-desc')?.value.trim();
+  if (!name) { alert('Please enter a storefront name.'); return; }
+  const data = JSON.parse(localStorage.getItem('vf_reseller') || '{"storefronts":[],"sales":0,"revenue":0,"commission":0}');
+  data.storefronts.push({ name, niche, desc, date: new Date().toISOString().slice(0, 10) });
+  localStorage.setItem('vf_reseller', JSON.stringify(data));
+  document.getElementById('rs-sf-name').value = '';
+  document.getElementById('rs-sf-desc').value = '';
+  loadResellerData();
+}
+
+function removeStorefront(idx) {
+  const data = JSON.parse(localStorage.getItem('vf_reseller') || '{"storefronts":[],"sales":0,"revenue":0,"commission":0}');
+  data.storefronts.splice(idx, 1);
+  localStorage.setItem('vf_reseller', JSON.stringify(data));
+  loadResellerData();
+}
+
+// ====== ADMIN MODULE ======
+const DEFAULT_FLOWS = [
+  { name: 'New Listing Review', active: true, trigger: 'New listing submitted', action: 'AI review + categorize' },
+  { name: 'Price Alert Notifications', active: true, trigger: 'Price change detected', action: 'Notify watchers' },
+  { name: 'Buyer-Seller Matching', active: true, trigger: 'New listing or buyer signup', action: 'Match & notify' },
+  { name: 'Escrow Auto-Advance', active: false, trigger: 'Checklist item completed', action: 'Advance escrow step' },
+  { name: 'Weekly Report Generator', active: false, trigger: 'Every Monday 9 AM', action: 'Generate & email report' },
+  { name: 'Duplicate Detection', active: true, trigger: 'New listing submitted', action: 'Compare & flag dupes' }
+];
+
+function adminLogin() {
+  const pwd = document.getElementById('adminPwd')?.value;
+  if (pwd === 'demo') {
+    sessionStorage.setItem('vf_admin_auth', 'true');
+    showAdminDashboard();
+  } else {
+    alert('Incorrect password. Hint: try "demo".');
+  }
+}
+
+function adminLogout() {
+  sessionStorage.removeItem('vf_admin_auth');
+  document.getElementById('adminLoginGate').style.display = 'block';
+  document.getElementById('adminDashboard').style.display = 'none';
+}
+
+function showAdminDashboard() {
+  document.getElementById('adminLoginGate').style.display = 'none';
+  document.getElementById('adminDashboard').style.display = 'block';
+  renderFlows();
+}
+
+function checkAdminAuth() {
+  if (sessionStorage.getItem('vf_admin_auth') === 'true') {
+    showAdminDashboard();
+  }
+}
+
+function getFlows() {
+  const stored = localStorage.getItem('vf_admin');
+  if (stored) {
+    const data = JSON.parse(stored);
+    return data.flows || DEFAULT_FLOWS;
+  }
+  return [...DEFAULT_FLOWS];
+}
+
+function saveFlows(flows) {
+  const data = JSON.parse(localStorage.getItem('vf_admin') || '{}');
+  data.flows = flows;
+  localStorage.setItem('vf_admin', JSON.stringify(data));
+}
+
+function renderFlows() {
+  const flows = getFlows();
+  const list = document.getElementById('flowList');
+  if (!list) return;
+  list.innerHTML = flows.map((f, i) => `
+    <div class="flow-item">
+      <div>
+        <div class="fi-name">${f.name}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px;">${f.trigger} &#8594; ${f.action}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="fi-status ${f.active ? 'flow-active' : 'flow-inactive'}">${f.active ? 'Active' : 'Inactive'}</span>
+        <label class="toggle-switch" style="margin:0;"><input type="checkbox" ${f.active ? 'checked' : ''} onchange="toggleFlow(${i}, this.checked)"><span class="toggle-slider"></span></label>
+        <button class="btn btn-ghost btn-sm" style="padding:4px 8px;font-size:10px;color:var(--red);" onclick="deleteFlow(${i})">&#10005;</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleFlow(idx, active) {
+  const flows = getFlows();
+  if (flows[idx]) flows[idx].active = active;
+  saveFlows(flows);
+  renderFlows();
+}
+
+function deleteFlow(idx) {
+  const flows = getFlows();
+  flows.splice(idx, 1);
+  saveFlows(flows);
+  renderFlows();
+}
+
+function addAdminFlow() {
+  const name = document.getElementById('flow-name')?.value.trim();
+  const trigger = document.getElementById('flow-trigger')?.value.trim();
+  const action = document.getElementById('flow-action')?.value.trim();
+  if (!name) { alert('Please enter a flow name.'); return; }
+  const flows = getFlows();
+  flows.push({ name, trigger: trigger || 'Manual', action: action || 'Custom action', active: true });
+  saveFlows(flows);
+  document.getElementById('flow-name').value = '';
+  document.getElementById('flow-trigger').value = '';
+  document.getElementById('flow-action').value = '';
+  renderFlows();
+}
+
 // ====== INIT ======
 renderListings();
+renderAgentLog();
+loadAgentConfig();
+renderHotDeals();
+renderTemplates();
+loadResellerData();
+checkAdminAuth();
 </script>
 </body>
 </html>
