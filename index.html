@@ -752,6 +752,66 @@ a:hover { text-decoration: underline; }
   .reseller-stat-row { grid-template-columns: 1fr; }
   .brand-tiers { grid-template-columns: 1fr; }
 }
+/* ====== SUBSCRIPTIONS ====== */
+.sub-tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 48px; }
+.sub-tiers .tier-card .tier-check { color: var(--green); margin-right: 4px; }
+.sub-tiers .tier-card .tier-x { color: var(--red); opacity: .45; margin-right: 4px; }
+
+/* ====== AI OPS ====== */
+.ai-ops-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px; }
+.ai-ops-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 28px; }
+.ai-ops-card h3 { font-family: var(--font-display); font-size: 20px; color: var(--ink-bright); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+.ai-ops-card .ops-status { display: inline-block; padding: 3px 10px; border-radius: var(--radius-md); font-size: 11px; font-weight: 700; letter-spacing: .04em; }
+.ai-ops-card .ops-status.active { background: rgba(52,211,153,.15); color: var(--green); }
+.ai-ops-card .ops-status.inactive { background: rgba(255,255,255,.06); color: var(--muted); }
+.ops-caps { list-style: none; padding: 0; margin: 12px 0; }
+.ops-caps li { padding: 5px 0; color: var(--muted); font-size: 13px; display: flex; gap: 8px; align-items: center; }
+.ops-caps li::before { content: "\25B8"; color: var(--accent-light); font-size: 10px; }
+.ops-feed { max-height: 180px; overflow-y: auto; margin-top: 12px; }
+.ops-feed-item { padding: 6px 0; border-bottom: 1px solid var(--line); font-size: 12px; color: var(--muted); display: flex; gap: 8px; }
+.ops-feed-item .feed-time { color: var(--accent-light); white-space: nowrap; flex-shrink: 0; }
+.ops-metric-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px; }
+.ops-metric { background: rgba(255,255,255,.03); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 10px 14px; flex: 1; min-width: 100px; text-align: center; }
+.ops-metric .om-val { display: block; font-size: 22px; font-weight: 700; color: var(--ink-bright); }
+.ops-metric .om-lbl { display: block; font-size: 11px; color: var(--muted); margin-top: 2px; }
+.sec-findings { display: flex; gap: 12px; flex-wrap: wrap; margin: 12px 0; }
+.sec-finding { padding: 8px 14px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; }
+.sec-finding.critical { background: rgba(239,68,68,.12); color: #ef4444; }
+.sec-finding.high { background: rgba(249,115,22,.12); color: #f97316; }
+.sec-finding.medium { background: rgba(234,179,8,.12); color: var(--yellow); }
+.sec-finding.low { background: rgba(255,255,255,.06); color: var(--muted); }
+.sec-score-ring { width: 80px; height: 80px; border-radius: 50%; border: 4px solid var(--green); display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 800; color: var(--green); margin: 0 auto 12px; }
+
+/* ====== VERIFICATION MODAL ====== */
+.vf-verify-overlay { display: none; position: fixed; inset: 0; z-index: 250; background: rgba(0,0,0,.75); backdrop-filter: blur(8px); overflow-y: auto; padding: 40px 20px; justify-content: center; align-items: flex-start; }
+.vf-verify-overlay.open { display: flex; }
+.vf-verify-box { background: var(--bg2); border: 1px solid var(--line); border-radius: var(--radius-lg); max-width: 520px; width: 100%; padding: 36px; position: relative; box-shadow: 0 30px 80px rgba(0,0,0,.5); }
+.vf-verify-box h2 { font-family: var(--font-display); color: var(--ink-bright); margin-bottom: 6px; }
+.vf-verify-box .vf-step { display: none; }
+.vf-verify-box .vf-step.active { display: block; }
+.vf-verify-steps { display: flex; gap: 8px; margin-bottom: 20px; }
+.vf-verify-steps span { flex: 1; height: 4px; border-radius: 2px; background: var(--line); transition: background .3s; }
+.vf-verify-steps span.done { background: var(--green); }
+.vf-verify-steps span.current { background: var(--accent-light); }
+.vf-score { text-align: center; margin: 20px 0; }
+.vf-score .score-val { font-size: 48px; font-weight: 800; color: var(--green); }
+.vf-score .score-lbl { font-size: 14px; color: var(--muted); }
+
+/* ====== REVEAL LIMIT POPUP ====== */
+.vf-reveal-popup { display: none; position: fixed; inset: 0; z-index: 260; background: rgba(0,0,0,.7); backdrop-filter: blur(6px); justify-content: center; align-items: center; padding: 20px; }
+.vf-reveal-popup.open { display: flex; }
+.vf-reveal-box { background: var(--bg2); border: 1px solid var(--accent); border-radius: var(--radius-lg); max-width: 440px; width: 100%; padding: 32px; text-align: center; box-shadow: 0 0 40px var(--accent-glow); }
+.vf-reveal-box h3 { font-family: var(--font-display); color: var(--ink-bright); margin-bottom: 12px; }
+.vf-reveal-box p { color: var(--muted); font-size: 14px; margin-bottom: 20px; line-height: 1.6; }
+
+/* ====== VF BADGE ====== */
+.vf-platform-badge { position: absolute; top: 10px; right: 10px; background: var(--accent); color: #fff; font-size: 10px; font-weight: 800; letter-spacing: .06em; padding: 3px 8px; border-radius: var(--radius-md); z-index: 2; }
+.listing-card { position: relative; }
+
+@media (max-width: 640px) {
+  .sub-tiers { grid-template-columns: 1fr; }
+  .ai-ops-grid { grid-template-columns: 1fr; }
+}
   </style>
 </head>
 <body>
@@ -776,6 +836,8 @@ a:hover { text-decoration: underline; }
       <a href="#hot-deals" onclick="navigate('hot-deals')">Hot Deals</a>
       <a href="#reseller" onclick="navigate('reseller')">Reseller</a>
       <a href="#nft" onclick="navigate('nft')">NFT</a>
+      <a href="#subscriptions" onclick="navigate('subscriptions')">Subscriptions</a>
+      <a href="#ai-ops" onclick="navigate('ai-ops')">AI Ops</a>
       <a href="#admin" onclick="navigate('admin')">Admin</a>
     </div>
     <button class="nav-mobile" id="navToggle" onclick="document.getElementById('navLinks').classList.toggle('open')">&#9776;</button>
@@ -1790,6 +1852,234 @@ a:hover { text-decoration: underline; }
   </div>
 </section>
 
+<!-- ====== SUBSCRIPTIONS ====== -->
+<section id="subscriptions" class="section page-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Choose Your Plan</h2>
+      <p>Every plan includes ID verification, AI deal agent, and platform access. Upgrade for more power.</p>
+    </div>
+    <div class="sub-tiers">
+      <div class="tier-card glass">
+        <div class="tier-icon">&#9889;</div>
+        <h4>Starter</h4>
+        <div class="tier-price">$29<small>/mo</small></div>
+        <ul>
+          <li><span class="tier-check">&#10003;</span> 3 active listings</li>
+          <li><span class="tier-check">&#10003;</span> Basic AI deal agent</li>
+          <li><span class="tier-check">&#10003;</span> Valuation tools</li>
+          <li><span class="tier-check">&#10003;</span> Single platform (VF or FW)</li>
+          <li><span class="tier-x">&#10005;</span> Smart contracts</li>
+          <li><span class="tier-x">&#10005;</span> Lead generation</li>
+          <li><span class="tier-x">&#10005;</span> Template upload</li>
+        </ul>
+        <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center;" onclick="selectPlan('starter')">Select Starter</button>
+      </div>
+      <div class="tier-card glass featured">
+        <div class="tier-icon">&#128640;</div>
+        <h4>Pro</h4>
+        <div class="tier-price">$79<small>/mo</small></div>
+        <ul>
+          <li><span class="tier-check">&#10003;</span> 15 active listings</li>
+          <li><span class="tier-check">&#10003;</span> Full autonomous AI agent</li>
+          <li><span class="tier-check">&#10003;</span> Standard smart contracts</li>
+          <li><span class="tier-check">&#10003;</span> Lead gen (1% escrow fee)</li>
+          <li><span class="tier-check">&#10003;</span> 5 template uploads/mo</li>
+          <li><span class="tier-check">&#10003;</span> Single platform (VF or FW)</li>
+          <li><span class="tier-x">&#10005;</span> Cross-platform access</li>
+        </ul>
+        <button class="btn btn-primary btn-sm" style="width:100%;justify-content:center;" onclick="selectPlan('pro')">Select Pro</button>
+      </div>
+      <div class="tier-card glass">
+        <div class="tier-icon">&#127775;</div>
+        <h4>Enterprise</h4>
+        <div class="tier-price">$199<small>/mo</small></div>
+        <ul>
+          <li><span class="tier-check">&#10003;</span> Unlimited listings</li>
+          <li><span class="tier-check">&#10003;</span> Full + custom AI workflows</li>
+          <li><span class="tier-check">&#10003;</span> Custom multi-party smart contracts</li>
+          <li><span class="tier-check">&#10003;</span> Lead gen (1% escrow fee)</li>
+          <li><span class="tier-check">&#10003;</span> Unlimited template uploads</li>
+          <li><span class="tier-check">&#10003;</span> Both VF + Flipwala access</li>
+          <li><span class="tier-check">&#10003;</span> Dedicated operator + priority support</li>
+        </ul>
+        <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center;" onclick="selectPlan('enterprise')">Select Enterprise</button>
+      </div>
+    </div>
+    <div class="glass" style="max-width:600px;margin:0 auto;padding:24px;text-align:center;">
+      <p style="color:var(--muted);font-size:14px;margin-bottom:8px;">Current Plan: <strong id="currentPlanDisplay" style="color:var(--ink-bright);">Free</strong></p>
+      <p style="color:var(--muted);font-size:12px;">Free buyers can reveal up to 3 listings. <a href="#" onclick="upgradeToPaidBuyer();return false;" style="color:var(--accent-light);">Upgrade to Paid Buyer ($10/mo)</a> for unlimited reveals.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== AI OPS — AI ENGINEER + ML ENGINEER + SECURITY ====== -->
+<section id="ai-ops" class="section page-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>AI Ops Center</h2>
+      <p>AI Engineer, ML Engineer, and Security agents — monitoring, learning, and protecting the platform 24/7.</p>
+    </div>
+    <div class="ai-ops-grid">
+
+      <!-- AI Engineer Agent -->
+      <div class="ai-ops-card">
+        <h3>&#129302; AI Engineer Agent <span class="ops-status active">Active</span></h3>
+        <p style="color:var(--muted);font-size:13px;">Full-cycle AI project management, system integration, and ethical standards enforcement.</p>
+        <ul class="ops-caps">
+          <li>Listing quality scoring &amp; fraud detection</li>
+          <li>Template parsing &amp; automation ("Fix My Template")</li>
+          <li>Deal document generation &amp; review</li>
+          <li>Transparent adaptive deal guidance</li>
+          <li>Jurisdiction-aware compliance routing</li>
+        </ul>
+        <div class="ops-metric-row">
+          <div class="ops-metric"><span class="om-val">1,247</span><span class="om-lbl">Listings Scored</span></div>
+          <div class="ops-metric"><span class="om-val">98.2%</span><span class="om-lbl">Accuracy</span></div>
+          <div class="ops-metric"><span class="om-val">14</span><span class="om-lbl">Fraud Blocked</span></div>
+        </div>
+        <div class="ops-feed" style="margin-top:16px;">
+          <div class="ops-feed-item"><span class="feed-time">2m ago</span> Scored listing #VF-4821 — Quality: 87/100, Auto-approved</div>
+          <div class="ops-feed-item"><span class="feed-time">8m ago</span> Flagged duplicate: "AIRecipeHub" matches existing listing #VF-3102</div>
+          <div class="ops-feed-item"><span class="feed-time">15m ago</span> Generated NDA template for Deal #VF-D-291</div>
+          <div class="ops-feed-item"><span class="feed-time">22m ago</span> Parsed broker template — 14 fields extracted, workflow created</div>
+          <div class="ops-feed-item"><span class="feed-time">1h ago</span> Compliance check: NJ listing with lease — routed to RE pathway</div>
+        </div>
+      </div>
+
+      <!-- ML Engineer Agent -->
+      <div class="ai-ops-card">
+        <h3>&#129504; ML Engineer Agent <span class="ops-status active">Active</span></h3>
+        <p style="color:var(--muted);font-size:13px;">Self-learning models for pricing, matching, and market intelligence.</p>
+        <ul class="ops-caps">
+          <li>Price prediction model (SDE multiple regression)</li>
+          <li>Buyer-seller matching (collaborative filtering)</li>
+          <li>Churn prediction &amp; retention signals</li>
+          <li>Market trend analysis &amp; niche scoring</li>
+          <li>Asset flip-readiness scoring</li>
+        </ul>
+        <div class="ops-metric-row">
+          <div class="ops-metric"><span class="om-val">94.7%</span><span class="om-lbl">Price Accuracy</span></div>
+          <div class="ops-metric"><span class="om-val">82%</span><span class="om-lbl">Match Rate</span></div>
+          <div class="ops-metric"><span class="om-val">Apr 14</span><span class="om-lbl">Last Trained</span></div>
+        </div>
+        <div class="ops-feed" style="margin-top:16px;">
+          <div class="ops-feed-item"><span class="feed-time">5m ago</span> Price model predicted $48K for SaaS listing — actual ask $52K (7.7% delta)</div>
+          <div class="ops-feed-item"><span class="feed-time">12m ago</span> Matched 3 buyers to new newsletter listing #VF-4819</div>
+          <div class="ops-feed-item"><span class="feed-time">30m ago</span> Trend alert: "AI wrapper" niche oversaturated — lowering flip score</div>
+          <div class="ops-feed-item"><span class="feed-time">2h ago</span> Retrained pricing model — 1,247 comps, R²=0.91</div>
+          <div class="ops-feed-item"><span class="feed-time">6h ago</span> Churn signal: Buyer #B-441 inactive 14 days — triggered re-engagement</div>
+        </div>
+      </div>
+
+      <!-- Security & Vulnerability Monitor -->
+      <div class="ai-ops-card">
+        <h3>&#128737; Security Monitor <span class="ops-status active">Active</span></h3>
+        <p style="color:var(--muted);font-size:13px;">24/7 vulnerability scanning, threat detection, and compliance monitoring.</p>
+        <div style="text-align:center;margin:16px 0;">
+          <div class="sec-score-ring">94</div>
+          <p style="color:var(--green);font-size:13px;font-weight:600;">Security Score: Excellent</p>
+          <p style="color:var(--muted);font-size:11px;">Last full scan: Today 06:00 UTC</p>
+        </div>
+        <div class="sec-findings">
+          <span class="sec-finding critical">0 Critical</span>
+          <span class="sec-finding high">0 High</span>
+          <span class="sec-finding medium">2 Medium</span>
+          <span class="sec-finding low">5 Low</span>
+        </div>
+        <div style="margin:12px 0;">
+          <div class="agent-control">
+            <label style="font-size:13px;">Daily vulnerability scan</label>
+            <label class="toggle-switch"><input type="checkbox" checked disabled><span class="toggle-slider"></span></label>
+          </div>
+          <div class="agent-control">
+            <label style="font-size:13px;">Auto-patch low severity</label>
+            <label class="toggle-switch"><input type="checkbox" id="sec-autopatch" checked onchange="localStorage.setItem('vf_sec_autopatch',this.checked)"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="agent-control">
+            <label style="font-size:13px;">OWASP Top 10 monitoring</label>
+            <label class="toggle-switch"><input type="checkbox" checked disabled><span class="toggle-slider"></span></label>
+          </div>
+          <div class="agent-control">
+            <label style="font-size:13px;">OFAC/Sanctions screening</label>
+            <label class="toggle-switch"><input type="checkbox" checked disabled><span class="toggle-slider"></span></label>
+          </div>
+        </div>
+        <div class="ops-feed">
+          <div class="ops-feed-item"><span class="feed-time">06:00</span> Daily scan complete — 0 critical, 0 high, 2 medium, 5 low</div>
+          <div class="ops-feed-item"><span class="feed-time">05:48</span> Auto-patched: CSP header updated for inline styles</div>
+          <div class="ops-feed-item"><span class="feed-time">04:12</span> OFAC screen passed for 12 new users</div>
+          <div class="ops-feed-item"><span class="feed-time">Yesterday</span> Medium: Rate limiting threshold raised on /webhook endpoints</div>
+          <div class="ops-feed-item"><span class="feed-time">Yesterday</span> KYC verification: 8 users verified, 1 flagged for manual review</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ====== VERIFICATION MODAL ====== -->
+<div class="vf-verify-overlay" id="verificationModal">
+  <div class="vf-verify-box">
+    <button onclick="closeVerifyModal()" style="position:absolute;top:12px;right:16px;background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;">&times;</button>
+    <div class="vf-verify-steps">
+      <span id="vs1" class="current"></span>
+      <span id="vs2"></span>
+      <span id="vs3"></span>
+    </div>
+
+    <div class="vf-step active" id="verify-step-1">
+      <h2>Identity Verification</h2>
+      <p style="color:var(--muted);font-size:14px;margin-bottom:20px;">Required before you can view seller details or enter deals.</p>
+      <div class="form-group"><label>Full Legal Name</label><input type="text" id="vf-id-name" placeholder="As it appears on your ID"></div>
+      <div class="form-group"><label>Email</label><input type="email" id="vf-id-email" placeholder="you@email.com"></div>
+      <div class="form-group"><label>ID Type</label>
+        <select id="vf-id-type"><option>Passport</option><option>Driver's License</option><option>National ID</option></select>
+      </div>
+      <div class="form-group"><label>Upload ID Documents</label><div id="vf-id-upload"></div></div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="verifyStep(2)">Continue to Proof of Funds</button>
+      <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:8px;" onclick="skipVerification()">Skip for Demo</button>
+    </div>
+
+    <div class="vf-step" id="verify-step-2">
+      <h2>Proof of Funds</h2>
+      <p style="color:var(--muted);font-size:14px;margin-bottom:20px;">Verify your acquisition budget to get matched to the right Concierge tier.</p>
+      <div class="form-group"><label>Estimated Budget Range</label>
+        <select id="vf-funds-range">
+          <option value="25000">Up to $25,000 (Standard)</option>
+          <option value="250000">$25,000 – $250,000 (Growth)</option>
+          <option value="999999">$250,000+ (Premier)</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Upload Proof Documents</label><div id="vf-funds-upload"></div></div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="verifyStep(3)">Submit Verification</button>
+      <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:8px;" onclick="verifyStep(1)">Back</button>
+    </div>
+
+    <div class="vf-step" id="verify-step-3">
+      <h2>Verification Complete</h2>
+      <div class="vf-score">
+        <div class="score-val" id="vf-score-display">&#10003;</div>
+        <div class="score-lbl">Identity + Funds Verified</div>
+      </div>
+      <p style="color:var(--muted);font-size:14px;text-align:center;margin-bottom:8px;">Concierge Tier: <strong id="vf-tier-display" style="color:var(--green);">Standard</strong></p>
+      <p style="color:var(--muted);font-size:12px;text-align:center;margin-bottom:20px;">You now have full access to reveal listings, make offers, and enter deals.</p>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="closeVerifyModal()">Start Browsing</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== REVEAL LIMIT POPUP ====== -->
+<div class="vf-reveal-popup" id="revealPopup">
+  <div class="vf-reveal-box">
+    <h3>Focus on 3</h3>
+    <p>It's hard to find the right business when you're looking at everything. You've revealed 3 listings — that's the free limit.</p>
+    <p style="font-size:13px;color:var(--accent-light);margin-bottom:20px;">Want unlimited access? Upgrade for just $10/mo.</p>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;margin-bottom:10px;" onclick="upgradeToPaidBuyer()">Upgrade to Paid Buyer ($10/mo)</button>
+    <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;" onclick="closeRevealPopup()">I'll focus on these 3</button>
+  </div>
+</div>
+
 <!-- ====== ADMIN ====== -->
 <section id="admin" class="section page-section">
   <div class="container">
@@ -2156,6 +2446,7 @@ function renderListings() {
 
   grid.innerHTML = items.map(l => `
     <div class="listing-card" onclick="openListing(${l.id})">
+      <span class="vf-platform-badge">VF</span>
       <div class="listing-card-header">
         <h3>${l.name}</h3>
         <span class="badge ${getBadgeClass(l.type)}">${l.type}</span>
@@ -2176,6 +2467,7 @@ function renderListings() {
 
 // ====== LISTING DETAIL MODAL ======
 function openListing(id) {
+  if (!revealListing(id)) return;
   const l = LISTINGS.find(x => x.id === id);
   if (!l) return;
 
@@ -3056,6 +3348,246 @@ function addAdminFlow() {
   renderFlows();
 }
 
+// ====== ROLE-BASED NAV VISIBILITY ======
+const NAV_VISIBILITY = {
+  'marketplace': ['buyer','seller','broker','reseller','service_provider','admin','operator'],
+  'sell': ['seller','broker','service_provider','admin'],
+  'valuations': ['buyer','seller','broker','service_provider','admin'],
+  'pipeline': ['buyer','seller','broker','operator','admin'],
+  'domains': ['buyer','seller','broker','admin'],
+  'how-it-works': ['buyer','seller','broker','reseller','service_provider'],
+  'about': ['buyer','seller','broker','reseller','service_provider'],
+  'agent': ['seller','broker','admin','operator'],
+  'brand-box': ['buyer','seller','broker'],
+  'hot-deals': ['buyer','seller','broker','reseller'],
+  'reseller': ['reseller','admin'],
+  'nft': ['buyer','seller','broker','admin'],
+  'subscriptions': ['buyer','seller','broker','reseller','service_provider'],
+  'ai-ops': ['admin','operator'],
+  'admin': ['admin']
+};
+
+function setUserRole(role) {
+  localStorage.setItem('vf_user_role', role);
+  applyNavVisibility();
+}
+
+function getUserRole() {
+  return localStorage.getItem('vf_user_role') || 'buyer';
+}
+
+function applyNavVisibility() {
+  const role = getUserRole();
+  const navLinks = document.querySelectorAll('#navLinks a');
+  navLinks.forEach(link => {
+    const href = link.getAttribute('href') || '';
+    const sectionId = href.replace('#', '');
+    const onclick = link.getAttribute('onclick') || '';
+    // Extract section from navigate('xxx') or href
+    const match = onclick.match(/navigate\('([^']+)'\)/) || [null, sectionId];
+    const section = match[1];
+    if (section && NAV_VISIBILITY[section]) {
+      link.style.display = NAV_VISIBILITY[section].includes(role) ? '' : 'none';
+    }
+  });
+}
+
+// ====== MULTI-FILE UPLOAD ======
+function initMultiUpload(containerId, category, maxFiles, maxSizeMB) {
+  maxFiles = maxFiles || 10;
+  maxSizeMB = maxSizeMB || 25;
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  container.innerHTML = `
+    <div class="multi-upload" style="border:2px dashed var(--line);border-radius:var(--radius-md);padding:24px;text-align:center;cursor:pointer;transition:border-color .2s;" ondragover="event.preventDefault();this.style.borderColor='var(--accent-light)'" ondragleave="this.style.borderColor='var(--line)'" ondrop="handleFileDrop(event,'${containerId}','${category}',${maxFiles},${maxSizeMB})">
+      <input type="file" multiple accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt" style="display:none" id="${containerId}-input" onchange="handleFileSelect(this,'${containerId}','${category}',${maxFiles},${maxSizeMB})">
+      <div style="font-size:32px;margin-bottom:8px;">&#128206;</div>
+      <p style="color:var(--ink-bright);font-weight:600;margin-bottom:4px;">Drop files here or <a href="#" onclick="document.getElementById('${containerId}-input').click();return false" style="color:var(--accent-light)">browse</a></p>
+      <p style="color:var(--muted);font-size:12px;">Up to ${maxFiles} files, max ${maxSizeMB}MB each. PDF, images, docs, spreadsheets.</p>
+    </div>
+    <div id="${containerId}-list" class="upload-file-list" style="margin-top:12px;"></div>
+  `;
+}
+
+function handleFileDrop(event, containerId, category, maxFiles, maxSizeMB) {
+  event.preventDefault();
+  event.currentTarget.style.borderColor = 'var(--line)';
+  const files = Array.from(event.dataTransfer.files);
+  processFiles(files, containerId, category, maxFiles, maxSizeMB);
+}
+
+function handleFileSelect(input, containerId, category, maxFiles, maxSizeMB) {
+  const files = Array.from(input.files);
+  processFiles(files, containerId, category, maxFiles, maxSizeMB);
+  input.value = '';
+}
+
+function processFiles(files, containerId, category, maxFiles, maxSizeMB) {
+  const key = 'vf_uploads_' + containerId;
+  const existing = JSON.parse(localStorage.getItem(key) || '[]');
+  const maxBytes = maxSizeMB * 1024 * 1024;
+
+  let added = 0;
+  files.forEach(f => {
+    if (existing.length + added >= maxFiles) {
+      alert('Maximum ' + maxFiles + ' files allowed.');
+      return;
+    }
+    if (f.size > maxBytes) {
+      alert(f.name + ' exceeds ' + maxSizeMB + 'MB limit.');
+      return;
+    }
+    existing.push({
+      name: f.name,
+      size: f.size,
+      type: f.type,
+      category: category,
+      uploaded_at: new Date().toISOString(),
+      // In production: upload to Supabase Storage and store URL
+      status: 'pending_upload'
+    });
+    added++;
+  });
+
+  localStorage.setItem(key, JSON.stringify(existing));
+  renderUploadList(containerId);
+}
+
+function renderUploadList(containerId) {
+  const key = 'vf_uploads_' + containerId;
+  const files = JSON.parse(localStorage.getItem(key) || '[]');
+  const list = document.getElementById(containerId + '-list');
+  if (!list) return;
+
+  if (!files.length) { list.innerHTML = ''; return; }
+
+  list.innerHTML = files.map((f, i) => `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius-md);margin-bottom:4px;font-size:13px;">
+      <span style="color:var(--ink);">&#128196; ${f.name} <span style="color:var(--muted);font-size:11px;">(${(f.size/1024/1024).toFixed(1)}MB)</span></span>
+      <button onclick="removeUpload('${containerId}',${i})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;">&#10005;</button>
+    </div>
+  `).join('');
+}
+
+function removeUpload(containerId, idx) {
+  const key = 'vf_uploads_' + containerId;
+  const files = JSON.parse(localStorage.getItem(key) || '[]');
+  files.splice(idx, 1);
+  localStorage.setItem(key, JSON.stringify(files));
+  renderUploadList(containerId);
+}
+
+// ====== SUBSCRIPTIONS ======
+function selectPlan(plan) {
+  localStorage.setItem('vf_subscription', plan);
+  updatePlanDisplay();
+  alert('Plan selected: ' + plan.charAt(0).toUpperCase() + plan.slice(1) + '. In production this would route to Stripe Checkout.');
+}
+
+function updatePlanDisplay() {
+  const plan = localStorage.getItem('vf_subscription') || 'free';
+  const el = document.getElementById('currentPlanDisplay');
+  if (el) el.textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
+}
+
+function upgradeToPaidBuyer() {
+  localStorage.setItem('vf_paid_buyer', 'true');
+  closeRevealPopup();
+  alert('Upgraded to Paid Buyer! You now have unlimited listing reveals. In production this routes to Stripe ($10/mo).');
+}
+
+// ====== VERIFICATION GATE ======
+let verifyCurrentStep = 1;
+
+function openVerifyModal() {
+  verifyCurrentStep = 1;
+  updateVerifySteps();
+  document.getElementById('verificationModal').classList.add('open');
+  initMultiUpload('vf-id-upload', 'id_document', 3, 25);
+  initMultiUpload('vf-funds-upload', 'proof_of_funds', 5, 25);
+}
+
+function closeVerifyModal() {
+  document.getElementById('verificationModal').classList.remove('open');
+}
+
+function verifyStep(step) {
+  verifyCurrentStep = step;
+  document.querySelectorAll('.vf-step').forEach(s => s.classList.remove('active'));
+  const target = document.getElementById('verify-step-' + step);
+  if (target) target.classList.add('active');
+  updateVerifySteps();
+
+  if (step === 3) {
+    localStorage.setItem('vf_verified', 'true');
+    const range = document.getElementById('vf-funds-range')?.value || '25000';
+    let tier = 'Standard';
+    if (parseInt(range) >= 250000) tier = 'Premier';
+    else if (parseInt(range) >= 25000) tier = 'Growth';
+    localStorage.setItem('vf_concierge_tier', tier);
+    const tierEl = document.getElementById('vf-tier-display');
+    if (tierEl) tierEl.textContent = tier;
+  }
+}
+
+function updateVerifySteps() {
+  for (let i = 1; i <= 3; i++) {
+    const el = document.getElementById('vs' + i);
+    if (!el) continue;
+    el.className = '';
+    if (i < verifyCurrentStep) el.className = 'done';
+    else if (i === verifyCurrentStep) el.className = 'current';
+  }
+}
+
+function skipVerification() {
+  localStorage.setItem('vf_verified', 'true');
+  localStorage.setItem('vf_concierge_tier', 'Standard');
+  closeVerifyModal();
+}
+
+function isVerified() {
+  return localStorage.getItem('vf_verified') === 'true';
+}
+
+// ====== BUYER REVEAL LIMIT ======
+function getReveals() {
+  return JSON.parse(localStorage.getItem('vf_reveals') || '[]');
+}
+
+function canReveal(listingId) {
+  if (localStorage.getItem('vf_paid_buyer') === 'true') return true;
+  const reveals = getReveals();
+  if (reveals.includes(listingId)) return true;
+  return reveals.length < 3;
+}
+
+function revealListing(listingId) {
+  if (!isVerified()) {
+    openVerifyModal();
+    return false;
+  }
+  if (!canReveal(listingId)) {
+    showRevealPopup();
+    return false;
+  }
+  const reveals = getReveals();
+  if (!reveals.includes(listingId)) {
+    reveals.push(listingId);
+    localStorage.setItem('vf_reveals', JSON.stringify(reveals));
+  }
+  return true;
+}
+
+function showRevealPopup() {
+  document.getElementById('revealPopup').classList.add('open');
+}
+
+function closeRevealPopup() {
+  document.getElementById('revealPopup').classList.remove('open');
+}
+
 // ====== INIT ======
 renderListings();
 renderAgentLog();
@@ -3064,6 +3596,8 @@ renderHotDeals();
 renderTemplates();
 loadResellerData();
 checkAdminAuth();
+updatePlanDisplay();
+applyNavVisibility();
 </script>
 </body>
 </html>
