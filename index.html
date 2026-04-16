@@ -812,6 +812,214 @@ a:hover { text-decoration: underline; }
   .sub-tiers { grid-template-columns: 1fr; }
   .ai-ops-grid { grid-template-columns: 1fr; }
 }
+
+/* ====== AUTH SYSTEM ====== */
+.auth-modal {
+  display: none; position: fixed; inset: 0; z-index: 300;
+  background: rgba(0,0,0,0.75); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  justify-content: center; align-items: center; padding: 20px;
+}
+.auth-modal.open { display: flex; }
+.auth-box {
+  background: linear-gradient(165deg, rgba(28,24,58,0.95), rgba(12,10,20,0.98));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl); max-width: 440px; width: 100%;
+  padding: 40px 36px 36px; position: relative;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 60px var(--accent-glow);
+}
+.auth-box-close {
+  position: absolute; top: 14px; right: 18px;
+  background: none; border: none; color: var(--muted); font-size: 24px;
+  cursor: pointer; line-height: 1; transition: color 0.2s;
+}
+.auth-box-close:hover { color: var(--ink-bright); }
+.auth-logo {
+  text-align: center; margin-bottom: 24px;
+}
+.auth-logo .mark {
+  width: 48px; height: 48px; border-radius: 14px;
+  background: var(--hero); display: inline-block;
+  box-shadow: 0 0 30px var(--accent-glow);
+}
+.auth-logo h2 {
+  font-family: var(--font-display); font-size: 24px;
+  color: var(--ink-bright); margin-top: 12px; letter-spacing: -0.03em;
+}
+.auth-logo p { color: var(--muted); font-size: 14px; margin-top: 4px; }
+.auth-tabs {
+  display: flex; gap: 0; margin-bottom: 28px;
+  border-radius: var(--radius-pill); overflow: hidden;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--line);
+}
+.auth-tab {
+  flex: 1; padding: 12px; text-align: center;
+  font: 700 13px/1 var(--font-mono); text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--muted);
+  background: transparent; border: none; cursor: pointer;
+  transition: all 0.25s;
+}
+.auth-tab.active {
+  background: var(--accent); color: #fff;
+  box-shadow: 0 2px 12px var(--accent-glow);
+}
+.auth-tab:hover:not(.active) { color: var(--ink-bright); background: rgba(255,255,255,0.06); }
+.auth-pane { display: none; }
+.auth-pane.active { display: block; }
+.auth-field { margin-bottom: 18px; }
+.auth-field label {
+  display: block; font: 700 11px/1 var(--font-mono);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--muted); margin-bottom: 8px;
+}
+.auth-field input, .auth-field select {
+  width: 100%; padding: 13px 16px; border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.06); border: 1px solid var(--line);
+  color: var(--ink); font-size: 14px; font-family: var(--font-body);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.auth-field input:focus, .auth-field select:focus {
+  outline: none; border-color: var(--accent-light);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.auth-field select option { background: var(--bg2); color: var(--ink); }
+.auth-field .input-wrap {
+  position: relative;
+}
+.password-toggle {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; color: var(--muted); cursor: pointer;
+  font-size: 16px; padding: 4px; transition: color 0.2s;
+}
+.password-toggle:hover { color: var(--ink-bright); }
+.password-strength {
+  height: 4px; border-radius: 2px; margin-top: 8px;
+  background: rgba(255,255,255,0.08); overflow: hidden;
+}
+.password-strength .bar {
+  height: 100%; border-radius: 2px; width: 0;
+  transition: width 0.3s, background 0.3s;
+}
+.password-strength .bar.weak { width: 33%; background: var(--red); }
+.password-strength .bar.medium { width: 66%; background: var(--yellow); }
+.password-strength .bar.strong { width: 100%; background: var(--green); }
+.password-strength-label {
+  font-size: 11px; margin-top: 4px; font-weight: 600;
+}
+.password-strength-label.weak { color: var(--red); }
+.password-strength-label.medium { color: var(--yellow); }
+.password-strength-label.strong { color: var(--green); }
+.auth-row {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 20px; font-size: 13px;
+}
+.auth-row label { display: flex; align-items: center; gap: 8px; color: var(--muted); cursor: pointer; font-size: 13px; text-transform: none; letter-spacing: 0; font-family: var(--font-body); font-weight: 500; }
+.auth-row label input[type="checkbox"] {
+  accent-color: var(--accent); width: 16px; height: 16px;
+}
+.auth-row a { color: var(--accent-light); font-size: 13px; }
+.auth-submit {
+  width: 100%; padding: 14px; border-radius: var(--radius-pill);
+  background: var(--accent); color: #fff; border: none;
+  font: 700 14px/1 var(--font-mono); text-transform: uppercase;
+  letter-spacing: 0.06em; cursor: pointer;
+  box-shadow: 0 4px 20px var(--accent-glow);
+  transition: all 0.25s;
+}
+.auth-submit:hover { background: var(--accent-light); transform: translateY(-1px); }
+.auth-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.auth-switch {
+  text-align: center; margin-top: 20px; font-size: 13px; color: var(--muted);
+}
+.auth-switch a { color: var(--accent-light); font-weight: 600; cursor: pointer; }
+.auth-terms { margin-bottom: 20px; }
+.auth-terms label {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 13px; color: var(--muted); cursor: pointer;
+  font-family: var(--font-body); font-weight: 400;
+  text-transform: none; letter-spacing: 0;
+}
+.auth-terms label input[type="checkbox"] { accent-color: var(--accent); margin-top: 2px; flex-shrink: 0; }
+.auth-terms a { color: var(--accent-light); }
+.auth-error {
+  background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.3);
+  border-radius: var(--radius-sm); padding: 10px 14px;
+  color: var(--red); font-size: 13px; margin-bottom: 16px; display: none;
+}
+.auth-error.show { display: block; }
+
+/* ====== USER MENU (Nav) ====== */
+.nav-auth { display: flex; align-items: center; gap: 12px; }
+.nav-signin {
+  padding: 8px 20px; border-radius: var(--radius-pill);
+  background: var(--accent); color: #fff; border: none;
+  font: 700 12px/1 var(--font-mono); text-transform: uppercase;
+  letter-spacing: 0.06em; cursor: pointer;
+  box-shadow: 0 2px 12px var(--accent-glow);
+  transition: all 0.25s;
+}
+.nav-signin:hover { background: var(--accent-light); transform: translateY(-1px); }
+.user-menu { position: relative; }
+.user-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font: 700 15px/1 var(--font-mono); text-transform: uppercase;
+  cursor: pointer; border: 2px solid var(--accent-light);
+  transition: box-shadow 0.2s;
+}
+.user-avatar:hover { box-shadow: 0 0 16px var(--accent-glow); }
+.user-dropdown {
+  display: none; position: absolute; top: calc(100% + 10px); right: 0;
+  min-width: 240px; background: var(--bg2);
+  border: 1px solid var(--glass-border); border-radius: var(--radius-lg);
+  padding: 8px 0; box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+  z-index: 310;
+}
+.user-dropdown.open { display: block; }
+.user-dropdown-header {
+  padding: 14px 18px; border-bottom: 1px solid var(--line);
+}
+.user-dropdown-header .ud-name {
+  font-size: 15px; font-weight: 700; color: var(--ink-bright);
+}
+.user-dropdown-header .ud-email {
+  font-size: 12px; color: var(--muted); margin-top: 2px;
+}
+.role-badge {
+  display: inline-block; padding: 3px 8px; border-radius: var(--radius-pill);
+  font: 700 9px/1 var(--font-mono); text-transform: uppercase;
+  letter-spacing: 0.08em; margin-top: 6px;
+}
+.role-badge.rb-buyer { background: rgba(52,211,153,0.15); color: var(--green); }
+.role-badge.rb-seller { background: rgba(96,165,250,0.15); color: var(--blue); }
+.role-badge.rb-broker { background: rgba(251,191,36,0.15); color: var(--yellow); }
+.role-badge.rb-reseller { background: rgba(168,85,247,0.15); color: #a855f7; }
+.role-badge.rb-service_provider { background: rgba(248,113,113,0.15); color: var(--red); }
+.role-badge.rb-admin { background: rgba(248,113,113,0.2); color: var(--red); }
+.role-badge.rb-operator { background: rgba(251,191,36,0.2); color: var(--yellow); }
+.user-dropdown a, .user-dropdown button {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 11px 18px; border: none; background: none;
+  color: var(--muted); font-size: 14px; font-family: var(--font-body);
+  cursor: pointer; text-align: left; transition: all 0.15s;
+  text-decoration: none;
+}
+.user-dropdown a:hover, .user-dropdown button:hover {
+  background: rgba(108,60,175,0.15); color: var(--ink-bright);
+  text-decoration: none;
+}
+.user-dropdown .ud-divider {
+  height: 1px; background: var(--line); margin: 4px 0;
+}
+.user-dropdown .ud-plan {
+  font: 700 10px/1 var(--font-mono); text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--accent-light);
+}
+
+@media (max-width: 640px) {
+  .auth-box { padding: 28px 20px 24px; margin: 10px; }
+  .user-dropdown { right: -40px; min-width: 220px; }
+}
   </style>
 </head>
 <body>
@@ -840,9 +1048,88 @@ a:hover { text-decoration: underline; }
       <a href="#ai-ops" onclick="navigate('ai-ops')">AI Ops</a>
       <a href="#admin" onclick="navigate('admin')">Admin</a>
     </div>
+    <div class="nav-auth" id="navAuth">
+      <button class="nav-signin" onclick="openAuthModal('login')">Sign In</button>
+    </div>
     <button class="nav-mobile" id="navToggle" onclick="document.getElementById('navLinks').classList.toggle('open')">&#9776;</button>
   </div>
 </nav>
+
+<!-- ====== AUTH SYSTEM ====== -->
+<div class="auth-modal" id="authModal">
+  <div class="auth-box">
+    <button class="auth-box-close" onclick="closeAuthModal()">&times;</button>
+    <div class="auth-logo">
+      <div class="mark"></div>
+      <h2>VibeFlippers</h2>
+      <p>AI-Built Digital Asset Marketplace</p>
+    </div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchAuthTab('login')" id="authTabLogin">Sign In</button>
+      <button class="auth-tab" onclick="switchAuthTab('signup')" id="authTabSignup">Sign Up</button>
+    </div>
+
+    <div class="auth-error" id="authError"></div>
+
+    <!-- LOGIN PANE -->
+    <div class="auth-pane active" id="authPaneLogin">
+      <div class="auth-field">
+        <label>Email</label>
+        <input type="email" id="loginEmail" placeholder="you@example.com" onkeydown="if(event.key==='Enter')vfLogin()">
+      </div>
+      <div class="auth-field">
+        <label>Password</label>
+        <div class="input-wrap">
+          <input type="password" id="loginPassword" placeholder="Enter your password" onkeydown="if(event.key==='Enter')vfLogin()">
+          <button class="password-toggle" type="button" onclick="togglePasswordVis('loginPassword', this)" title="Show password">&#128065;</button>
+        </div>
+      </div>
+      <div class="auth-row">
+        <label><input type="checkbox" id="loginRemember"> Remember me</label>
+        <a href="#" onclick="event.preventDefault();alert('Password reset will be available with Supabase Auth integration.')">Forgot password?</a>
+      </div>
+      <button class="auth-submit" onclick="vfLogin()">Sign In</button>
+      <div class="auth-switch">Don't have an account? <a onclick="switchAuthTab('signup')">Sign Up</a></div>
+    </div>
+
+    <!-- SIGNUP PANE -->
+    <div class="auth-pane" id="authPaneSignup">
+      <div class="auth-field">
+        <label>Full Name</label>
+        <input type="text" id="signupName" placeholder="Your full name">
+      </div>
+      <div class="auth-field">
+        <label>Email</label>
+        <input type="email" id="signupEmail" placeholder="you@example.com">
+      </div>
+      <div class="auth-field">
+        <label>Password</label>
+        <div class="input-wrap">
+          <input type="password" id="signupPassword" placeholder="Create a strong password" oninput="checkPasswordStrength(this.value)">
+          <button class="password-toggle" type="button" onclick="togglePasswordVis('signupPassword', this)" title="Show password">&#128065;</button>
+        </div>
+        <div class="password-strength"><div class="bar" id="pwdStrengthBar"></div></div>
+        <div class="password-strength-label" id="pwdStrengthLabel"></div>
+      </div>
+      <div class="auth-field">
+        <label>I am a...</label>
+        <select id="signupRole">
+          <option value="buyer">Buyer</option>
+          <option value="seller">Seller</option>
+          <option value="broker">Broker / Advisor</option>
+          <option value="reseller">Reseller / Affiliate</option>
+          <option value="service_provider">Service Provider</option>
+        </select>
+      </div>
+      <div class="auth-terms">
+        <label><input type="checkbox" id="signupTerms"> I agree to the <a href="#" onclick="event.preventDefault()">Terms of Service</a> and <a href="#" onclick="event.preventDefault()">Privacy Policy</a></label>
+      </div>
+      <button class="auth-submit" onclick="vfSignup()">Create Account</button>
+      <div class="auth-switch">Already have an account? <a onclick="switchAuthTab('login')">Sign In</a></div>
+    </div>
+  </div>
+</div>
 
 <!-- ====== HERO ====== -->
 <section id="hero" class="section page-section active">
@@ -3259,6 +3546,15 @@ const DEFAULT_FLOWS = [
 ];
 
 function adminLogin() {
+  // If logged in as admin/operator, auto-authenticate
+  if (isLoggedIn()) {
+    const u = getCurrentUser();
+    if (u && (u.role === 'admin' || u.role === 'operator')) {
+      sessionStorage.setItem('vf_admin_auth', 'true');
+      showAdminDashboard();
+      return;
+    }
+  }
   const pwd = document.getElementById('adminPwd')?.value;
   if (pwd === 'demo') {
     sessionStorage.setItem('vf_admin_auth', 'true');
@@ -3588,6 +3884,283 @@ function closeRevealPopup() {
   document.getElementById('revealPopup').classList.remove('open');
 }
 
+// ====== AUTH SYSTEM ======
+const DEMO_ACCOUNTS = {
+  'admin@vibeflippers.com': { password: 'VF-Admin-2026!', role: 'admin', tier: 'enterprise', name: 'VF Admin' },
+  'operator@vibeflippers.com': { password: 'VF-Ops-2026!', role: 'operator', tier: 'pro', name: 'VF Operator' }
+};
+
+function isLoggedIn() {
+  const user = localStorage.getItem('vf_auth_user');
+  if (!user) return false;
+  try {
+    const u = JSON.parse(user);
+    // Auto-logout after 24h
+    if (u.login_at && (Date.now() - u.login_at > 86400000)) {
+      vfLogout(true);
+      return false;
+    }
+    return true;
+  } catch(e) { return false; }
+}
+
+function getCurrentUser() {
+  try { return JSON.parse(localStorage.getItem('vf_auth_user')); }
+  catch(e) { return null; }
+}
+
+function vfLogin() {
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const password = document.getElementById('loginPassword').value;
+  const remember = document.getElementById('loginRemember').checked;
+  hideAuthError();
+
+  if (!email || !password) { showAuthError('Please enter your email and password.'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showAuthError('Please enter a valid email address.'); return; }
+
+  // Check demo/admin accounts
+  const demo = DEMO_ACCOUNTS[email];
+  if (demo) {
+    if (password !== demo.password) { showAuthError('Incorrect password.'); return; }
+    const user = {
+      id: 'vf-usr-' + (email === 'admin@vibeflippers.com' ? 'admin' : 'ops'),
+      name: demo.name, email: email, role: demo.role,
+      tier: demo.tier, verified: true,
+      created_at: '2026-01-01T00:00:00Z', login_at: Date.now()
+    };
+    completeLogin(user, remember);
+    return;
+  }
+
+  // Check localStorage registered users
+  const users = JSON.parse(localStorage.getItem('vf_users') || '{}');
+  const stored = users[email];
+  if (!stored) { showAuthError('No account found with this email. Please sign up.'); return; }
+  if (stored.password !== password) { showAuthError('Incorrect password.'); return; }
+
+  const user = {
+    id: stored.id, name: stored.name, email: email, role: stored.role,
+    tier: stored.tier || 'free', verified: stored.verified || false,
+    created_at: stored.created_at, login_at: Date.now()
+  };
+  completeLogin(user, remember);
+}
+
+function vfSignup() {
+  const name = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim().toLowerCase();
+  const password = document.getElementById('signupPassword').value;
+  const role = document.getElementById('signupRole').value;
+  const terms = document.getElementById('signupTerms').checked;
+  hideAuthError();
+
+  if (!name) { showAuthError('Please enter your full name.'); return; }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showAuthError('Please enter a valid email address.'); return; }
+  if (password.length < 6) { showAuthError('Password must be at least 6 characters.'); return; }
+  if (!terms) { showAuthError('You must agree to the Terms of Service and Privacy Policy.'); return; }
+
+  // Check if email already exists
+  if (DEMO_ACCOUNTS[email]) { showAuthError('This email is reserved. Please use a different email.'); return; }
+  const users = JSON.parse(localStorage.getItem('vf_users') || '{}');
+  if (users[email]) { showAuthError('An account with this email already exists. Please sign in.'); return; }
+
+  const userId = 'vf-usr-' + Date.now().toString(36) + Math.random().toString(36).substr(2, 4);
+  const now = new Date().toISOString();
+
+  users[email] = { id: userId, name, password, role, tier: 'free', verified: false, created_at: now };
+  localStorage.setItem('vf_users', JSON.stringify(users));
+
+  const user = { id: userId, name, email, role, tier: 'free', verified: false, created_at: now, login_at: Date.now() };
+  completeLogin(user, false);
+}
+
+function completeLogin(user, remember) {
+  localStorage.setItem('vf_auth_user', JSON.stringify(user));
+  setUserRole(user.role);
+  if (user.tier && user.tier !== 'free') {
+    localStorage.setItem('vf_subscription', user.tier);
+  }
+  // Admin accounts auto-authenticate the admin panel
+  if (user.role === 'admin' || user.role === 'operator') {
+    sessionStorage.setItem('vf_admin_auth', 'true');
+  }
+  closeAuthModal();
+  renderUserNav();
+  applyNavVisibility();
+  updatePlanDisplay();
+}
+
+function vfLogout(silent) {
+  localStorage.removeItem('vf_auth_user');
+  sessionStorage.removeItem('vf_admin_auth');
+  setUserRole('buyer');
+  renderUserNav();
+  applyNavVisibility();
+  updatePlanDisplay();
+  navigate('hero');
+  if (!silent) openAuthModal('login');
+}
+
+function openAuthModal(tab) {
+  document.getElementById('authModal').classList.add('open');
+  switchAuthTab(tab || 'login');
+  hideAuthError();
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAuthModal() {
+  document.getElementById('authModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function switchAuthTab(tab) {
+  document.getElementById('authTabLogin').classList.toggle('active', tab === 'login');
+  document.getElementById('authTabSignup').classList.toggle('active', tab === 'signup');
+  document.getElementById('authPaneLogin').classList.toggle('active', tab === 'login');
+  document.getElementById('authPaneSignup').classList.toggle('active', tab === 'signup');
+  hideAuthError();
+}
+
+function showAuthError(msg) {
+  const el = document.getElementById('authError');
+  el.textContent = msg; el.classList.add('show');
+}
+function hideAuthError() {
+  const el = document.getElementById('authError');
+  el.textContent = ''; el.classList.remove('show');
+}
+
+function togglePasswordVis(inputId, btn) {
+  const input = document.getElementById(inputId);
+  if (input.type === 'password') { input.type = 'text'; btn.innerHTML = '&#128064;'; }
+  else { input.type = 'password'; btn.innerHTML = '&#128065;'; }
+}
+
+function checkPasswordStrength(pw) {
+  const bar = document.getElementById('pwdStrengthBar');
+  const label = document.getElementById('pwdStrengthLabel');
+  if (!pw) { bar.className = 'bar'; label.className = 'password-strength-label'; label.textContent = ''; return; }
+  let score = 0;
+  if (pw.length >= 6) score++;
+  if (pw.length >= 10) score++;
+  if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) score++;
+  if (/[0-9]/.test(pw)) score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
+
+  if (score <= 2) { bar.className = 'bar weak'; label.className = 'password-strength-label weak'; label.textContent = 'Weak'; }
+  else if (score <= 3) { bar.className = 'bar medium'; label.className = 'password-strength-label medium'; label.textContent = 'Medium'; }
+  else { bar.className = 'bar strong'; label.className = 'password-strength-label strong'; label.textContent = 'Strong'; }
+}
+
+function renderUserNav() {
+  const authEl = document.getElementById('navAuth');
+  if (!isLoggedIn()) {
+    authEl.innerHTML = '<button class="nav-signin" onclick="openAuthModal(\'login\')">Sign In</button>';
+    return;
+  }
+  const user = getCurrentUser();
+  const initial = (user.name || user.email || '?')[0].toUpperCase();
+  const roleBadgeClass = 'rb-' + (user.role || 'buyer');
+  const roleLabel = { buyer:'Buyer', seller:'Seller', broker:'Broker', reseller:'Reseller', service_provider:'Service Provider', admin:'Admin', operator:'Operator' }[user.role] || user.role;
+  const tierLabel = (user.tier || 'free').charAt(0).toUpperCase() + (user.tier || 'free').slice(1);
+
+  let switchRoleHtml = '';
+  if (user.role === 'admin' || user.role === 'operator') {
+    switchRoleHtml = '<button onclick="promptSwitchRole()">&#128260; Switch Role</button>';
+  }
+
+  authEl.innerHTML = `
+    <div class="user-menu">
+      <div class="user-avatar" onclick="toggleUserDropdown()" title="${user.name}">${initial}</div>
+      <div class="user-dropdown" id="userDropdown">
+        <div class="user-dropdown-header">
+          <div class="ud-name">${user.name || 'User'}</div>
+          <div class="ud-email">${user.email}</div>
+          <span class="role-badge ${roleBadgeClass}">${roleLabel}</span>
+        </div>
+        <a href="#" onclick="event.preventDefault();closeUserDropdown();navigate('subscriptions')">&#128100; My Profile</a>
+        <a href="#" onclick="event.preventDefault();closeUserDropdown();navigate('subscriptions')">&#11088; <span class="ud-plan">My Plan: ${tierLabel}</span></a>
+        ${switchRoleHtml}
+        <a href="#" onclick="event.preventDefault();closeUserDropdown();navigate('subscriptions')">&#9881; Settings</a>
+        <div class="ud-divider"></div>
+        <button onclick="closeUserDropdown();vfLogout()">&#128682; Sign Out</button>
+      </div>
+    </div>
+  `;
+}
+
+function toggleUserDropdown() {
+  const dd = document.getElementById('userDropdown');
+  if (dd) dd.classList.toggle('open');
+}
+function closeUserDropdown() {
+  const dd = document.getElementById('userDropdown');
+  if (dd) dd.classList.remove('open');
+}
+
+function promptSwitchRole() {
+  closeUserDropdown();
+  const roles = ['buyer','seller','broker','reseller','service_provider','admin','operator'];
+  const user = getCurrentUser();
+  const allowed = (user.role === 'admin') ? roles : roles.filter(r => r !== 'admin');
+  const choice = prompt('Switch role to:\\n' + allowed.map((r,i) => (i+1) + '. ' + r).join('\\n') + '\\n\\nEnter role name:');
+  if (choice && allowed.includes(choice.trim().toLowerCase())) {
+    user.role = choice.trim().toLowerCase();
+    localStorage.setItem('vf_auth_user', JSON.stringify(user));
+    setUserRole(user.role);
+    renderUserNav();
+    applyNavVisibility();
+  }
+}
+
+// Close user dropdown when clicking outside
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.user-menu')) closeUserDropdown();
+});
+
+// Close auth modal on backdrop click
+document.getElementById('authModal').addEventListener('click', function(e) {
+  if (e.target === this) closeAuthModal();
+});
+
+// Close auth modal on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') { closeAuthModal(); closeUserDropdown(); }
+});
+
+// Auth-gate: intercept nav clicks when not logged in (except hero, marketplace, how-it-works, about)
+const AUTH_FREE_SECTIONS = ['hero', 'marketplace', 'how-it-works', 'about'];
+const _originalNavigate = navigate;
+navigate = function(sectionId) {
+  if (!isLoggedIn() && !AUTH_FREE_SECTIONS.includes(sectionId)) {
+    openAuthModal('login');
+    return;
+  }
+  _originalNavigate(sectionId);
+};
+
+function initAuthSession() {
+  if (isLoggedIn()) {
+    const user = getCurrentUser();
+    setUserRole(user.role);
+    if (user.role === 'admin' || user.role === 'operator') {
+      sessionStorage.setItem('vf_admin_auth', 'true');
+    }
+    renderUserNav();
+  } else {
+    renderUserNav();
+    // Auto-show auth modal for first-time visitors after 3s
+    if (!localStorage.getItem('vf_auth_seen')) {
+      setTimeout(function() {
+        if (!isLoggedIn()) {
+          openAuthModal('login');
+          localStorage.setItem('vf_auth_seen', '1');
+        }
+      }, 3000);
+    }
+  }
+}
+
 // ====== INIT ======
 renderListings();
 renderAgentLog();
@@ -3595,6 +4168,7 @@ loadAgentConfig();
 renderHotDeals();
 renderTemplates();
 loadResellerData();
+initAuthSession();
 checkAdminAuth();
 updatePlanDisplay();
 applyNavVisibility();
