@@ -823,9 +823,10 @@ a:hover { text-decoration: underline; }
 .auth-box {
   background: linear-gradient(165deg, rgba(28,24,58,0.95), rgba(12,10,20,0.98));
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius-xl); max-width: 440px; width: 100%;
+  border-radius: var(--radius-xl); max-width: 520px; width: 100%;
   padding: 40px 36px 36px; position: relative;
   box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 60px var(--accent-glow);
+  max-height: 90vh; overflow-y: auto;
 }
 .auth-box-close {
   position: absolute; top: 14px; right: 18px;
@@ -946,6 +947,102 @@ a:hover { text-decoration: underline; }
   color: var(--red); font-size: 13px; margin-bottom: 16px; display: none;
 }
 .auth-error.show { display: block; }
+
+/* ====== MULTI-STEP SIGNUP ====== */
+.signup-steps-bar {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; margin-bottom: 24px;
+}
+.signup-step-indicator {
+  display: flex; align-items: center; gap: 8px; cursor: pointer;
+  padding: 6px 12px; border-radius: var(--radius-pill);
+  transition: all 0.25s;
+}
+.signup-step-indicator .step-num {
+  width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font: 700 12px/1 var(--font-mono); border: 2px solid var(--line);
+  color: var(--muted); transition: all 0.25s; flex-shrink: 0;
+}
+.signup-step-indicator .step-label {
+  font: 600 11px/1 var(--font-mono); text-transform: uppercase;
+  letter-spacing: 0.04em; color: var(--muted); transition: color 0.25s;
+  white-space: nowrap;
+}
+.signup-step-indicator.active .step-num {
+  background: var(--accent); border-color: var(--accent); color: #fff;
+}
+.signup-step-indicator.active .step-label { color: var(--ink-bright); }
+.signup-step-indicator.completed .step-num {
+  background: var(--green); border-color: var(--green); color: #fff;
+}
+.signup-step-indicator.completed .step-label { color: var(--green); }
+.signup-step-connector {
+  width: 24px; height: 2px; background: var(--line); flex-shrink: 0;
+}
+.signup-step { display: none; }
+.signup-step.active { display: block; }
+.signup-step-buttons {
+  display: flex; gap: 12px; margin-top: 8px;
+}
+.signup-step-buttons .auth-submit { flex: 1; }
+.auth-submit-outline {
+  background: transparent !important; border: 2px solid var(--line) !important;
+  color: var(--ink) !important; box-shadow: none !important;
+}
+.auth-submit-outline:hover {
+  border-color: var(--accent-light) !important; color: var(--ink-bright) !important;
+  background: rgba(255,255,255,0.04) !important; transform: translateY(-1px);
+}
+.field-req { color: var(--red); }
+.field-hint { font-weight: 400; color: var(--muted); text-transform: none; letter-spacing: 0; font-size: 11px; }
+.checkbox-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 6px 12px;
+}
+.cb-label {
+  display: flex; align-items: center; gap: 8px;
+  font: 400 13px/1.4 var(--font-body); color: var(--ink);
+  cursor: pointer; padding: 6px 0; text-transform: none;
+  letter-spacing: 0;
+}
+.cb-label input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; flex-shrink: 0; }
+.toggle-group { display: flex; gap: 0; border-radius: var(--radius-pill); overflow: hidden; border: 1px solid var(--line); }
+.toggle-btn {
+  flex: 1; padding: 10px 20px; text-align: center; font: 700 12px/1 var(--font-mono);
+  text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer;
+  background: transparent; border: none; color: var(--muted); transition: all 0.25s;
+}
+.toggle-btn.active { background: var(--accent); color: #fff; }
+.toggle-btn:hover:not(.active) { background: rgba(255,255,255,0.06); color: var(--ink-bright); }
+.role-fields { animation: fadeSlide 0.3s ease; }
+@keyframes fadeSlide { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.signup-decentralized-id {
+  background: rgba(255,255,255,0.03); border: 1px solid var(--line);
+  border-radius: var(--radius-md); padding: 20px; margin: 20px 0;
+}
+.signup-decentralized-id .section-subtitle {
+  font: 700 12px/1 var(--font-mono); text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--ink-bright); margin-bottom: 8px;
+}
+.did-description {
+  font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 14px;
+}
+.did-buttons { display: flex; gap: 10px; }
+.did-btn {
+  flex: 1; padding: 10px 16px; border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.06); border: 1px solid var(--line);
+  color: var(--ink); font: 600 12px/1 var(--font-mono);
+  cursor: pointer; transition: all 0.25s; text-transform: uppercase; letter-spacing: 0.04em;
+}
+.did-btn:hover { border-color: var(--accent-light); color: var(--accent-light); }
+@media (max-width: 600px) {
+  .signup-step-indicator .step-label { display: none; }
+  .signup-step-connector { width: 16px; }
+  .checkbox-grid { grid-template-columns: 1fr; }
+  .did-buttons { flex-direction: column; }
+  .signup-step-buttons { flex-direction: column; }
+}
 
 /* ====== USER MENU (Nav) ====== */
 .nav-auth { display: flex; align-items: center; gap: 12px; }
@@ -1093,40 +1190,404 @@ a:hover { text-decoration: underline; }
       <div class="auth-switch">Don't have an account? <a onclick="switchAuthTab('signup')">Sign Up</a></div>
     </div>
 
-    <!-- SIGNUP PANE -->
+    <!-- SIGNUP PANE (Multi-Step) -->
     <div class="auth-pane" id="authPaneSignup">
-      <div class="auth-field">
-        <label>Full Name</label>
-        <input type="text" id="signupName" placeholder="Your full name">
-      </div>
-      <div class="auth-field">
-        <label>Email</label>
-        <input type="email" id="signupEmail" placeholder="you@example.com">
-      </div>
-      <div class="auth-field">
-        <label>Password</label>
-        <div class="input-wrap">
-          <input type="password" id="signupPassword" placeholder="Create a strong password" oninput="checkPasswordStrength(this.value)">
-          <button class="password-toggle" type="button" onclick="togglePasswordVis('signupPassword', this)" title="Show password">&#128065;</button>
+      <!-- Step Indicators -->
+      <div class="signup-steps-bar">
+        <div class="signup-step-indicator active" id="signupStepInd1" onclick="goToSignupStep(1)">
+          <span class="step-num">1</span><span class="step-label">Basic Info</span>
         </div>
-        <div class="password-strength"><div class="bar" id="pwdStrengthBar"></div></div>
-        <div class="password-strength-label" id="pwdStrengthLabel"></div>
+        <div class="signup-step-connector"></div>
+        <div class="signup-step-indicator" id="signupStepInd2" onclick="goToSignupStep(2)">
+          <span class="step-num">2</span><span class="step-label">Role Details</span>
+        </div>
+        <div class="signup-step-connector"></div>
+        <div class="signup-step-indicator" id="signupStepInd3" onclick="goToSignupStep(3)">
+          <span class="step-num">3</span><span class="step-label">Verification</span>
+        </div>
       </div>
-      <div class="auth-field">
-        <label>I am a...</label>
-        <select id="signupRole">
-          <option value="buyer">Buyer</option>
-          <option value="seller">Seller</option>
-          <option value="broker">Broker / Advisor</option>
-          <option value="reseller">Reseller / Affiliate</option>
-          <option value="service_provider">Service Provider</option>
-        </select>
+
+      <!-- STEP 1: Basic Info -->
+      <div class="signup-step active" id="signupStep1">
+        <div class="auth-field">
+          <label>Full Legal Name <span class="field-req">*</span></label>
+          <input type="text" id="signupName" placeholder="Your full legal name" required>
+        </div>
+        <div class="auth-field">
+          <label>Email <span class="field-req">*</span></label>
+          <input type="email" id="signupEmail" placeholder="you@example.com" required>
+        </div>
+        <div class="auth-field">
+          <label>Password <span class="field-req">*</span> <span class="field-hint">(8+ characters)</span></label>
+          <div class="input-wrap">
+            <input type="password" id="signupPassword" placeholder="Create a strong password" oninput="checkPasswordStrength(this.value)" required>
+            <button class="password-toggle" type="button" onclick="togglePasswordVis('signupPassword', this)" title="Show password">&#128065;</button>
+          </div>
+          <div class="password-strength"><div class="bar" id="pwdStrengthBar"></div></div>
+          <div class="password-strength-label" id="pwdStrengthLabel"></div>
+        </div>
+        <div class="auth-field">
+          <label>Phone Number <span class="field-req">*</span></label>
+          <input type="tel" id="signupPhone" placeholder="+1 (555) 123-4567" required>
+        </div>
+        <div class="auth-field">
+          <label>Country <span class="field-req">*</span></label>
+          <select id="signupCountry" required>
+            <option value="">Select your country</option>
+            <option value="US">United States</option>
+            <option value="IN">India</option>
+            <option value="GB">United Kingdom</option>
+            <option value="CA">Canada</option>
+            <option value="AU">Australia</option>
+            <option value="DE">Germany</option>
+            <option value="FR">France</option>
+            <option value="NL">Netherlands</option>
+            <option value="SG">Singapore</option>
+            <option value="AE">United Arab Emirates</option>
+            <option value="JP">Japan</option>
+            <option value="BR">Brazil</option>
+            <option value="MX">Mexico</option>
+            <option value="NG">Nigeria</option>
+            <option value="KE">Kenya</option>
+            <option value="ZA">South Africa</option>
+            <option value="PH">Philippines</option>
+            <option value="PK">Pakistan</option>
+            <option value="BD">Bangladesh</option>
+            <option value="OTHER">Other</option>
+          </select>
+        </div>
+        <button class="auth-submit" onclick="goToSignupStep(2)">Continue</button>
+        <div class="auth-switch">Already have an account? <a onclick="switchAuthTab('login')">Sign In</a></div>
       </div>
-      <div class="auth-terms">
-        <label><input type="checkbox" id="signupTerms"> I agree to the <a href="#" onclick="event.preventDefault()">Terms of Service</a> and <a href="#" onclick="event.preventDefault()">Privacy Policy</a></label>
+
+      <!-- STEP 2: Role Selection + Role-Specific Fields -->
+      <div class="signup-step" id="signupStep2">
+        <div class="auth-field">
+          <label>I am a... <span class="field-req">*</span></label>
+          <select id="signupRole" onchange="showRoleFields()">
+            <option value="">Select your role</option>
+            <option value="buyer">Buyer</option>
+            <option value="seller">Seller</option>
+            <option value="broker">Broker / Advisor</option>
+            <option value="reseller">Reseller / Affiliate</option>
+            <option value="service_provider">Service Provider</option>
+          </select>
+        </div>
+
+        <!-- BUYER FIELDS -->
+        <div class="role-fields" id="roleFieldsBuyer" style="display:none;">
+          <div class="auth-field">
+            <label>Budget Range <span class="field-req">*</span></label>
+            <select id="buyerBudget" required>
+              <option value="">Select budget range</option>
+              <option value="under_5k">Under $5K</option>
+              <option value="5k_25k">$5K - $25K</option>
+              <option value="25k_100k">$25K - $100K</option>
+              <option value="100k_250k">$100K - $250K</option>
+              <option value="250k_plus">$250K+</option>
+            </select>
+          </div>
+          <div class="auth-field">
+            <label>What are you looking for?</label>
+            <div class="checkbox-grid">
+              <label class="cb-label"><input type="checkbox" name="buyerInterests" value="website"> Website</label>
+              <label class="cb-label"><input type="checkbox" name="buyerInterests" value="saas"> SaaS</label>
+              <label class="cb-label"><input type="checkbox" name="buyerInterests" value="app"> App</label>
+              <label class="cb-label"><input type="checkbox" name="buyerInterests" value="domain"> Domain</label>
+              <label class="cb-label"><input type="checkbox" name="buyerInterests" value="newsletter"> Newsletter</label>
+              <label class="cb-label"><input type="checkbox" name="buyerInterests" value="content_site"> Content Site</label>
+              <label class="cb-label"><input type="checkbox" name="buyerInterests" value="shopify_store"> Shopify Store</label>
+              <label class="cb-label"><input type="checkbox" name="buyerInterests" value="social_account"> Social Account</label>
+            </div>
+          </div>
+          <div class="auth-field">
+            <label>How did you hear about us?</label>
+            <select id="buyerReferral">
+              <option value="">Select one</option>
+              <option value="google">Google Search</option>
+              <option value="social_media">Social Media</option>
+              <option value="referral">Referral / Word of Mouth</option>
+              <option value="blog">Blog / Article</option>
+              <option value="podcast">Podcast</option>
+              <option value="youtube">YouTube</option>
+              <option value="community">Community / Forum</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- SELLER FIELDS -->
+        <div class="role-fields" id="roleFieldsSeller" style="display:none;">
+          <div class="auth-field">
+            <label>Business Name <span class="field-req">*</span></label>
+            <input type="text" id="sellerBizName" placeholder="Your business name" required>
+          </div>
+          <div class="auth-field">
+            <label>Business URL <span class="field-req">*</span></label>
+            <input type="url" id="sellerBizUrl" placeholder="https://yourbusiness.com" required>
+          </div>
+          <div class="auth-field">
+            <label>Business Type <span class="field-req">*</span></label>
+            <select id="sellerBizType" required>
+              <option value="">Select type</option>
+              <option value="ecommerce">eCommerce</option>
+              <option value="saas">SaaS</option>
+              <option value="content">Content</option>
+              <option value="app">App</option>
+              <option value="agency">Agency</option>
+              <option value="marketplace">Marketplace</option>
+              <option value="newsletter">Newsletter</option>
+              <option value="domain_portfolio">Domain Portfolio</option>
+            </select>
+          </div>
+          <div class="auth-field">
+            <label>Monthly Revenue Range</label>
+            <select id="sellerRevenue">
+              <option value="">Select range</option>
+              <option value="pre_revenue">Pre-Revenue</option>
+              <option value="under_1k">Under $1K</option>
+              <option value="1k_5k">$1K - $5K</option>
+              <option value="5k_25k">$5K - $25K</option>
+              <option value="25k_100k">$25K - $100K</option>
+              <option value="100k_plus">$100K+</option>
+            </select>
+          </div>
+          <div class="auth-field">
+            <label>How long have you owned this business?</label>
+            <select id="sellerOwnership">
+              <option value="">Select duration</option>
+              <option value="under_6mo">Less than 6 months</option>
+              <option value="6_12mo">6 - 12 months</option>
+              <option value="1_2yr">1 - 2 years</option>
+              <option value="2_5yr">2 - 5 years</option>
+              <option value="5yr_plus">5+ years</option>
+            </select>
+          </div>
+          <div class="auth-field">
+            <label>Upload Revenue Proof</label>
+            <div id="signup-revenue-proof"></div>
+          </div>
+        </div>
+
+        <!-- BROKER / ADVISOR FIELDS -->
+        <div class="role-fields" id="roleFieldsBroker" style="display:none;">
+          <div class="auth-field">
+            <label>Company / Brokerage Name <span class="field-req">*</span></label>
+            <input type="text" id="brokerCompany" placeholder="Your brokerage or company" required>
+          </div>
+          <div class="auth-field">
+            <label>Broker Subtype(s)</label>
+            <div class="checkbox-grid">
+              <label class="cb-label"><input type="checkbox" name="brokerSubtype" value="domain_broker"> Domain Broker</label>
+              <label class="cb-label"><input type="checkbox" name="brokerSubtype" value="digital_asset"> Digital Asset Broker</label>
+              <label class="cb-label"><input type="checkbox" name="brokerSubtype" value="brand_broker"> Brand Broker</label>
+              <label class="cb-label"><input type="checkbox" name="brokerSubtype" value="vibe_code"> Vibe Code Broker</label>
+            </div>
+          </div>
+          <div class="auth-field">
+            <label>Do you hold a broker license?</label>
+            <div class="toggle-group">
+              <button type="button" class="toggle-btn" id="brokerLicYes" onclick="toggleBrokerLicense(true)">Yes</button>
+              <button type="button" class="toggle-btn active" id="brokerLicNo" onclick="toggleBrokerLicense(false)">No</button>
+            </div>
+          </div>
+          <!-- License fields (shown when Yes) -->
+          <div id="brokerLicenseFields" style="display:none;">
+            <div class="auth-field">
+              <label>License Number <span class="field-req">*</span></label>
+              <input type="text" id="brokerLicNumber" placeholder="License number">
+            </div>
+            <div class="auth-field">
+              <label>Issuing State / Authority <span class="field-req">*</span></label>
+              <input type="text" id="brokerLicState" placeholder="e.g. California, FCA, FINRA">
+            </div>
+            <div class="auth-field">
+              <label>License Type <span class="field-req">*</span></label>
+              <select id="brokerLicType">
+                <option value="">Select type</option>
+                <option value="real_estate">Real Estate</option>
+                <option value="business">Business</option>
+                <option value="financial">Financial</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="auth-field">
+              <label>Upload License Document</label>
+              <div id="signup-license-doc"></div>
+            </div>
+          </div>
+          <div class="auth-field">
+            <label>Years of Experience</label>
+            <select id="brokerExperience">
+              <option value="">Select range</option>
+              <option value="under_1">Less than 1 year</option>
+              <option value="1_3">1 - 3 years</option>
+              <option value="3_5">3 - 5 years</option>
+              <option value="5_10">5 - 10 years</option>
+              <option value="10_plus">10+ years</option>
+            </select>
+          </div>
+          <div class="auth-field">
+            <label>Portfolio / Website URL</label>
+            <input type="url" id="brokerPortfolioUrl" placeholder="https://yourportfolio.com">
+          </div>
+          <div class="auth-field">
+            <label>Number of Deals Closed</label>
+            <input type="number" id="brokerDeals" placeholder="0" min="0">
+          </div>
+          <div class="auth-field">
+            <label>Specialization Areas</label>
+            <div class="checkbox-grid">
+              <label class="cb-label"><input type="checkbox" name="brokerSpecializations" value="valuation"> Valuation</label>
+              <label class="cb-label"><input type="checkbox" name="brokerSpecializations" value="due_diligence"> Due Diligence</label>
+              <label class="cb-label"><input type="checkbox" name="brokerSpecializations" value="deal_structuring"> Deal Structuring</label>
+              <label class="cb-label"><input type="checkbox" name="brokerSpecializations" value="legal_coordination"> Legal Coordination</label>
+              <label class="cb-label"><input type="checkbox" name="brokerSpecializations" value="asset_packaging"> Asset Packaging</label>
+              <label class="cb-label"><input type="checkbox" name="brokerSpecializations" value="go_to_market"> Go-to-Market</label>
+            </div>
+          </div>
+          <div class="auth-field">
+            <label>E&amp;O Insurance?</label>
+            <div class="toggle-group">
+              <button type="button" class="toggle-btn" id="brokerEoYes" onclick="toggleEoInsurance(true)">Yes</button>
+              <button type="button" class="toggle-btn active" id="brokerEoNo" onclick="toggleEoInsurance(false)">No</button>
+            </div>
+          </div>
+          <div class="auth-terms">
+            <label><input type="checkbox" id="brokerEscrowAck"> I understand lead generation enrollment requires a 1% escrow fee on commissions earned</label>
+          </div>
+        </div>
+
+        <!-- RESELLER / AFFILIATE FIELDS -->
+        <div class="role-fields" id="roleFieldsReseller" style="display:none;">
+          <div class="auth-field">
+            <label>Company / Personal Brand Name</label>
+            <input type="text" id="resellerBrand" placeholder="Your brand name">
+          </div>
+          <div class="auth-field">
+            <label>Marketing Channels</label>
+            <div class="checkbox-grid">
+              <label class="cb-label"><input type="checkbox" name="resellerChannels" value="social_media"> Social Media</label>
+              <label class="cb-label"><input type="checkbox" name="resellerChannels" value="blog_website"> Blog / Website</label>
+              <label class="cb-label"><input type="checkbox" name="resellerChannels" value="email_list"> Email List</label>
+              <label class="cb-label"><input type="checkbox" name="resellerChannels" value="youtube"> YouTube</label>
+              <label class="cb-label"><input type="checkbox" name="resellerChannels" value="podcast"> Podcast</label>
+              <label class="cb-label"><input type="checkbox" name="resellerChannels" value="community_forum"> Community / Forum</label>
+            </div>
+          </div>
+          <div class="auth-field">
+            <label>Estimated Audience Size</label>
+            <select id="resellerAudience">
+              <option value="">Select range</option>
+              <option value="under_1k">Under 1K</option>
+              <option value="1k_10k">1K - 10K</option>
+              <option value="10k_50k">10K - 50K</option>
+              <option value="50k_100k">50K - 100K</option>
+              <option value="100k_plus">100K+</option>
+            </select>
+          </div>
+          <div class="auth-field">
+            <label>Website / Social URL</label>
+            <input type="url" id="resellerUrl" placeholder="https://yoursite.com">
+          </div>
+          <div class="auth-terms">
+            <label><input type="checkbox" id="resellerAgreement"> I agree to the VibeFlippers Affiliate Program Terms</label>
+          </div>
+        </div>
+
+        <!-- SERVICE PROVIDER FIELDS -->
+        <div class="role-fields" id="roleFieldsServiceProvider" style="display:none;">
+          <div class="auth-field">
+            <label>Company / Freelancer Name <span class="field-req">*</span></label>
+            <input type="text" id="spName" placeholder="Your company or name" required>
+          </div>
+          <div class="auth-field">
+            <label>Service Categories</label>
+            <div class="checkbox-grid">
+              <label class="cb-label"><input type="checkbox" name="spCategories" value="due_diligence"> Due Diligence</label>
+              <label class="cb-label"><input type="checkbox" name="spCategories" value="valuation"> Valuation</label>
+              <label class="cb-label"><input type="checkbox" name="spCategories" value="legal_review"> Legal Review</label>
+              <label class="cb-label"><input type="checkbox" name="spCategories" value="migration_transfer"> Migration / Transfer</label>
+              <label class="cb-label"><input type="checkbox" name="spCategories" value="development"> Development</label>
+              <label class="cb-label"><input type="checkbox" name="spCategories" value="design"> Design</label>
+              <label class="cb-label"><input type="checkbox" name="spCategories" value="seo_marketing"> SEO / Marketing</label>
+              <label class="cb-label"><input type="checkbox" name="spCategories" value="content"> Content</label>
+              <label class="cb-label"><input type="checkbox" name="spCategories" value="accounting_tax"> Accounting / Tax</label>
+            </div>
+          </div>
+          <div class="auth-field">
+            <label>Portfolio URL or Upload Past Work</label>
+            <input type="url" id="spPortfolioUrl" placeholder="https://portfolio.com" style="margin-bottom:10px;">
+            <div id="signup-portfolio"></div>
+          </div>
+          <div class="auth-field">
+            <label>Certifications / Credentials</label>
+            <input type="text" id="spCertifications" placeholder="e.g. CPA, PMP, CISA">
+          </div>
+          <div class="auth-field">
+            <label>Hourly Rate Range</label>
+            <select id="spRate">
+              <option value="">Select range</option>
+              <option value="under_50">Under $50/hr</option>
+              <option value="50_100">$50 - $100/hr</option>
+              <option value="100_200">$100 - $200/hr</option>
+              <option value="200_500">$200 - $500/hr</option>
+              <option value="500_plus">$500+/hr</option>
+            </select>
+          </div>
+          <div class="auth-field">
+            <label>Availability</label>
+            <select id="spAvailability">
+              <option value="">Select availability</option>
+              <option value="full_time">Full-time</option>
+              <option value="part_time">Part-time</option>
+              <option value="project_based">Project-based</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="signup-step-buttons">
+          <button class="auth-submit auth-submit-outline" onclick="goToSignupStep(1)">Back</button>
+          <button class="auth-submit" onclick="goToSignupStep(3)">Continue</button>
+        </div>
       </div>
-      <button class="auth-submit" onclick="vfSignup()">Create Account</button>
-      <div class="auth-switch">Already have an account? <a onclick="switchAuthTab('login')">Sign In</a></div>
+
+      <!-- STEP 3: Identity Verification -->
+      <div class="signup-step" id="signupStep3">
+        <div class="auth-field">
+          <label>ID Type <span class="field-req">*</span></label>
+          <select id="signupIdType" required>
+            <option value="">Select ID type</option>
+            <option value="passport">Passport</option>
+            <option value="drivers_license">Driver's License</option>
+            <option value="national_id">National ID</option>
+            <option value="aadhaar">Aadhaar</option>
+          </select>
+        </div>
+        <div class="auth-field">
+          <label>Government ID Upload <span class="field-req">*</span></label>
+          <div id="signup-id-doc"></div>
+        </div>
+
+        <div class="signup-decentralized-id">
+          <p class="section-subtitle">Decentralized Identity (Optional)</p>
+          <p class="did-description">Decentralized ID provides privacy-preserving verification. You can use traditional ID upload or a decentralized credential.</p>
+          <div class="did-buttons">
+            <button type="button" class="did-btn" onclick="alert('Coming Soon: Zero-knowledge proof of personhood via World ID.')">Verify with World ID</button>
+            <button type="button" class="did-btn" onclick="alert('Coming Soon: Civic decentralized identity verification.')">Verify with Civic</button>
+          </div>
+        </div>
+
+        <div class="auth-terms">
+          <label><input type="checkbox" id="signupTerms" required> I agree to the <a href="#" onclick="event.preventDefault()">Terms of Service</a> and <a href="#" onclick="event.preventDefault()">Privacy Policy</a></label>
+        </div>
+
+        <div class="signup-step-buttons">
+          <button class="auth-submit auth-submit-outline" onclick="goToSignupStep(2)">Back</button>
+          <button class="auth-submit" onclick="vfSignup()">Create Account</button>
+        </div>
+        <div class="auth-switch">Already have an account? <a onclick="switchAuthTab('login')">Sign In</a></div>
+      </div>
     </div>
   </div>
 </div>
@@ -3946,32 +4407,225 @@ function vfLogin() {
   completeLogin(user, remember);
 }
 
+// ====== MULTI-STEP SIGNUP LOGIC ======
+let signupCurrentStep = 1;
+let brokerHasLicense = false;
+let brokerHasEo = false;
+
+function goToSignupStep(step) {
+  hideAuthError();
+  // Validate current step before advancing
+  if (step > signupCurrentStep) {
+    if (signupCurrentStep === 1 && !validateSignupStep1()) return;
+    if (signupCurrentStep === 2 && !validateSignupStep2()) return;
+  }
+  signupCurrentStep = step;
+  // Update step panes
+  document.querySelectorAll('.signup-step').forEach(s => s.classList.remove('active'));
+  const target = document.getElementById('signupStep' + step);
+  if (target) target.classList.add('active');
+  // Update indicators
+  for (let i = 1; i <= 3; i++) {
+    const ind = document.getElementById('signupStepInd' + i);
+    ind.classList.remove('active', 'completed');
+    if (i < step) ind.classList.add('completed');
+    else if (i === step) ind.classList.add('active');
+  }
+  // Initialize file uploads for step 3
+  if (step === 3) {
+    initMultiUpload('signup-id-doc', 'id_document', 3, 25);
+  }
+  // Initialize file uploads for step 2 role-specific sections
+  if (step === 2) {
+    const role = document.getElementById('signupRole').value;
+    if (role === 'seller') initMultiUpload('signup-revenue-proof', 'revenue_proof', 5, 25);
+    if (role === 'broker') initMultiUpload('signup-license-doc', 'license_document', 3, 25);
+    if (role === 'service_provider') initMultiUpload('signup-portfolio', 'portfolio', 5, 25);
+  }
+}
+
+function validateSignupStep1() {
+  const name = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const password = document.getElementById('signupPassword').value;
+  const phone = document.getElementById('signupPhone').value.trim();
+  const country = document.getElementById('signupCountry').value;
+
+  if (!name) { showAuthError('Please enter your full legal name.'); return false; }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showAuthError('Please enter a valid email address.'); return false; }
+  if (password.length < 8) { showAuthError('Password must be at least 8 characters.'); return false; }
+  if (!phone) { showAuthError('Please enter your phone number.'); return false; }
+  if (!country) { showAuthError('Please select your country.'); return false; }
+  // Check if email already exists
+  if (DEMO_ACCOUNTS[email.toLowerCase()]) { showAuthError('This email is reserved. Please use a different email.'); return false; }
+  const users = JSON.parse(localStorage.getItem('vf_users') || '{}');
+  if (users[email.toLowerCase()]) { showAuthError('An account with this email already exists. Please sign in.'); return false; }
+  return true;
+}
+
+function validateSignupStep2() {
+  const role = document.getElementById('signupRole').value;
+  if (!role) { showAuthError('Please select a role.'); return false; }
+
+  if (role === 'buyer') {
+    const budget = document.getElementById('buyerBudget').value;
+    if (!budget) { showAuthError('Please select your budget range.'); return false; }
+  }
+  if (role === 'seller') {
+    if (!document.getElementById('sellerBizName').value.trim()) { showAuthError('Please enter your business name.'); return false; }
+    if (!document.getElementById('sellerBizUrl').value.trim()) { showAuthError('Please enter your business URL.'); return false; }
+    if (!document.getElementById('sellerBizType').value) { showAuthError('Please select your business type.'); return false; }
+  }
+  if (role === 'broker') {
+    if (!document.getElementById('brokerCompany').value.trim()) { showAuthError('Please enter your company or brokerage name.'); return false; }
+    if (brokerHasLicense) {
+      if (!document.getElementById('brokerLicNumber').value.trim()) { showAuthError('Please enter your license number.'); return false; }
+      if (!document.getElementById('brokerLicState').value.trim()) { showAuthError('Please enter the issuing state or authority.'); return false; }
+      if (!document.getElementById('brokerLicType').value) { showAuthError('Please select your license type.'); return false; }
+    }
+  }
+  if (role === 'service_provider') {
+    if (!document.getElementById('spName').value.trim()) { showAuthError('Please enter your company or freelancer name.'); return false; }
+  }
+  return true;
+}
+
+function showRoleFields() {
+  const role = document.getElementById('signupRole').value;
+  document.querySelectorAll('.role-fields').forEach(f => f.style.display = 'none');
+  const map = { buyer: 'roleFieldsBuyer', seller: 'roleFieldsSeller', broker: 'roleFieldsBroker', reseller: 'roleFieldsReseller', service_provider: 'roleFieldsServiceProvider' };
+  if (map[role]) {
+    document.getElementById(map[role]).style.display = 'block';
+    // Init file uploads for the newly visible role
+    if (role === 'seller') initMultiUpload('signup-revenue-proof', 'revenue_proof', 5, 25);
+    if (role === 'broker') initMultiUpload('signup-license-doc', 'license_document', 3, 25);
+    if (role === 'service_provider') initMultiUpload('signup-portfolio', 'portfolio', 5, 25);
+  }
+}
+
+function toggleBrokerLicense(hasLicense) {
+  brokerHasLicense = hasLicense;
+  document.getElementById('brokerLicYes').classList.toggle('active', hasLicense);
+  document.getElementById('brokerLicNo').classList.toggle('active', !hasLicense);
+  document.getElementById('brokerLicenseFields').style.display = hasLicense ? 'block' : 'none';
+  if (hasLicense) initMultiUpload('signup-license-doc', 'license_document', 3, 25);
+}
+
+function toggleEoInsurance(hasEo) {
+  brokerHasEo = hasEo;
+  document.getElementById('brokerEoYes').classList.toggle('active', hasEo);
+  document.getElementById('brokerEoNo').classList.toggle('active', !hasEo);
+}
+
+function getCheckedValues(name) {
+  return Array.from(document.querySelectorAll('input[name="' + name + '"]:checked')).map(cb => cb.value);
+}
+
+function collectRoleData(role) {
+  const data = {};
+  if (role === 'buyer') {
+    data.budget = document.getElementById('buyerBudget').value;
+    data.interests = getCheckedValues('buyerInterests');
+    data.referral = document.getElementById('buyerReferral').value;
+  }
+  if (role === 'seller') {
+    data.businessName = document.getElementById('sellerBizName').value.trim();
+    data.businessUrl = document.getElementById('sellerBizUrl').value.trim();
+    data.businessType = document.getElementById('sellerBizType').value;
+    data.monthlyRevenue = document.getElementById('sellerRevenue').value;
+    data.ownershipDuration = document.getElementById('sellerOwnership').value;
+    data.revenueProofFiles = JSON.parse(localStorage.getItem('vf_uploads_signup-revenue-proof') || '[]');
+  }
+  if (role === 'broker') {
+    data.company = document.getElementById('brokerCompany').value.trim();
+    data.subtypes = getCheckedValues('brokerSubtype');
+    data.hasLicense = brokerHasLicense;
+    if (brokerHasLicense) {
+      data.licenseNumber = document.getElementById('brokerLicNumber').value.trim();
+      data.licenseState = document.getElementById('brokerLicState').value.trim();
+      data.licenseType = document.getElementById('brokerLicType').value;
+      data.licenseDocFiles = JSON.parse(localStorage.getItem('vf_uploads_signup-license-doc') || '[]');
+    }
+    data.displayRole = brokerHasLicense ? 'Licensed Broker' : 'Advisor';
+    data.experience = document.getElementById('brokerExperience').value;
+    data.portfolioUrl = document.getElementById('brokerPortfolioUrl').value.trim();
+    data.dealsClosed = document.getElementById('brokerDeals').value;
+    data.specializations = getCheckedValues('brokerSpecializations');
+    data.hasEoInsurance = brokerHasEo;
+    data.escrowAcknowledged = document.getElementById('brokerEscrowAck').checked;
+  }
+  if (role === 'reseller') {
+    data.brandName = document.getElementById('resellerBrand').value.trim();
+    data.channels = getCheckedValues('resellerChannels');
+    data.audienceSize = document.getElementById('resellerAudience').value;
+    data.url = document.getElementById('resellerUrl').value.trim();
+    data.affiliateAgreed = document.getElementById('resellerAgreement').checked;
+  }
+  if (role === 'service_provider') {
+    data.companyName = document.getElementById('spName').value.trim();
+    data.categories = getCheckedValues('spCategories');
+    data.portfolioUrl = document.getElementById('spPortfolioUrl').value.trim();
+    data.portfolioFiles = JSON.parse(localStorage.getItem('vf_uploads_signup-portfolio') || '[]');
+    data.certifications = document.getElementById('spCertifications').value.trim();
+    data.hourlyRate = document.getElementById('spRate').value;
+    data.availability = document.getElementById('spAvailability').value;
+  }
+  return data;
+}
+
 function vfSignup() {
+  hideAuthError();
+  // Final validation on step 3
+  const idType = document.getElementById('signupIdType').value;
+  const terms = document.getElementById('signupTerms').checked;
+  const idFiles = JSON.parse(localStorage.getItem('vf_uploads_signup-id-doc') || '[]');
+
+  if (!idType) { showAuthError('Please select your ID type.'); return; }
+  if (!idFiles.length) { showAuthError('Please upload a government-issued ID.'); return; }
+  if (!terms) { showAuthError('You must agree to the Terms of Service and Privacy Policy.'); return; }
+
+  // Role-specific agreement checks
+  const role = document.getElementById('signupRole').value;
+  if (role === 'reseller') {
+    const agreed = document.getElementById('resellerAgreement');
+    if (agreed && !agreed.checked) { showAuthError('Please agree to the Affiliate Program Terms.'); goToSignupStep(2); return; }
+  }
+
+  // Gather all data
   const name = document.getElementById('signupName').value.trim();
   const email = document.getElementById('signupEmail').value.trim().toLowerCase();
   const password = document.getElementById('signupPassword').value;
-  const role = document.getElementById('signupRole').value;
-  const terms = document.getElementById('signupTerms').checked;
-  hideAuthError();
-
-  if (!name) { showAuthError('Please enter your full name.'); return; }
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showAuthError('Please enter a valid email address.'); return; }
-  if (password.length < 6) { showAuthError('Password must be at least 6 characters.'); return; }
-  if (!terms) { showAuthError('You must agree to the Terms of Service and Privacy Policy.'); return; }
-
-  // Check if email already exists
-  if (DEMO_ACCOUNTS[email]) { showAuthError('This email is reserved. Please use a different email.'); return; }
-  const users = JSON.parse(localStorage.getItem('vf_users') || '{}');
-  if (users[email]) { showAuthError('An account with this email already exists. Please sign in.'); return; }
+  const phone = document.getElementById('signupPhone').value.trim();
+  const country = document.getElementById('signupCountry').value;
+  const roleData = collectRoleData(role);
 
   const userId = 'vf-usr-' + Date.now().toString(36) + Math.random().toString(36).substr(2, 4);
   const now = new Date().toISOString();
 
-  users[email] = { id: userId, name, password, role, tier: 'free', verified: false, created_at: now };
+  const users = JSON.parse(localStorage.getItem('vf_users') || '{}');
+  users[email] = {
+    id: userId, name, password, role, phone, country,
+    tier: 'free', verified: false, created_at: now,
+    idType: idType,
+    idFiles: idFiles,
+    roleData: roleData
+  };
   localStorage.setItem('vf_users', JSON.stringify(users));
 
-  const user = { id: userId, name, email, role, tier: 'free', verified: false, created_at: now, login_at: Date.now() };
+  // Clean up upload localStorage keys
+  ['signup-id-doc', 'signup-revenue-proof', 'signup-license-doc', 'signup-portfolio'].forEach(k => {
+    localStorage.removeItem('vf_uploads_' + k);
+  });
+
+  const user = {
+    id: userId, name, email, role, phone, country,
+    tier: 'free', verified: false, created_at: now, login_at: Date.now(),
+    idType, roleData
+  };
   completeLogin(user, false);
+
+  // Reset signup form to step 1
+  signupCurrentStep = 1;
 }
 
 function completeLogin(user, remember) {
@@ -4019,6 +4673,19 @@ function switchAuthTab(tab) {
   document.getElementById('authPaneLogin').classList.toggle('active', tab === 'login');
   document.getElementById('authPaneSignup').classList.toggle('active', tab === 'signup');
   hideAuthError();
+  // Reset signup to step 1 when switching tabs
+  if (tab === 'signup') {
+    signupCurrentStep = 1;
+    document.querySelectorAll('.signup-step').forEach(s => s.classList.remove('active'));
+    var s1 = document.getElementById('signupStep1');
+    if (s1) s1.classList.add('active');
+    for (var i = 1; i <= 3; i++) {
+      var ind = document.getElementById('signupStepInd' + i);
+      if (ind) { ind.classList.remove('active', 'completed'); if (i === 1) ind.classList.add('active'); }
+    }
+    // Reset role fields
+    document.querySelectorAll('.role-fields').forEach(function(f) { f.style.display = 'none'; });
+  }
 }
 
 function showAuthError(msg) {
