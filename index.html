@@ -1117,6 +1117,518 @@ a:hover { text-decoration: underline; }
   .auth-box { padding: 28px 20px 24px; margin: 10px; }
   .user-dropdown { right: -40px; min-width: 220px; }
 }
+
+/* ====== V3 UX ENHANCEMENTS ====== */
+
+/* Nav search bar */
+.nav-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  margin: 0 8px;
+  min-width: 200px;
+  transition: all 0.2s;
+}
+.nav-search:focus-within {
+  border-color: var(--accent-light);
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.nav-search input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--ink);
+  font-size: 13px;
+  flex: 1;
+  font-family: var(--font-body);
+}
+.nav-search input::placeholder { color: var(--muted); }
+.nav-search .search-kbd {
+  font-size: 10px;
+  background: rgba(255,255,255,0.08);
+  color: var(--muted);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+}
+.search-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: var(--panel-solid);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  z-index: 1000;
+  max-height: 320px;
+  overflow-y: auto;
+  display: none;
+}
+.search-dropdown.open { display: block; }
+.search-result {
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.search-result:hover { background: rgba(108,60,175,0.12); }
+.search-result:last-child { border-bottom: none; }
+.search-result-name { color: var(--ink-bright); font-weight: 600; }
+.search-result-meta { color: var(--muted); font-size: 11px; }
+.search-section-label {
+  padding: 6px 14px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  background: rgba(255,255,255,0.02);
+}
+
+/* Notification bell */
+.nav-bell {
+  position: relative;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  padding: 6px 10px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  font-size: 15px;
+  margin-right: 6px;
+}
+.nav-bell:hover { background: rgba(255,255,255,0.06); }
+.nav-bell .bell-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--red);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg);
+}
+.notif-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 340px;
+  background: var(--panel-solid);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  z-index: 1000;
+  display: none;
+  overflow: hidden;
+}
+.notif-dropdown.open { display: block; }
+.notif-header {
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  font-weight: 600;
+  color: var(--ink-bright);
+}
+.notif-header button {
+  background: transparent;
+  border: none;
+  color: var(--accent-light);
+  font-size: 12px;
+  cursor: pointer;
+}
+.notif-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.notif-item:hover { background: rgba(108,60,175,0.08); }
+.notif-item.unread { background: rgba(108,60,175,0.06); }
+.notif-item.unread::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: var(--accent-light);
+  border-radius: 50%;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+.notif-item:last-child { border-bottom: none; }
+.notif-title { font-size: 13px; color: var(--ink-bright); font-weight: 600; margin-bottom: 2px; }
+.notif-body { font-size: 12px; color: var(--muted); }
+.notif-time { font-size: 10px; color: var(--muted); margin-top: 4px; }
+.notif-empty { padding: 32px 16px; text-align: center; color: var(--muted); font-size: 13px; }
+
+/* Onboarding progress tracker */
+.onboard-banner {
+  position: sticky;
+  top: 64px;
+  z-index: 90;
+  background: linear-gradient(90deg, rgba(108,60,175,0.18), rgba(155,109,215,0.12));
+  border-bottom: 1px solid var(--line);
+  padding: 10px 0;
+  backdrop-filter: blur(12px);
+  display: none;
+}
+.onboard-banner.show { display: block; }
+.onboard-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.onboard-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-bright);
+  white-space: nowrap;
+}
+.onboard-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+.onboard-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.04);
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.onboard-chip:hover { border-color: var(--accent-light); }
+.onboard-chip.done {
+  background: var(--green-bg);
+  border-color: rgba(52,211,153,0.3);
+  color: var(--green);
+}
+.onboard-chip.done::before { content: "✓ "; }
+.onboard-progress-bar {
+  flex: 0 0 100px;
+  height: 5px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.onboard-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  transition: width 0.3s;
+}
+
+/* Next-step banner */
+.next-step-banner {
+  background: linear-gradient(90deg, rgba(108,60,175,0.28), rgba(155,109,215,0.14));
+  border-bottom: 1px solid var(--line);
+  padding: 12px 0;
+  display: none;
+}
+.next-step-banner.show { display: block; }
+.next-step-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.next-step-icon { font-size: 22px; }
+.next-step-text { flex: 1; font-size: 13px; color: var(--ink-bright); }
+.next-step-text strong { color: var(--ink-bright); }
+.next-step-cta {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.next-step-cta:hover { background: var(--accent-light); }
+.next-step-dismiss {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px 8px;
+}
+
+/* Listing status badges */
+.listing-status {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+  z-index: 2;
+}
+.listing-status.status-live { background: rgba(52,211,153,0.18); color: var(--green); border: 1px solid rgba(52,211,153,0.35); }
+.listing-status.status-under-offer { background: rgba(251,191,36,0.18); color: var(--yellow); border: 1px solid rgba(251,191,36,0.35); }
+.listing-status.status-in-escrow { background: rgba(96,165,250,0.18); color: var(--blue); border: 1px solid rgba(96,165,250,0.35); }
+.listing-status.status-sold { background: rgba(155,147,192,0.18); color: var(--muted); border: 1px solid var(--line); }
+.listing-status.status-hot-deal {
+  background: linear-gradient(90deg, #6c3caf, #c73cd7);
+  color: #fff;
+  border: 1px solid rgba(199,60,215,0.5);
+  box-shadow: 0 0 14px rgba(199,60,215,0.4);
+}
+.listing-card { position: relative; }
+
+/* FAB */
+.fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 80;
+}
+.fab-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-light));
+  color: #fff;
+  border: none;
+  font-size: 26px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px var(--accent-glow);
+  transition: transform 0.25s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fab-btn:hover { transform: scale(1.08); }
+.fab.open .fab-btn { transform: rotate(45deg); }
+.fab-menu {
+  position: absolute;
+  bottom: 72px;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.fab.open .fab-menu { opacity: 1; pointer-events: auto; }
+.fab-action {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--panel-solid);
+  border: 1px solid var(--line);
+  color: var(--ink-bright);
+  padding: 10px 16px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: var(--shadow);
+}
+.fab-action:hover { background: var(--accent); border-color: var(--accent); }
+.fab-action-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+/* Dashboard */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 24px;
+}
+.dash-card {
+  background: var(--panel);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  backdrop-filter: blur(12px);
+}
+.dash-card h3 { font-size: 15px; color: var(--ink-bright); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.dash-stat {
+  font-size: 32px;
+  font-weight: 700;
+  background: var(--hero);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 4px;
+}
+.dash-stat-label { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.dash-list { display: flex; flex-direction: column; gap: 10px; }
+.dash-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+}
+.dash-list-item:hover { border-color: var(--accent-light); cursor: pointer; }
+.dash-quick-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.dash-quick-btn {
+  background: rgba(108,60,175,0.12);
+  border: 1px solid rgba(108,60,175,0.3);
+  color: var(--ink-bright);
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.dash-quick-btn:hover { background: var(--accent); border-color: var(--accent); }
+.dash-welcome {
+  background: var(--hero);
+  padding: 32px;
+  border-radius: var(--radius-lg);
+  color: #fff;
+  margin-bottom: 20px;
+}
+.dash-welcome h2 { color: #fff; margin-bottom: 8px; }
+.dash-welcome p { color: rgba(255,255,255,0.85); }
+
+/* Deal Room */
+.dealroom-header {
+  background: var(--panel);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(12px);
+}
+.dr-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.dr-tabs::-webkit-scrollbar { display: none; }
+.dr-tab {
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+.dr-tab.active { color: var(--ink-bright); border-bottom-color: var(--accent-light); }
+.dr-tab:hover { color: var(--ink); }
+.dr-pane { display: none; }
+.dr-pane.active { display: block; }
+.dr-message {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background: rgba(255,255,255,0.03);
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+}
+.dr-msg-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.dr-msg-body { flex: 1; }
+.dr-msg-head { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
+.dr-msg-head strong { color: var(--ink-bright); }
+.dr-msg-head span { color: var(--muted); }
+.dr-msg-text { font-size: 13px; color: var(--ink); }
+.dr-doc, .dr-check, .dr-mile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+.dr-check input { margin-right: 10px; }
+.dr-mile-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.dr-mile-num.pending { background: rgba(255,255,255,0.08); color: var(--muted); }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .nav-search { display: none; }
+}
+@media (max-width: 640px) {
+  .onboard-inner { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .onboard-progress-bar { width: 100%; }
+  .next-step-inner { flex-direction: column; align-items: flex-start; }
+  .fab { bottom: 16px; right: 16px; }
+  .fab-action { font-size: 12px; padding: 8px 12px; }
+}
   </style>
 </head>
 <body>
@@ -1129,7 +1641,9 @@ a:hover { text-decoration: underline; }
       VibeFlippers
     </div>
     <div class="nav-links" id="navLinks">
+      <a href="#dashboard" onclick="navigate('dashboard')">Dashboard</a>
       <a href="#marketplace" onclick="navigate('marketplace')">Marketplace</a>
+      <a href="#dealroom" onclick="navigate('dealroom')">Deal Room</a>
       <a href="#sell" onclick="navigate('sell')">Sell Your Asset</a>
       <a href="#valuations" onclick="navigate('valuations')">Valuations</a>
       <a href="#pipeline" onclick="navigate('pipeline')">Deal Pipeline</a>
@@ -1145,12 +1659,49 @@ a:hover { text-decoration: underline; }
       <a href="#ai-ops" onclick="navigate('ai-ops')">AI Ops</a>
       <a href="#admin" onclick="navigate('admin')">Admin</a>
     </div>
+    <div class="nav-search" id="navSearch">
+      <input type="text" id="navSearchInput" placeholder="Search listings..." autocomplete="off" oninput="vfSearchInput(event)" onfocus="vfSearchFocus()" onblur="setTimeout(vfSearchBlur, 200)">
+      <span class="search-kbd">/</span>
+      <div class="search-dropdown" id="searchDropdown"></div>
+    </div>
+    <div style="position:relative;">
+      <button class="nav-bell" id="navBell" onclick="vfToggleNotifs(event)" title="Notifications">
+        &#128276;
+        <span class="bell-badge" id="bellBadge" style="display:none;">0</span>
+      </button>
+      <div class="notif-dropdown" id="notifDropdown">
+        <div class="notif-header">
+          <span>Notifications</span>
+          <button onclick="vfClearNotifs()">Clear all</button>
+        </div>
+        <div id="notifList"></div>
+      </div>
+    </div>
     <div class="nav-auth" id="navAuth">
       <button class="nav-signin" onclick="openAuthModal('login')">Sign In</button>
     </div>
     <button class="nav-mobile" id="navToggle" onclick="document.getElementById('navLinks').classList.toggle('open')">&#9776;</button>
   </div>
 </nav>
+
+<!-- ====== ONBOARDING PROGRESS BANNER ====== -->
+<div class="onboard-banner" id="onboardBanner">
+  <div class="container onboard-inner">
+    <span class="onboard-label" id="onboardLabel">Complete your profile</span>
+    <div class="onboard-chips" id="onboardChips"></div>
+    <div class="onboard-progress-bar"><div class="onboard-progress-fill" id="onboardFill" style="width:0%"></div></div>
+  </div>
+</div>
+
+<!-- ====== CONTEXTUAL NEXT-STEP BANNER ====== -->
+<div class="next-step-banner" id="nextStepBanner">
+  <div class="container next-step-inner">
+    <span class="next-step-icon" id="nextStepIcon">&#128640;</span>
+    <div class="next-step-text" id="nextStepText"></div>
+    <button class="next-step-cta" id="nextStepCta" onclick="vfNextStepAction()">Let's go</button>
+    <button class="next-step-dismiss" onclick="vfDismissNextStep()" title="Dismiss">&times;</button>
+  </div>
+</div>
 
 <!-- ====== AUTH SYSTEM ====== -->
 <div class="auth-modal" id="authModal">
@@ -1591,6 +2142,79 @@ a:hover { text-decoration: underline; }
     </div>
   </div>
 </div>
+
+<!-- ====== DASHBOARD (v3) ====== -->
+<section id="dashboard" class="section page-section">
+  <div class="container">
+    <div id="dashboardContent"></div>
+  </div>
+</section>
+
+<!-- ====== DEAL ROOM (v3) ====== -->
+<section id="dealroom" class="section page-section">
+  <div class="container">
+    <div class="dealroom-header">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+        <div>
+          <h2 style="margin-bottom:4px;">PromptVault — Deal Room</h2>
+          <p style="color:var(--muted);font-size:13px;">Deal ID: DR-2026-0418 &middot; $210,000 &middot; In Negotiation</p>
+        </div>
+        <span class="badge badge-saas">SaaS</span>
+      </div>
+    </div>
+    <div class="dr-tabs">
+      <button class="dr-tab active" onclick="drSwitchTab('overview')">Overview</button>
+      <button class="dr-tab" onclick="drSwitchTab('messages')">Messages</button>
+      <button class="dr-tab" onclick="drSwitchTab('documents')">Documents</button>
+      <button class="dr-tab" onclick="drSwitchTab('escrow')">Escrow</button>
+      <button class="dr-tab" onclick="drSwitchTab('checklist')">Checklist</button>
+      <button class="dr-tab" onclick="drSwitchTab('milestones')">Milestones</button>
+      <button class="dr-tab" onclick="drSwitchTab('nft')">NFT</button>
+    </div>
+    <div id="dr-overview" class="dr-pane active">
+      <div class="dashboard-grid">
+        <div class="dash-card"><h3>Deal Status</h3><div class="dash-stat">Due Diligence</div><div class="dash-stat-label">Stage 3 of 6</div></div>
+        <div class="dash-card"><h3>Purchase Price</h3><div class="dash-stat">$210K</div><div class="dash-stat-label">30x monthly profit</div></div>
+        <div class="dash-card"><h3>Days Active</h3><div class="dash-stat">12</div><div class="dash-stat-label">Target close: 45 days</div></div>
+      </div>
+    </div>
+    <div id="dr-messages" class="dr-pane">
+      <div id="drMessageThread" style="margin-bottom:16px;"></div>
+      <div style="display:flex;gap:8px;">
+        <textarea id="drMsgInput" placeholder="Type a message..." style="flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px;color:var(--ink);font-family:var(--font-body);min-height:60px;resize:vertical;"></textarea>
+        <button class="btn btn-primary" onclick="drSendMessage()" style="align-self:flex-end;">Send</button>
+      </div>
+    </div>
+    <div id="dr-documents" class="dr-pane">
+      <div class="dr-doc"><span>&#128196; Asset Purchase Agreement v2.pdf</span><span style="color:var(--muted);font-size:11px;">Uploaded 2d ago</span></div>
+      <div class="dr-doc"><span>&#128196; Financial Statements 2024-2025.xlsx</span><span style="color:var(--muted);font-size:11px;">Uploaded 4d ago</span></div>
+      <div class="dr-doc"><span>&#128196; Traffic Analytics Export.csv</span><span style="color:var(--muted);font-size:11px;">Uploaded 6d ago</span></div>
+      <button class="btn btn-outline" onclick="alert('Upload coming soon — documents sync to Supabase.')" style="margin-top:10px;">+ Upload Document</button>
+    </div>
+    <div id="dr-escrow" class="dr-pane">
+      <p style="color:var(--muted);font-size:13px;margin-bottom:12px;">Escrow is managed in the <a onclick="navigate('pipeline')" style="cursor:pointer;">Deal Pipeline</a> module. This pane reuses that flow.</p>
+      <div class="dash-card">
+        <h3>Escrow Status</h3>
+        <p>Funds in escrow: <strong style="color:var(--green);">$210,000</strong></p>
+        <p style="color:var(--muted);font-size:12px;margin-top:8px;">Released upon buyer sign-off + domain/asset transfer confirmation.</p>
+      </div>
+    </div>
+    <div id="dr-checklist" class="dr-pane">
+      <div id="drChecklist"></div>
+    </div>
+    <div id="dr-milestones" class="dr-pane">
+      <div id="drMilestones"></div>
+    </div>
+    <div id="dr-nft" class="dr-pane">
+      <div class="dash-card" style="text-align:center;">
+        <h3>Ownership NFT</h3>
+        <div style="width:180px;height:180px;margin:20px auto;background:var(--hero);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;font-size:60px;">&#128142;</div>
+        <p style="color:var(--muted);font-size:12px;">Mint-ready on close. ERC-721 ownership token with deal metadata.</p>
+        <button class="btn btn-outline" style="margin-top:12px;" onclick="alert('NFT minting activates automatically at escrow release.')">Preview Mint</button>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ====== HERO ====== -->
 <section id="hero" class="section page-section active">
@@ -4107,6 +4731,8 @@ function addAdminFlow() {
 
 // ====== ROLE-BASED NAV VISIBILITY ======
 const NAV_VISIBILITY = {
+  'dashboard': ['buyer','seller','broker','reseller','service_provider','admin','operator','vibe_coder'],
+  'dealroom': ['buyer','seller','broker','admin'],
   'marketplace': ['buyer','seller','broker','reseller','service_provider','admin','operator'],
   'sell': ['seller','broker','service_provider','admin'],
   'valuations': ['buyer','seller','broker','service_provider','admin'],
@@ -4828,6 +5454,420 @@ function initAuthSession() {
   }
 }
 
+// ====== V3: STATUS BADGES ======
+// Assign statuses deterministically: most Live, 2 Hot Deal, 1 Under Offer, 1 In Escrow, 1 Sold.
+(function seedListingStatuses() {
+  const plan = { 2: 'hot-deal', 4: 'hot-deal', 7: 'under-offer', 9: 'in-escrow', 6: 'sold' };
+  LISTINGS.forEach(l => { if (!l.status) l.status = plan[l.id] || 'live'; });
+})();
+
+function statusLabel(s) {
+  return { 'live': '🟢 Live', 'under-offer': '🟡 Under Offer', 'in-escrow': '🔵 In Escrow', 'sold': '⚫ Sold', 'hot-deal': '🟣 Hot Deal' }[s] || '🟢 Live';
+}
+
+// Patch renderListings to include status badge (wrapper)
+const _origRenderListings = renderListings;
+renderListings = function() {
+  _origRenderListings();
+  const grid = document.getElementById('listingsGrid');
+  if (!grid) return;
+  const cards = grid.querySelectorAll('.listing-card');
+  const items = getFilteredListings();
+  cards.forEach((card, i) => {
+    if (!items[i]) return;
+    if (card.querySelector('.listing-status')) return;
+    const badge = document.createElement('span');
+    badge.className = 'listing-status status-' + items[i].status;
+    badge.textContent = statusLabel(items[i].status);
+    card.prepend(badge);
+  });
+};
+
+// ====== V3: NOTIFICATIONS ======
+const DEFAULT_NOTIFS = [
+  { id: 1, title: 'New listing matches your filters', body: 'CodeSnap.ai — $112K, 35x multiple', time: '2h ago', unread: true, action: () => navigate('marketplace') },
+  { id: 2, title: 'Offer update on PromptVault', body: 'Seller counter-offered at $215K', time: '5h ago', unread: true, action: () => navigate('dealroom') },
+  { id: 3, title: 'Escrow funded', body: '$210K received for PromptVault', time: '1d ago', unread: true, action: () => navigate('dealroom') },
+  { id: 4, title: 'Valuation report ready', body: 'Your request for "mynewblog.com" is complete', time: '2d ago', unread: false, action: () => navigate('valuations') },
+  { id: 5, title: 'Welcome to VibeFlippers', body: 'Your account is verified and ready.', time: '3d ago', unread: false, action: () => navigate('dashboard') }
+];
+function vfGetNotifs() {
+  const raw = localStorage.getItem('vf_notifications');
+  if (!raw) { localStorage.setItem('vf_notifications', JSON.stringify(DEFAULT_NOTIFS)); return JSON.parse(JSON.stringify(DEFAULT_NOTIFS)); }
+  try { return JSON.parse(raw); } catch(e) { return JSON.parse(JSON.stringify(DEFAULT_NOTIFS)); }
+}
+function vfSaveNotifs(arr) { localStorage.setItem('vf_notifications', JSON.stringify(arr)); }
+function vfRenderNotifs() {
+  const list = document.getElementById('notifList');
+  const badge = document.getElementById('bellBadge');
+  if (!list || !badge) return;
+  const notifs = vfGetNotifs();
+  const unread = notifs.filter(n => n.unread).length;
+  badge.textContent = unread;
+  badge.style.display = unread > 0 ? 'flex' : 'none';
+  if (notifs.length === 0) { list.innerHTML = '<div class="notif-empty">You\'re all caught up.</div>'; return; }
+  list.innerHTML = notifs.map(n => `
+    <div class="notif-item ${n.unread ? 'unread' : ''}" onclick="vfClickNotif(${n.id})">
+      <div style="flex:1;">
+        <div class="notif-title">${n.title}</div>
+        <div class="notif-body">${n.body}</div>
+        <div class="notif-time">${n.time}</div>
+      </div>
+    </div>
+  `).join('');
+}
+function vfToggleNotifs(e) {
+  if (e) e.stopPropagation();
+  document.getElementById('notifDropdown').classList.toggle('open');
+}
+function vfClickNotif(id) {
+  const notifs = vfGetNotifs();
+  const n = notifs.find(x => x.id === id);
+  if (n) { n.unread = false; vfSaveNotifs(notifs); vfRenderNotifs(); }
+  document.getElementById('notifDropdown').classList.remove('open');
+  const action = (DEFAULT_NOTIFS.find(x => x.id === id) || {}).action;
+  if (action) action();
+}
+function vfClearNotifs() {
+  const notifs = vfGetNotifs().map(n => ({ ...n, unread: false }));
+  vfSaveNotifs(notifs); vfRenderNotifs();
+}
+document.addEventListener('click', function(e) {
+  const dd = document.getElementById('notifDropdown');
+  const bell = document.getElementById('navBell');
+  if (dd && !dd.contains(e.target) && bell && !bell.contains(e.target)) dd.classList.remove('open');
+});
+
+// ====== V3: UNIVERSAL SEARCH ======
+function vfSearchFocus() {
+  vfSearchInput({ target: document.getElementById('navSearchInput') });
+}
+function vfSearchBlur() {
+  document.getElementById('searchDropdown').classList.remove('open');
+}
+function vfSearchInput(e) {
+  const q = (e.target.value || '').toLowerCase().trim();
+  const dd = document.getElementById('searchDropdown');
+  if (!dd) return;
+  const history = JSON.parse(localStorage.getItem('vf_search_history') || '[]');
+  if (!q) {
+    if (history.length) {
+      dd.innerHTML = '<div class="search-section-label">Recent</div>' + history.slice(0, 5).map(h =>
+        `<div class="search-result" onclick="vfApplySearch('${h.replace(/'/g, "\\'")}')"><span class="search-result-name">${h}</span></div>`
+      ).join('');
+      dd.classList.add('open');
+    } else { dd.classList.remove('open'); }
+    return;
+  }
+  const matches = LISTINGS.filter(l =>
+    l.name.toLowerCase().includes(q) || l.type.toLowerCase().includes(q) || l.niche.toLowerCase().includes(q)
+  ).slice(0, 5);
+  if (matches.length === 0) {
+    dd.innerHTML = '<div class="search-result"><span class="search-result-meta">No listings match.</span></div>';
+  } else {
+    dd.innerHTML = '<div class="search-section-label">Listings</div>' + matches.map(l =>
+      `<div class="search-result" onclick="vfOpenFromSearch(${l.id}, '${l.name.replace(/'/g, "\\'")}')"><span class="search-result-name">${l.name}</span><span class="search-result-meta">${l.type} &middot; ${fmtFull(l.askingPrice)}</span></div>`
+    ).join('');
+  }
+  dd.classList.add('open');
+}
+function vfApplySearch(q) {
+  document.getElementById('navSearchInput').value = q;
+  navigate('marketplace');
+  const sq = document.getElementById('searchQuery');
+  if (sq) { sq.value = q; if (typeof filterListings === 'function') filterListings(); }
+  document.getElementById('searchDropdown').classList.remove('open');
+}
+function vfOpenFromSearch(id, name) {
+  const hist = JSON.parse(localStorage.getItem('vf_search_history') || '[]');
+  const updated = [name, ...hist.filter(h => h !== name)].slice(0, 10);
+  localStorage.setItem('vf_search_history', JSON.stringify(updated));
+  document.getElementById('searchDropdown').classList.remove('open');
+  document.getElementById('navSearchInput').value = '';
+  if (typeof openListing === 'function') openListing(id);
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+    const input = document.getElementById('navSearchInput');
+    if (input) { e.preventDefault(); input.focus(); }
+  }
+});
+
+// ====== V3: ONBOARDING PROGRESS ======
+function vfOnboardingSteps() {
+  const role = getUserRole();
+  const base = [
+    { key: 'profile', label: 'Profile', nav: 'dashboard' },
+    { key: 'verify', label: 'Verify ID', nav: 'dashboard' }
+  ];
+  if (role === 'buyer') return [...base, { key: 'budget', label: 'Set budget', nav: 'marketplace' }, { key: 'preferences', label: 'Save filters', nav: 'marketplace' }, { key: 'first_offer', label: 'Make first offer', nav: 'marketplace' }];
+  if (role === 'seller') return [...base, { key: 'listing', label: 'Create listing', nav: 'sell' }, { key: 'financials', label: 'Upload financials', nav: 'sell' }, { key: 'pricing', label: 'Set price', nav: 'sell' }];
+  if (role === 'broker') return [...base, { key: 'plan', label: 'Pick plan', nav: 'subscriptions' }, { key: 'deal', label: 'Add first deal', nav: 'pipeline' }, { key: 'client', label: 'Invite client', nav: 'pipeline' }];
+  if (role === 'operator' || role === 'vibe_coder') return [...base, { key: 'portfolio', label: 'Add portfolio', nav: 'agent' }, { key: 'build', label: 'Start build', nav: 'agent' }, { key: 'publish', label: 'Publish', nav: 'marketplace' }];
+  return [...base, { key: 'browse', label: 'Browse marketplace', nav: 'marketplace' }, { key: 'valuation', label: 'Try valuation', nav: 'valuations' }, { key: 'save', label: 'Save a listing', nav: 'marketplace' }];
+}
+function vfGetOnboardProgress() {
+  try { return JSON.parse(localStorage.getItem('vf_onboarding_progress') || '{}'); } catch(e) { return {}; }
+}
+function vfSetOnboardStep(key) {
+  const p = vfGetOnboardProgress();
+  p[key] = true;
+  localStorage.setItem('vf_onboarding_progress', JSON.stringify(p));
+  vfRenderOnboarding();
+}
+function vfRenderOnboarding() {
+  const banner = document.getElementById('onboardBanner');
+  if (!banner) return;
+  if (!isLoggedIn()) { banner.classList.remove('show'); return; }
+  const steps = vfOnboardingSteps();
+  const progress = vfGetOnboardProgress();
+  const done = steps.filter(s => progress[s.key]).length;
+  if (done >= steps.length) { banner.classList.remove('show'); return; }
+  document.getElementById('onboardLabel').textContent = `Complete your profile (${done} of ${steps.length})`;
+  document.getElementById('onboardChips').innerHTML = steps.map(s =>
+    `<span class="onboard-chip ${progress[s.key] ? 'done' : ''}" onclick="vfSetOnboardStep('${s.key}'); navigate('${s.nav}');">${s.label}</span>`
+  ).join('');
+  document.getElementById('onboardFill').style.width = (done / steps.length * 100) + '%';
+  banner.classList.add('show');
+}
+
+// ====== V3: NEXT-STEP BANNER ======
+function vfComputeNextStep() {
+  if (localStorage.getItem('vf_next_step_dismissed') === '1') return null;
+  if (!isLoggedIn()) return { icon: '🚀', text: '<strong>Start browsing curated AI-built assets.</strong> Free to explore.', nav: 'marketplace', cta: 'Explore' };
+  const role = getUserRole();
+  const progress = vfGetOnboardProgress();
+  const steps = vfOnboardingSteps();
+  const firstTodo = steps.find(s => !progress[s.key]);
+  if (firstTodo) return { icon: '✨', text: `<strong>Next:</strong> ${firstTodo.label}`, nav: firstTodo.nav, cta: firstTodo.label };
+  if (role === 'seller') return { icon: '💼', text: '<strong>Boost your listing</strong> — enable featured placement.', nav: 'subscriptions', cta: 'Upgrade' };
+  if (role === 'broker') return { icon: '📈', text: '<strong>Your pipeline has 3 active deals.</strong> Review the pipeline.', nav: 'pipeline', cta: 'Open' };
+  return { icon: '🔥', text: '<strong>2 new Hot Deals</strong> posted this week.', nav: 'hot-deals', cta: 'See Hot Deals' };
+}
+let _nextStepTarget = null;
+function vfRenderNextStep() {
+  const banner = document.getElementById('nextStepBanner');
+  if (!banner) return;
+  const s = vfComputeNextStep();
+  if (!s) { banner.classList.remove('show'); return; }
+  _nextStepTarget = s.nav;
+  document.getElementById('nextStepIcon').textContent = s.icon;
+  document.getElementById('nextStepText').innerHTML = s.text;
+  document.getElementById('nextStepCta').textContent = s.cta;
+  banner.classList.add('show');
+}
+function vfNextStepAction() { if (_nextStepTarget) navigate(_nextStepTarget); }
+function vfDismissNextStep() {
+  localStorage.setItem('vf_next_step_dismissed', '1');
+  document.getElementById('nextStepBanner').classList.remove('show');
+}
+
+// ====== V3: DASHBOARD ======
+function renderDashboard() {
+  const container = document.getElementById('dashboardContent');
+  if (!container) return;
+  const user = getCurrentUser();
+  const role = isLoggedIn() ? getUserRole() : 'explorer';
+  const name = user ? (user.name || user.email || 'there') : 'Explorer';
+  let body = '';
+  const welcome = `<div class="dash-welcome"><h2>Welcome back, ${name}.</h2><p>${dashTagline(role)}</p></div>`;
+  if (role === 'buyer') {
+    body = `<div class="dashboard-grid">
+      <div class="dash-card"><h3>📌 Action Items</h3><div class="dash-list">
+        <div class="dash-list-item" onclick="navigate('dealroom')"><span>Review counter-offer on PromptVault</span><span style="color:var(--yellow);">Urgent</span></div>
+        <div class="dash-list-item" onclick="navigate('marketplace')"><span>3 new listings match your filters</span><span style="color:var(--accent-light);">New</span></div>
+        <div class="dash-list-item"><span>Complete ID verification</span><span style="color:var(--muted);">Optional</span></div>
+      </div></div>
+      <div class="dash-card"><h3>🎯 Matched Listings</h3><div class="dash-list">
+        ${LISTINGS.slice(0, 3).map(l => `<div class="dash-list-item" onclick="openListing(${l.id})"><span>${l.name}</span><span style="color:var(--green);">${fmtFull(l.askingPrice)}</span></div>`).join('')}
+      </div></div>
+      <div class="dash-card"><h3>⚡ Quick Actions</h3><div class="dash-quick-actions">
+        <button class="dash-quick-btn" onclick="navigate('marketplace')">Browse</button>
+        <button class="dash-quick-btn" onclick="navigate('valuations')">Value Asset</button>
+        <button class="dash-quick-btn" onclick="navigate('dealroom')">Active Deals</button>
+        <button class="dash-quick-btn" onclick="navigate('subscriptions')">Upgrade</button>
+      </div></div>
+    </div>`;
+  } else if (role === 'seller') {
+    body = `<div class="dashboard-grid">
+      <div class="dash-card"><h3>📦 Your Listings</h3><div class="dash-stat">2</div><div class="dash-stat-label">1 Live · 1 Under Offer</div>
+        <button class="dash-quick-btn" style="width:100%;" onclick="navigate('sell')">+ New Listing</button></div>
+      <div class="dash-card"><h3>💰 Offers Received</h3><div class="dash-list">
+        <div class="dash-list-item"><span>PromptVault - $215K</span><span style="color:var(--green);">+$5K</span></div>
+        <div class="dash-list-item"><span>PromptVault - $205K</span><span style="color:var(--muted);">Pending</span></div>
+      </div></div>
+      <div class="dash-card"><h3>⚡ Quick Actions</h3><div class="dash-quick-actions">
+        <button class="dash-quick-btn" onclick="navigate('sell')">Edit Listing</button>
+        <button class="dash-quick-btn" onclick="navigate('valuations')">Re-value</button>
+        <button class="dash-quick-btn" onclick="navigate('dealroom')">Deal Room</button>
+        <button class="dash-quick-btn" onclick="navigate('pipeline')">Pipeline</button>
+      </div></div>
+    </div>`;
+  } else if (role === 'broker') {
+    body = `<div class="dashboard-grid">
+      <div class="dash-card"><h3>📊 Pipeline</h3><div class="dash-stat">7</div><div class="dash-stat-label">Active deals · $1.2M total value</div></div>
+      <div class="dash-card"><h3>💵 Commission YTD</h3><div class="dash-stat">$48K</div><div class="dash-stat-label">3 deals closed this quarter</div></div>
+      <div class="dash-card"><h3>⚡ Quick Actions</h3><div class="dash-quick-actions">
+        <button class="dash-quick-btn" onclick="navigate('pipeline')">Pipeline</button>
+        <button class="dash-quick-btn" onclick="navigate('dealroom')">Deal Room</button>
+        <button class="dash-quick-btn" onclick="navigate('marketplace')">Find Deal</button>
+        <button class="dash-quick-btn" onclick="navigate('subscriptions')">Plan</button>
+      </div></div>
+    </div>`;
+  } else if (role === 'vibe_coder' || role === 'operator') {
+    body = `<div class="dashboard-grid">
+      <div class="dash-card"><h3>🛠️ Active Builds</h3><div class="dash-stat">3</div><div class="dash-stat-label">2 in review, 1 shipped</div></div>
+      <div class="dash-card"><h3>📮 Build Requests</h3><div class="dash-list">
+        <div class="dash-list-item"><span>AI Recipe Scraper</span><span style="color:var(--green);">$2.4K</span></div>
+        <div class="dash-list-item"><span>Shopify SEO Tool</span><span style="color:var(--yellow);">In Progress</span></div>
+      </div></div>
+      <div class="dash-card"><h3>⚡ Quick Actions</h3><div class="dash-quick-actions">
+        <button class="dash-quick-btn" onclick="navigate('agent')">AI Agent</button>
+        <button class="dash-quick-btn" onclick="navigate('marketplace')">Publish</button>
+        <button class="dash-quick-btn" onclick="navigate('brand-box')">Brand Box</button>
+        <button class="dash-quick-btn" onclick="navigate('pipeline')">Pipeline</button>
+      </div></div>
+    </div>`;
+  } else {
+    body = `<div class="dashboard-grid">
+      <div class="dash-card"><h3>👋 Getting Started</h3><p style="color:var(--muted);font-size:13px;margin-bottom:14px;">You're browsing as an Explorer. Sign up to save listings, make offers, and unlock valuations.</p>
+        <button class="dash-quick-btn" style="width:100%;" onclick="openAuthModal('signup')">Create Account</button></div>
+      <div class="dash-card"><h3>🔥 Trending Now</h3><div class="dash-list">
+        ${LISTINGS.slice(0, 3).map(l => `<div class="dash-list-item" onclick="openListing(${l.id})"><span>${l.name}</span><span style="color:var(--green);">${fmtFull(l.askingPrice)}</span></div>`).join('')}
+      </div></div>
+      <div class="dash-card"><h3>⚡ Quick Actions</h3><div class="dash-quick-actions">
+        <button class="dash-quick-btn" onclick="navigate('marketplace')">Browse</button>
+        <button class="dash-quick-btn" onclick="navigate('valuations')">Free Valuation</button>
+        <button class="dash-quick-btn" onclick="navigate('how-it-works')">How It Works</button>
+        <button class="dash-quick-btn" onclick="navigate('hot-deals')">Hot Deals</button>
+      </div></div>
+    </div>`;
+  }
+  container.innerHTML = welcome + body;
+}
+function dashTagline(role) {
+  return {
+    'buyer': 'Here\'s what\'s happening with your deals and matched listings.',
+    'seller': 'Track your listings, offers, and commission in one place.',
+    'broker': 'Your pipeline and commissions at a glance.',
+    'vibe_coder': 'Ship builds, manage requests, and publish to the marketplace.',
+    'operator': 'Your build queue and admin actions.',
+    'explorer': 'Browse AI-built digital assets. Sign up to unlock more.'
+  }[role] || 'Welcome to VibeFlippers.';
+}
+
+// ====== V3: FAB ======
+function vfFabToggle() {
+  document.getElementById('vfFab').classList.toggle('open');
+}
+function vfFabAction(type) {
+  document.getElementById('vfFab').classList.remove('open');
+  const actions = {
+    'create': () => navigate('sell'),
+    'offer': () => navigate('marketplace'),
+    'search': () => { const i = document.getElementById('navSearchInput'); if (i) i.focus(); },
+    'deal': () => navigate('pipeline'),
+    'valuation': () => navigate('valuations'),
+    'help': () => navigate('how-it-works')
+  };
+  (actions[type] || function() {})();
+}
+
+// ====== V3: DEAL ROOM ======
+const DR_CHECKLIST_DEFAULT = [
+  { label: 'Sign NDA', done: true },
+  { label: 'Share financial statements', done: true },
+  { label: 'Review traffic analytics', done: true },
+  { label: 'Due diligence call', done: false },
+  { label: 'Draft asset purchase agreement', done: false },
+  { label: 'Escrow funding', done: false },
+  { label: 'Asset transfer confirmation', done: false }
+];
+const DR_MILESTONES = [
+  { label: 'Offer accepted', done: true },
+  { label: 'NDA signed', done: true },
+  { label: 'Due diligence', done: true },
+  { label: 'APA executed', done: false },
+  { label: 'Escrow funded', done: false },
+  { label: 'Asset transfer complete', done: false }
+];
+const DR_DEFAULT_MESSAGES = [
+  { from: 'Seller', initials: 'S', text: 'Thanks for your interest. Attached 2024-2025 financials.', time: '6d ago' },
+  { from: 'You', initials: 'Y', text: 'Reviewed. Counter at $215K, 30-day close?', time: '5d ago' },
+  { from: 'Seller', initials: 'S', text: 'Can do $215K, 45-day close with 2 weeks founder support.', time: '3d ago' }
+];
+function drSwitchTab(name) {
+  document.querySelectorAll('.dr-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.dr-pane').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('dr-' + name).classList.add('active');
+  if (name === 'messages') drRenderMessages();
+  if (name === 'checklist') drRenderChecklist();
+  if (name === 'milestones') drRenderMilestones();
+}
+function drGetMessages() {
+  try { const m = JSON.parse(localStorage.getItem('vf_dr_messages')); return m && m.length ? m : DR_DEFAULT_MESSAGES; }
+  catch(e) { return DR_DEFAULT_MESSAGES; }
+}
+function drRenderMessages() {
+  const thread = document.getElementById('drMessageThread');
+  if (!thread) return;
+  thread.innerHTML = drGetMessages().map(m => `
+    <div class="dr-message">
+      <div class="dr-msg-avatar">${m.initials}</div>
+      <div class="dr-msg-body">
+        <div class="dr-msg-head"><strong>${m.from}</strong><span>${m.time}</span></div>
+        <div class="dr-msg-text">${m.text}</div>
+      </div>
+    </div>
+  `).join('');
+}
+function drSendMessage() {
+  const input = document.getElementById('drMsgInput');
+  const text = (input.value || '').trim();
+  if (!text) return;
+  const msgs = drGetMessages();
+  msgs.push({ from: 'You', initials: 'Y', text, time: 'just now' });
+  localStorage.setItem('vf_dr_messages', JSON.stringify(msgs));
+  input.value = '';
+  drRenderMessages();
+}
+function drRenderChecklist() {
+  const el = document.getElementById('drChecklist');
+  if (!el) return;
+  const stored = JSON.parse(localStorage.getItem('vf_dr_checklist') || 'null') || DR_CHECKLIST_DEFAULT;
+  el.innerHTML = stored.map((c, i) => `
+    <label class="dr-check"><span><input type="checkbox" ${c.done ? 'checked' : ''} onchange="drToggleCheck(${i})"> ${c.label}</span><span style="color:${c.done ? 'var(--green)' : 'var(--muted)'};font-size:11px;">${c.done ? 'Complete' : 'Pending'}</span></label>
+  `).join('');
+}
+function drToggleCheck(i) {
+  const stored = JSON.parse(localStorage.getItem('vf_dr_checklist') || 'null') || DR_CHECKLIST_DEFAULT.slice();
+  stored[i].done = !stored[i].done;
+  localStorage.setItem('vf_dr_checklist', JSON.stringify(stored));
+  drRenderChecklist();
+}
+function drRenderMilestones() {
+  const el = document.getElementById('drMilestones');
+  if (!el) return;
+  el.innerHTML = DR_MILESTONES.map((m, i) => `
+    <div class="dr-mile">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div class="dr-mile-num ${m.done ? '' : 'pending'}">${m.done ? '✓' : i + 1}</div>
+        <span>${m.label}</span>
+      </div>
+      <span style="color:${m.done ? 'var(--green)' : 'var(--muted)'};font-size:11px;">${m.done ? 'Done' : 'Pending'}</span>
+    </div>
+  `).join('');
+}
+
+// Patch navigate to refresh dashboard + v3 banners
+const _origNavigate = navigate;
+navigate = function(sectionId) {
+  _origNavigate(sectionId);
+  if (sectionId === 'dashboard') renderDashboard();
+  if (sectionId === 'dealroom') { drRenderMessages(); drRenderChecklist(); drRenderMilestones(); }
+};
+
 // ====== INIT ======
 renderListings();
 renderAgentLog();
@@ -4839,6 +5879,36 @@ initAuthSession();
 checkAdminAuth();
 updatePlanDisplay();
 applyNavVisibility();
+
+// v3 init
+vfRenderNotifs();
+vfRenderOnboarding();
+vfRenderNextStep();
+renderDashboard();
+drRenderMessages();
+drRenderChecklist();
+drRenderMilestones();
+
+// If user is logged in, route them to dashboard as landing page (only on first visit this session)
+(function v3Landing() {
+  if (isLoggedIn() && !sessionStorage.getItem('vf_v3_landed')) {
+    sessionStorage.setItem('vf_v3_landed', '1');
+    setTimeout(() => navigate('dashboard'), 50);
+  }
+})();
 </script>
+
+<!-- ====== V3: QUICK ACTION FAB ====== -->
+<div class="fab" id="vfFab">
+  <div class="fab-menu">
+    <button class="fab-action" onclick="vfFabAction('create')"><span class="fab-action-icon">📦</span>Create listing</button>
+    <button class="fab-action" onclick="vfFabAction('offer')"><span class="fab-action-icon">💸</span>Make offer</button>
+    <button class="fab-action" onclick="vfFabAction('search')"><span class="fab-action-icon">🔍</span>Search</button>
+    <button class="fab-action" onclick="vfFabAction('deal')"><span class="fab-action-icon">📊</span>New deal</button>
+    <button class="fab-action" onclick="vfFabAction('valuation')"><span class="fab-action-icon">💰</span>Valuation</button>
+    <button class="fab-action" onclick="vfFabAction('help')"><span class="fab-action-icon">❓</span>Help</button>
+  </div>
+  <button class="fab-btn" onclick="vfFabToggle()" aria-label="Quick actions">+</button>
+</div>
 </body>
 </html>
