@@ -1652,6 +1652,7 @@ a:hover { text-decoration: underline; }
       <a href="#domains" onclick="navigate('domains')">Domains</a>
       <a href="#how-it-works" onclick="navigate('how-it-works')">How It Works</a>
       <a href="#about" onclick="navigate('about')">About</a>
+      <a href="#roadmap" onclick="navigate('roadmap')">Roadmap</a>
       <a href="#agent" onclick="navigate('agent')">AI Agent</a>
       <a href="#brand-box" onclick="navigate('brand-box')">Brand Box</a>
       <a href="#hot-deals" onclick="navigate('hot-deals')">Hot Deals</a>
@@ -3542,29 +3543,42 @@ a:hover { text-decoration: underline; }
         <a href="#marketplace" onclick="navigate('marketplace')">Marketplace</a>
         <a href="#sell" onclick="navigate('sell')">Sell Your Asset</a>
         <a href="#valuations" onclick="navigate('valuations')">Valuations</a>
-        <a href="#pipeline" onclick="navigate('pipeline')">Deal Pipeline</a>
         <a href="#domains" onclick="navigate('domains')">Domains</a>
+        <a href="#hot-deals" onclick="navigate('hot-deals')">Hot Deals</a>
+        <a href="#brand-box" onclick="navigate('brand-box')">Brand Box</a>
+        <a href="#pipeline" onclick="navigate('pipeline')">Deal Pipeline</a>
       </div>
       <div class="footer-col">
-        <h4>Resources</h4>
+        <h4>For Pros</h4>
+        <a href="#agent" onclick="navigate('agent')">AI Agent (Brokers)</a>
+        <a href="#reseller" onclick="navigate('reseller')">Vibe Coders</a>
+        <a href="#reseller" onclick="navigate('reseller')">Resellers</a>
+        <a href="#admin" onclick="navigate('admin')">Admin Panel</a>
+        <a href="#subscriptions" onclick="navigate('subscriptions')">Subscriptions</a>
+      </div>
+      <div class="footer-col">
+        <h4>Learn</h4>
         <a href="#how-it-works" onclick="navigate('how-it-works')">How It Works</a>
         <a href="#about" onclick="navigate('about')">About Us</a>
-        <a href="#agent" onclick="navigate('agent')">AI Agent</a>
-        <a href="#brand-box" onclick="navigate('brand-box')">Brand Box</a>
-        <a href="#hot-deals" onclick="navigate('hot-deals')">Hot Deals</a>
-        <a href="#reseller" onclick="navigate('reseller')">Reseller</a>
-        <a href="#nft" onclick="navigate('nft')">NFT</a>
+        <a href="#nft" onclick="navigate('nft')">NFT Ownership</a>
+        <a href="#roadmap" onclick="navigate('roadmap')">Roadmap &amp; Vote</a>
+        <a href="#" onclick="event.preventDefault();alert('Blog/Guides — coming soon');">Blog / Guides</a>
+        <a href="#" onclick="event.preventDefault();alert('API Docs — coming soon');">API Docs</a>
       </div>
       <div class="footer-col">
         <h4>Legal</h4>
-        <a href="#" onclick="event.preventDefault()">Terms of Service</a>
-        <a href="#" onclick="event.preventDefault()">Privacy Policy</a>
-        <a href="#" onclick="event.preventDefault()">Escrow Terms</a>
-        <a href="#" onclick="event.preventDefault()">Contact</a>
+        <a href="#" onclick="event.preventDefault();v33OpenLegal('terms')">Terms of Service</a>
+        <a href="#" onclick="event.preventDefault();v33OpenLegal('privacy')">Privacy Policy</a>
+        <a href="#" onclick="event.preventDefault();v33OpenLegal('escrow')">Escrow Terms</a>
+        <a href="#" onclick="event.preventDefault();v33OpenLegal('dmca')">DMCA / IP Takedown</a>
+        <a href="#" onclick="event.preventDefault();alert('Contact: hello@vibeflippers.com');">Contact</a>
+        <a href="https://www.legalzoom.com/business/business-compliance/" target="_blank" rel="noopener">Need a real attorney?</a>
+        <div style="margin-top:10px;font-size:11px;color:var(--muted);opacity:.75;">⚖️ Legal docs auto-updated via Termly</div>
       </div>
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 VibeFlippers. All rights reserved.</span>
+      <span style="cursor:pointer;" onclick="v33ShowShipLog()">🚢 <span id="v33ShipText">v3.3 — Figma-pattern gates, Roadmap voting, Legal integrations</span></span>
       <span>vibeflippers.com</span>
     </div>
   </div>
@@ -5713,18 +5727,47 @@ document.addEventListener('keydown', function(e) {
 // Auth-gate: intercept nav clicks when not logged in (except hero, marketplace, how-it-works, about)
 // Public sections (browseable without login — lead-gen + top-of-funnel).
 // Gated sections remain: pipeline, agent, reseller, admin, dealroom.
+// v3.3 — Figma-pattern gates. Public / Soft / Preview / Subscription.
 const AUTH_FREE_SECTIONS = [
-  'hero', 'dashboard', 'marketplace',
+  'hero', 'marketplace',
   'valuations', 'domains', 'brand-box', 'hot-deals', 'nft',
-  'subscriptions', 'how-it-works', 'about'
+  'subscriptions', 'how-it-works', 'about', 'roadmap', 'sell'
 ];
+const V33_SOFT_GATE = ['dashboard', 'dealroom'];
+const V33_PREVIEW_GATE = ['pipeline'];
+const V33_SUB_GATE = ['agent', 'reseller'];
 const _originalNavigate = navigate;
 navigate = function(sectionId) {
-  if (!isLoggedIn() && !AUTH_FREE_SECTIONS.includes(sectionId)) {
-    openAuthModal('login');
+  // Admin: hard-hide unless role=admin
+  if (sectionId === 'admin') {
+    var role = (typeof getUserRole === 'function') ? getUserRole() : null;
+    if (!isLoggedIn() || (role !== 'admin' && role !== 'operator')) {
+      openAuthModal('login');
+      return;
+    }
+    _originalNavigate(sectionId);
     return;
   }
+  // Roadmap is a synthetic section rendered by v33
+  if (sectionId === 'roadmap') {
+    v33RenderRoadmap();
+    return;
+  }
+  // Hide roadmap if leaving it
+  var rm = document.getElementById('section-roadmap');
+  if (rm) { rm.style.display = 'none'; rm.classList.remove('active'); }
+  // Navigate first, then apply gate overlays inline (blur+card pattern)
   _originalNavigate(sectionId);
+  if (isLoggedIn()) { v33ClearGate(sectionId); return; }
+  if (V33_SOFT_GATE.indexOf(sectionId) >= 0) {
+    v33ShowSoftGate(sectionId);
+  } else if (V33_PREVIEW_GATE.indexOf(sectionId) >= 0) {
+    v33ShowPreviewGate(sectionId);
+  } else if (V33_SUB_GATE.indexOf(sectionId) >= 0) {
+    v33ShowSubGate(sectionId);
+  } else {
+    v33ClearGate(sectionId);
+  }
 };
 
 function initAuthSession() {
@@ -5737,15 +5780,7 @@ function initAuthSession() {
     renderUserNav();
   } else {
     renderUserNav();
-    // Auto-show auth modal for first-time visitors after 3s
-    if (!localStorage.getItem('vf_auth_seen')) {
-      setTimeout(function() {
-        if (!isLoggedIn()) {
-          openAuthModal('login');
-          localStorage.setItem('vf_auth_seen', '1');
-        }
-      }, 3000);
-    }
+    // v3.3: no auto-popup — let users explore first (Figma/Stripe pattern).
   }
 }
 
@@ -6936,5 +6971,581 @@ drRenderMilestones();
   }
 })();
 </script>
+
+<!-- ====== v3.3 — Figma-pattern gates, Roadmap voting, Legal integrations ====== -->
+<style>
+.v33-gate-overlay{
+  position:absolute;inset:0;
+  background:rgba(12,10,20,0.72);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  z-index:40;border-radius:12px;
+  animation:v33FadeIn .25s ease-out;
+}
+@keyframes v33FadeIn{from{opacity:0}to{opacity:1}}
+.v33-gate-card{
+  width:340px;max-width:92vw;
+  background:linear-gradient(180deg,#1a1528 0%,#0f0c18 100%);
+  border:1px solid rgba(108,60,175,0.45);
+  border-radius:14px;padding:26px 22px;
+  box-shadow:0 24px 80px rgba(0,0,0,.55),0 0 0 1px rgba(108,60,175,.15);
+  text-align:center;position:relative;
+  color:#efeafc;
+}
+.v33-gate-card::before{
+  content:"";position:absolute;inset:-1px;border-radius:14px;
+  padding:1px;background:linear-gradient(135deg,#6c3caf,#b088f2,#6c3caf);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  pointer-events:none;opacity:.55;
+}
+.v33-gate-close{
+  position:absolute;top:8px;right:10px;background:none;border:0;
+  color:#bdb3d6;font-size:20px;cursor:pointer;line-height:1;padding:4px 8px;
+}
+.v33-gate-close:hover{color:#fff}
+.v33-gate-icon{font-size:40px;opacity:.85;margin-bottom:8px}
+.v33-gate-card h3{font-family:Georgia,serif;font-size:22px;margin:4px 0 8px;color:#fff;line-height:1.2}
+.v33-gate-card p{font-size:14px;color:#bdb3d6;margin:0 0 16px;line-height:1.45}
+.v33-gate-card button.v33-gate-cta{
+  width:100%;background:linear-gradient(135deg,#6c3caf,#8655d4);
+  color:#fff;border:0;padding:12px 16px;border-radius:10px;
+  font-weight:600;font-size:14px;cursor:pointer;
+  box-shadow:0 8px 24px rgba(108,60,175,.35);
+  transition:transform .12s;
+}
+.v33-gate-card button.v33-gate-cta:hover{transform:translateY(-1px)}
+.v33-gate-card .v33-gate-secondary{
+  display:block;margin-top:10px;font-size:12px;color:#9b90b8;
+  cursor:pointer;text-decoration:underline;
+}
+.v33-gate-card .v33-gate-secondary:hover{color:#d1c7ec}
+
+/* Soft-gate inline banner (top of section) */
+.v33-soft-banner{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:10px 16px;margin:0 0 14px;border-radius:10px;
+  background:rgba(108,60,175,.12);border:1px solid rgba(108,60,175,.3);
+  color:#d7cff0;font-size:13px;
+}
+.v33-soft-banner strong{color:#fff}
+.v33-soft-banner button{
+  background:#6c3caf;color:#fff;border:0;border-radius:8px;
+  padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;
+}
+.v33-soft-banner .v33-soft-x{
+  background:none;color:#9b90b8;font-size:16px;padding:0 6px;
+}
+
+/* Subscription-gate marketing landing */
+.v33-sub-landing{
+  padding:48px 20px;text-align:center;color:#efeafc;
+  background:linear-gradient(180deg,rgba(108,60,175,.08),transparent 60%);
+  border-radius:16px;border:1px solid rgba(108,60,175,.25);
+  margin:20px 0;
+}
+.v33-sub-landing h2{font-size:32px;margin:0 0 10px;color:#fff}
+.v33-sub-landing .v33-sub-tag{color:#b088f2;font-weight:600;letter-spacing:1.5px;font-size:12px;text-transform:uppercase}
+.v33-sub-landing p.lead{font-size:16px;color:#bdb3d6;max-width:620px;margin:12px auto 22px;line-height:1.55}
+.v33-sub-features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;max-width:820px;margin:24px auto}
+.v33-sub-features>div{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px;text-align:left;font-size:13px;color:#d7cff0}
+.v33-sub-features strong{display:block;color:#fff;margin-bottom:4px;font-size:14px}
+.v33-sub-cta{margin-top:22px}
+.v33-sub-cta button{
+  background:linear-gradient(135deg,#6c3caf,#8655d4);color:#fff;border:0;
+  padding:14px 28px;border-radius:10px;font-weight:700;font-size:15px;cursor:pointer;
+  box-shadow:0 12px 32px rgba(108,60,175,.4);
+}
+.v33-sub-cta .v33-sub-price{display:block;color:#b088f2;font-size:13px;margin-top:10px}
+
+/* Roadmap section */
+#section-roadmap{padding:40px 20px;color:#efeafc}
+.v33-rm-head{max-width:900px;margin:0 auto 24px;text-align:center}
+.v33-rm-head h1{font-size:34px;margin:0 0 8px;color:#fff}
+.v33-rm-head p{color:#bdb3d6;max-width:640px;margin:0 auto;font-size:15px}
+.v33-rm-controls{display:flex;gap:10px;justify-content:center;margin:18px 0 24px;flex-wrap:wrap}
+.v33-rm-controls select,.v33-rm-controls button{
+  background:#1a1528;color:#efeafc;border:1px solid rgba(108,60,175,.35);
+  border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;
+}
+.v33-rm-controls button.primary{background:#6c3caf;border-color:#6c3caf;color:#fff;font-weight:600}
+.v33-rm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;max-width:1100px;margin:0 auto}
+.v33-rm-card{
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:10px;
+  transition:border-color .15s,transform .12s;
+}
+.v33-rm-card:hover{border-color:rgba(108,60,175,.5);transform:translateY(-2px)}
+.v33-rm-card h4{margin:0;font-size:16px;color:#fff}
+.v33-rm-card p{margin:0;color:#bdb3d6;font-size:13px;line-height:1.5;flex:1}
+.v33-rm-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:4px}
+.v33-pill{
+  display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;
+  font-weight:600;letter-spacing:.3px;
+}
+.v33-pill.planned{background:rgba(108,60,175,.2);color:#b088f2}
+.v33-pill.progress{background:rgba(240,180,40,.15);color:#f0c040}
+.v33-pill.shipped{background:rgba(60,200,120,.15);color:#4cd089}
+.v33-pill.considering{background:rgba(160,160,180,.15);color:#b8b0c8}
+.v33-vote-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(108,60,175,.15);border:1px solid rgba(108,60,175,.4);
+  color:#d7cff0;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:13px;font-weight:600;
+  transition:all .12s;
+}
+.v33-vote-btn:hover{background:rgba(108,60,175,.3)}
+.v33-vote-btn.voted{background:#6c3caf;color:#fff;border-color:#6c3caf}
+.v33-vote-btn .v33-arrow{font-size:14px}
+
+/* Legal modal */
+.v33-legal-modal{
+  position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.65);
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.v33-legal-modal.open{display:flex}
+.v33-legal-box{
+  background:#0f0c18;border:1px solid rgba(108,60,175,.4);border-radius:14px;
+  width:720px;max-width:100%;max-height:85vh;overflow:auto;padding:28px;color:#efeafc;position:relative;
+}
+.v33-legal-box h2{margin:0 0 6px;color:#fff}
+.v33-legal-box .v33-legal-by{color:#9b90b8;font-size:12px;margin-bottom:18px;display:block}
+.v33-legal-box p{color:#bdb3d6;font-size:14px;line-height:1.6}
+.v33-legal-box .v33-legal-close{
+  position:absolute;top:14px;right:18px;background:none;border:0;color:#bdb3d6;
+  font-size:24px;cursor:pointer;
+}
+
+/* Ship log dropdown */
+.v33-ship-log{
+  position:fixed;bottom:20px;left:20px;z-index:9998;
+  background:#0f0c18;border:1px solid rgba(108,60,175,.4);
+  border-radius:12px;padding:16px;max-width:340px;color:#efeafc;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);display:none;
+}
+.v33-ship-log.open{display:block}
+.v33-ship-log h4{margin:0 0 10px;color:#fff;font-size:14px}
+.v33-ship-log ul{margin:0;padding-left:18px;font-size:12px;color:#bdb3d6}
+.v33-ship-log li{margin-bottom:6px}
+
+/* Ensure gated sections are positioned for overlay anchor */
+.section{position:relative}
+
+/* Suggest feature form */
+.v33-suggest-form{display:grid;gap:10px;margin-top:10px}
+.v33-suggest-form input,.v33-suggest-form textarea{
+  background:#1a1528;border:1px solid rgba(108,60,175,.35);color:#efeafc;
+  border-radius:8px;padding:10px;font-size:13px;font-family:inherit;
+}
+.v33-suggest-form button{
+  background:#6c3caf;color:#fff;border:0;border-radius:8px;padding:10px;
+  font-weight:600;cursor:pointer;
+}
+
+@media(max-width:600px){
+  .v33-gate-card{width:92vw;padding:22px 18px}
+  .v33-sub-landing{padding:32px 14px}
+  .v33-sub-landing h2{font-size:24px}
+}
+</style>
+
+<!-- v3.3 Legal modal markup -->
+<div class="v33-legal-modal" id="v33LegalModal" onclick="if(event.target===this)v33CloseLegal()">
+  <div class="v33-legal-box">
+    <button class="v33-legal-close" onclick="v33CloseLegal()">&times;</button>
+    <div id="v33LegalContent"></div>
+  </div>
+</div>
+
+<!-- v3.3 Roadmap section (injected into body; navigate('roadmap') shows it) -->
+<section id="section-roadmap" class="section" style="display:none">
+  <div class="v33-rm-head">
+    <h1>Roadmap &amp; Feedback — tell us what to build next</h1>
+    <p>Upvote what matters. We ship the most-voted features first. Transparency &gt; promises.</p>
+  </div>
+  <div class="v33-rm-controls">
+    <select id="v33RmSort" onchange="v33RenderRoadmapCards()">
+      <option value="votes">Sort: Most Voted</option>
+      <option value="newest">Sort: Newest</option>
+      <option value="status">Sort: By Status</option>
+    </select>
+    <button class="primary" onclick="v33OpenSuggest()">+ Suggest a Feature</button>
+  </div>
+  <div class="v33-rm-grid" id="v33RmGrid"></div>
+  <div style="max-width:560px;margin:28px auto 0;display:none" id="v33SuggestPanel">
+    <h3 style="color:#fff;margin:0 0 6px">Suggest a Feature</h3>
+    <p style="color:#bdb3d6;font-size:13px;margin:0">We read every one. Seriously.</p>
+    <form class="v33-suggest-form" onsubmit="event.preventDefault();v33SubmitSuggest()">
+      <input type="text" id="v33SugTitle" placeholder="Feature title" required>
+      <textarea id="v33SugDesc" placeholder="What problem does it solve?" rows="3" required></textarea>
+      <input type="email" id="v33SugEmail" placeholder="Your email (optional)">
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+</section>
+
+<!-- v3.3 Ship log popup -->
+<div class="v33-ship-log" id="v33ShipLog">
+  <h4>🚢 Recent ships</h4>
+  <ul id="v33ShipList"></ul>
+  <button onclick="document.getElementById('v33ShipLog').classList.remove('open')" style="margin-top:8px;background:none;border:0;color:#9b90b8;font-size:12px;cursor:pointer">Close</button>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  // --------- Gate copy table (from UX-GATED-PATTERNS.md) ---------
+  const V33_GATE_COPY = {
+    dashboard: { title:'See your personal dashboard', body:'Matched listings, saved searches, deal alerts — free forever.', cta:'Create free account' },
+    pipeline:  { title:'Track your deals in one place', body:'Kanban board, escrow status, transfer checklist — free account.', cta:'Create free account' },
+    dealroom:  { title:'Build your first deal room', body:'Messages, documents, escrow, NFT transfer — when you close a deal.', cta:'Sign in to start' },
+    listing:   { title:'Unlock the full listing', body:'Traffic sources, P&L, seller Q&A — free, 20 seconds.', cta:'Unlock listing' },
+    agent:     { title:'Enable your AI Agent', body:'Auto-review listings, detect duplicates, match buyers.', cta:'Subscribe — Pro $149/mo' },
+    reseller:  { title:'Join the Reseller Program', body:'Build & sell templates on the platform, earn 5% on referrals.', cta:'Subscribe — $49/mo' }
+  };
+
+  function v33SessionDismissed(sectionId){
+    return sessionStorage.getItem('vf_v33_dismiss_'+sectionId) === '1';
+  }
+  function v33SetDismissed(sectionId){
+    sessionStorage.setItem('vf_v33_dismiss_'+sectionId,'1');
+  }
+
+  function getSectionEl(sectionId){
+    // Existing sections are id="section-xxx" per navigate() convention
+    return document.getElementById('section-'+sectionId) || document.getElementById(sectionId);
+  }
+
+  window.v33ClearGate = function(sectionId){
+    const sec = getSectionEl(sectionId);
+    if (!sec) return;
+    sec.querySelectorAll('.v33-gate-overlay,.v33-soft-banner,.v33-sub-landing-wrap').forEach(n=>n.remove());
+    // restore any preview content wrapper if needed
+  };
+
+  window.v33ShowPreviewGate = function(sectionId){
+    if (v33SessionDismissed(sectionId)) return;
+    const sec = getSectionEl(sectionId);
+    if (!sec) return;
+    v33ClearGate(sectionId);
+    const copy = V33_GATE_COPY[sectionId] || V33_GATE_COPY.listing;
+    const overlay = document.createElement('div');
+    overlay.className = 'v33-gate-overlay';
+    overlay.setAttribute('data-v33-gate', sectionId);
+    overlay.innerHTML = `
+      <div class="v33-gate-card" role="dialog" aria-modal="false" aria-labelledby="v33gt-${sectionId}">
+        <button class="v33-gate-close" aria-label="Dismiss" onclick="v33DismissGate('${sectionId}')">&times;</button>
+        <div class="v33-gate-icon">🔒</div>
+        <h3 id="v33gt-${sectionId}">${copy.title}</h3>
+        <p>${copy.body}</p>
+        <button class="v33-gate-cta" onclick="openAuthModal('signup')">${copy.cta}</button>
+        <a class="v33-gate-secondary" onclick="openAuthModal('login')">Already have an account? Sign in</a>
+      </div>
+    `;
+    sec.appendChild(overlay);
+  };
+
+  window.v33ShowSoftGate = function(sectionId){
+    if (v33SessionDismissed(sectionId)) return;
+    const sec = getSectionEl(sectionId);
+    if (!sec) return;
+    v33ClearGate(sectionId);
+    const copy = V33_GATE_COPY[sectionId] || V33_GATE_COPY.dashboard;
+    const banner = document.createElement('div');
+    banner.className = 'v33-soft-banner';
+    banner.innerHTML = `
+      <div>🔍 <strong>Sample view.</strong> ${copy.body} <span style="opacity:.7">Sign in for your personalized view.</span></div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button onclick="openAuthModal('signup')">${copy.cta}</button>
+        <button class="v33-soft-x" onclick="v33DismissGate('${sectionId}')" aria-label="Dismiss">&times;</button>
+      </div>
+    `;
+    // Prepend into the section's main content
+    const container = sec.querySelector('.container') || sec;
+    container.insertBefore(banner, container.firstChild);
+  };
+
+  window.v33ShowSubGate = function(sectionId){
+    if (v33SessionDismissed(sectionId)) return;
+    const sec = getSectionEl(sectionId);
+    if (!sec) return;
+    v33ClearGate(sectionId);
+    const copy = V33_GATE_COPY[sectionId] || V33_GATE_COPY.agent;
+    const overlay = document.createElement('div');
+    overlay.className = 'v33-gate-overlay';
+    overlay.setAttribute('data-v33-gate', sectionId);
+    const features = sectionId === 'agent' ? [
+      {t:'Auto-Review', b:'AI screens every new listing for red flags — fake traffic, inflated revenue, duplicates.'},
+      {t:'Buyer Matching', b:'Smart matching to your saved filters; alerts when a qualified listing goes live.'},
+      {t:'Deal Assistant', b:'In-deal AI that drafts offers, counter-offers, and due-diligence questions.'},
+      {t:'Portfolio Scoring', b:'Continuously scores your owned assets so you know when to hold vs flip.'}
+    ] : [
+      {t:'Template Marketplace', b:'Sell vibe-coded templates, plugins, and asset packs to buyers and builders.'},
+      {t:'5% Referral Revenue', b:'Earn on every deal you refer — tracked automatically via your reseller code.'},
+      {t:'Reseller Dashboard', b:'Live stats: sales, commissions, top-performing listings.'},
+      {t:'Co-Branded Storefront', b:'Your own branded storefront inside VibeFlippers.'}
+    ];
+    overlay.innerHTML = `
+      <div class="v33-sub-landing" style="width:min(860px,92vw);pointer-events:auto;max-height:88vh;overflow:auto">
+        <button class="v33-gate-close" style="top:8px;right:14px" aria-label="Dismiss" onclick="v33DismissGate('${sectionId}')">&times;</button>
+        <span class="v33-sub-tag">Subscription feature</span>
+        <h2>${copy.title}</h2>
+        <p class="lead">${copy.body}</p>
+        <div class="v33-sub-features">
+          ${features.map(f=>`<div><strong>${f.t}</strong>${f.b}</div>`).join('')}
+        </div>
+        <div class="v33-sub-cta">
+          <button onclick="navigate('subscriptions')">${copy.cta}</button>
+          <span class="v33-sub-price">Cancel anytime. No credit card to preview.</span>
+          <div style="margin-top:14px"><a class="v33-gate-secondary" onclick="openAuthModal('login')">Already a subscriber? Sign in</a></div>
+        </div>
+      </div>
+    `;
+    sec.appendChild(overlay);
+  };
+
+  window.v33DismissGate = function(sectionId){
+    v33SetDismissed(sectionId);
+    v33ClearGate(sectionId);
+  };
+
+  // ESC dismisses any active gate
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') {
+      const any = document.querySelector('.v33-gate-overlay[data-v33-gate]');
+      if (any) {
+        v33DismissGate(any.getAttribute('data-v33-gate'));
+      }
+      const lm = document.getElementById('v33LegalModal');
+      if (lm && lm.classList.contains('open')) v33CloseLegal();
+    }
+  });
+
+  // --------- Hide admin nav link unless role=admin ---------
+  function v33HideAdminIfNotAdmin(){
+    const isAdmin = (typeof isLoggedIn === 'function' && isLoggedIn()) &&
+                    (typeof getUserRole === 'function') &&
+                    (getUserRole() === 'admin' || getUserRole() === 'operator');
+    document.querySelectorAll('a[href="#admin"]').forEach(a=>{
+      a.style.display = isAdmin ? '' : 'none';
+    });
+  }
+
+  // --------- Priority 2: Feature Feedback Voting ---------
+  const V33_SEED_FEATURES = [
+    { id:'listing-redesign', title:'Listing Detail Full Redesign', desc:'Revamped listing page: traffic charts, P&L, seller Q&A, live chat.', status:'planned', added:'2026-04-10' },
+    { id:'mobile-app', title:'Mobile App (iOS/Android)', desc:'Native apps with push alerts for new listings and deal-room updates.', status:'considering', added:'2026-04-12' },
+    { id:'ai-valuation-2', title:'AI Valuation Agent 2.0', desc:'Next-gen valuation with multi-comp, cohort analysis, confidence bands.', status:'progress', added:'2026-04-05' },
+    { id:'cross-platform-sync', title:'Cross-Platform Listing Sync', desc:'Sync your listing to Flippa, Empire Flippers, MicroAcquire in one click.', status:'planned', added:'2026-04-08' },
+    { id:'portfolio-analytics', title:'Portfolio Analytics for Acquirers', desc:'Track ROI, MRR, churn across all your acquired assets in one dashboard.', status:'planned', added:'2026-04-15' },
+    { id:'dealroom-video', title:'Live Deal Room Chat with Video', desc:'Video + screenshare inside the deal room for due diligence walkthroughs.', status:'considering', added:'2026-04-18' },
+    { id:'migration-assistant', title:'Automated Migration Assistant', desc:'Step-by-step guided transfer: DNS, code, Stripe, analytics, customer data.', status:'planned', added:'2026-04-02' },
+    { id:'domain-portfolios', title:'Marketplace for Domain Portfolios', desc:'Buy/sell curated baskets of domains as a single asset.', status:'considering', added:'2026-04-14' }
+  ];
+
+  function v33GetFeatures(){
+    const raw = localStorage.getItem('vf_v33_features');
+    if (raw) { try { return JSON.parse(raw); } catch(e){} }
+    localStorage.setItem('vf_v33_features', JSON.stringify(V33_SEED_FEATURES));
+    return V33_SEED_FEATURES.slice();
+  }
+  function v33GetVotes(){
+    const raw = localStorage.getItem('vf_feature_votes');
+    return raw ? JSON.parse(raw) : {};
+  }
+  function v33SaveVotes(v){ localStorage.setItem('vf_feature_votes', JSON.stringify(v)); }
+  function v33GetSuggestions(){
+    const raw = localStorage.getItem('vf_feature_suggestions');
+    return raw ? JSON.parse(raw) : [];
+  }
+
+  window.v33Vote = function(id){
+    const votes = v33GetVotes();
+    if (votes[id]){ delete votes[id]; } else { votes[id] = { ts:Date.now() }; }
+    v33SaveVotes(votes);
+    v33RenderRoadmapCards();
+  };
+
+  function v33StatusMeta(s){
+    return {
+      planned:{label:'Planned',cls:'planned'},
+      progress:{label:'In Progress',cls:'progress'},
+      shipped:{label:'Shipped',cls:'shipped'},
+      considering:{label:'Considering',cls:'considering'}
+    }[s] || {label:s,cls:'planned'};
+  }
+
+  function v33CountForFeature(f){
+    // base count + user upvotes = make it feel active. Deterministic per id.
+    const base = 3 + (f.id.length * 7) % 37;
+    const votes = v33GetVotes();
+    return base + (votes[f.id] ? 1 : 0);
+  }
+
+  window.v33RenderRoadmap = function(){
+    // The app hides sections by toggling .active on .page-section elements
+    document.querySelectorAll('.page-section').forEach(s=>s.classList.remove('active'));
+    // Hide the hero/default content too
+    const hero = document.getElementById('hero');
+    if (hero) hero.classList.remove('active');
+    const sec = document.getElementById('section-roadmap');
+    if (!sec) return;
+    sec.style.display = 'block';
+    // Make it behave like an active page
+    sec.classList.add('active','page-section');
+    window.scrollTo({top:0,behavior:'smooth'});
+    v33RenderRoadmapCards();
+  };
+
+  window.v33RenderRoadmapCards = function(){
+    const grid = document.getElementById('v33RmGrid');
+    if (!grid) return;
+    const features = v33GetFeatures().concat(v33GetSuggestions().map(s=>({
+      id:'sug-'+(s.id||s.ts), title:s.title, desc:s.desc, status:'considering', added:s.ts
+    })));
+    const sort = document.getElementById('v33RmSort').value;
+    const votes = v33GetVotes();
+    features.sort((a,b)=>{
+      if (sort==='votes') return v33CountForFeature(b) - v33CountForFeature(a);
+      if (sort==='newest') return (b.added||'').localeCompare(a.added||'');
+      if (sort==='status') return (a.status||'').localeCompare(b.status||'');
+      return 0;
+    });
+    grid.innerHTML = features.map(f=>{
+      const meta = v33StatusMeta(f.status);
+      const count = v33CountForFeature(f);
+      const voted = !!votes[f.id];
+      return `
+        <div class="v33-rm-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+            <h4>${f.title}</h4>
+            <span class="v33-pill ${meta.cls}">${meta.label}</span>
+          </div>
+          <p>${f.desc||''}</p>
+          <div class="v33-rm-foot">
+            <button class="v33-vote-btn ${voted?'voted':''}" onclick="v33Vote('${f.id}')">
+              <span class="v33-arrow">▲</span> <span>${count}</span> <span style="opacity:.75">${voted?'voted':'upvote'}</span>
+            </button>
+            <span style="font-size:11px;color:#9b90b8">${(f.added||'').slice(0,10)}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  };
+
+  window.v33OpenSuggest = function(){
+    const p = document.getElementById('v33SuggestPanel');
+    p.style.display = p.style.display==='none' || !p.style.display ? 'block' : 'none';
+    if (p.style.display==='block') p.scrollIntoView({behavior:'smooth',block:'center'});
+  };
+  window.v33SubmitSuggest = function(){
+    const title = document.getElementById('v33SugTitle').value.trim();
+    const desc = document.getElementById('v33SugDesc').value.trim();
+    const email = document.getElementById('v33SugEmail').value.trim();
+    if (!title || !desc) return;
+    const all = v33GetSuggestions();
+    all.push({ id:'sug'+Date.now(), title, desc, email, ts:new Date().toISOString() });
+    localStorage.setItem('vf_feature_suggestions', JSON.stringify(all));
+    document.getElementById('v33SugTitle').value='';
+    document.getElementById('v33SugDesc').value='';
+    document.getElementById('v33SugEmail').value='';
+    document.getElementById('v33SuggestPanel').style.display='none';
+    v33RenderRoadmapCards();
+    alert('Thanks — your suggestion was recorded. We review these weekly.');
+  };
+
+  // --------- Priority 3: Legal integrations ---------
+  const V33_LEGAL = {
+    terms: {
+      title:'Terms of Service',
+      by:'Powered by Termly — auto-updated for regulatory changes',
+      body:`<p>These Terms of Service govern your use of VibeFlippers ("the Platform"). By using the Platform you agree to be bound by these terms.</p>
+            <p><strong>1. Marketplace role.</strong> VibeFlippers is a marketplace connecting buyers and sellers of digital assets. We are not a party to any transaction; all deals are between you and the counterparty.</p>
+            <p><strong>2. Escrow.</strong> Funds held in escrow are governed by our separate Escrow Terms.</p>
+            <p><strong>3. Disputes.</strong> Disputes between users are handled first by our support team and, if unresolved, by binding arbitration.</p>
+            <p><strong>4. Liability.</strong> The Platform is provided "as is". We disclaim all warranties to the fullest extent allowed by law.</p>
+            <p style="opacity:.7;font-size:12px;margin-top:24px">Placeholder text. Live Termly embed will replace this when the Termly account is active.</p>`
+    },
+    privacy: {
+      title:'Privacy Policy',
+      by:'Powered by Termly — auto-updated for regulatory changes',
+      body:`<p>We collect data you provide (email, listing details, transaction data) and limited analytics (page views, referrers) to operate the Platform.</p>
+            <p><strong>We do not sell your data.</strong> We share data only with service providers (payment, escrow, email) and when legally required.</p>
+            <p>You may request deletion of your account at any time from your settings page.</p>
+            <p style="opacity:.7;font-size:12px;margin-top:24px">Placeholder text. Live Termly embed will replace this when the Termly account is active.</p>`
+    },
+    escrow: {
+      title:'Escrow Terms (In-house)',
+      by:'Maintained by VibeFlippers legal',
+      body:`<p>Escrow holds buyer funds until the seller confirms asset transfer and the transfer passes the platform's verification.</p>
+            <p><strong>Hold period:</strong> Funds remain in escrow 3–14 days depending on deal size.</p>
+            <p><strong>Release triggers:</strong> Mutual confirmation, NFT transfer event, or 14-day auto-release if no dispute filed.</p>
+            <p><strong>Disputes:</strong> Filed via the Deal Room; reviewed within 72 hours.</p>`
+    },
+    dmca: {
+      title:'DMCA / IP Takedown',
+      by:'Report suspected IP infringement',
+      body:`<p>If you believe a listing infringes your intellectual property, email <a href="mailto:dmca@vibeflippers.com" style="color:#b088f2">dmca@vibeflippers.com</a> with:</p>
+            <ul style="color:#bdb3d6;font-size:14px;line-height:1.7">
+              <li>Your contact information</li>
+              <li>A description of the copyrighted work</li>
+              <li>The URL of the infringing listing on VibeFlippers</li>
+              <li>A good-faith statement that the use is not authorized</li>
+              <li>A statement under penalty of perjury that your notice is accurate</li>
+              <li>Your physical or electronic signature</li>
+            </ul>
+            <p>We respond within 5 business days and remove confirmed infringing content.</p>`
+    }
+  };
+  window.v33OpenLegal = function(key){
+    const doc = V33_LEGAL[key];
+    if (!doc) return;
+    document.getElementById('v33LegalContent').innerHTML = `
+      <h2>${doc.title}</h2>
+      <span class="v33-legal-by">${doc.by}</span>
+      ${doc.body}
+    `;
+    document.getElementById('v33LegalModal').classList.add('open');
+  };
+  window.v33CloseLegal = function(){
+    document.getElementById('v33LegalModal').classList.remove('open');
+  };
+
+  // --------- Priority 5: Continuous improvement visibility ---------
+  const V33_SHIPS = [
+    { date:'2026-04-19', msg:'v3.3 — Figma-pattern gates, Roadmap voting, Legal integrations' },
+    { date:'2026-04-18', msg:'v3.2 — Supabase sync + live notifications' },
+    { date:'2026-04-17', msg:'v3.1 — Explorer dashboard, FAB, hot deals' },
+    { date:'2026-04-15', msg:'v3.0 — Public marketplace without auth wall' },
+    { date:'2026-04-12', msg:'v2.9 — Escrow flow + NFT transfer ownership' }
+  ];
+  if (!localStorage.getItem('vf_latest_ship')) {
+    localStorage.setItem('vf_latest_ship', V33_SHIPS[0].msg);
+  }
+  window.v33ShowShipLog = function(){
+    const el = document.getElementById('v33ShipLog');
+    const list = document.getElementById('v33ShipList');
+    list.innerHTML = V33_SHIPS.slice(0,5).map(s=>`<li><strong>${s.date}</strong> — ${s.msg}</li>`).join('');
+    el.classList.toggle('open');
+  };
+
+  // --------- Boot ---------
+  function v33Boot(){
+    v33HideAdminIfNotAdmin();
+    // Re-check admin visibility whenever auth state changes (polling-light: on click)
+    document.addEventListener('click', function(){ setTimeout(v33HideAdminIfNotAdmin, 50); });
+    // Show latest ship text in footer
+    const ship = localStorage.getItem('vf_latest_ship');
+    const txt = document.getElementById('v33ShipText');
+    if (ship && txt) txt.textContent = '🚢 Shipped: '+ship;
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', v33Boot);
+  } else {
+    v33Boot();
+  }
+})();
+</script>
+
 </body>
 </html>
