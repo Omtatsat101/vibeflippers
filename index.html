@@ -5910,5 +5910,635 @@ drRenderMilestones();
   </div>
   <button class="fab-btn" onclick="vfFabToggle()" aria-label="Quick actions">+</button>
 </div>
+<!-- ====== V3.1 UX ENHANCEMENTS (E1-E12) ====== -->
+<style>
+/* E1 Trust Counter Bar */
+.vf31-trust-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding:28px 0;margin:32px 0 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(108,60,175,0.05),transparent);border-radius:12px}
+.vf31-trust-bar .vf31-stat{text-align:center;padding:8px}
+.vf31-trust-bar .vf31-num{display:block;font-size:2.1rem;font-weight:800;color:var(--accent-light);line-height:1.1;letter-spacing:-0.02em;font-family:var(--font-display,inherit)}
+.vf31-trust-bar .vf31-lbl{display:block;margin-top:6px;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+@media(max-width:640px){.vf31-trust-bar{grid-template-columns:repeat(2,1fr);gap:12px}.vf31-trust-bar .vf31-num{font-size:1.5rem}}
+
+/* E8 Valuation mini-quiz */
+.vf31-valquiz{margin-top:28px;padding:20px;background:rgba(255,255,255,0.04);border:1px solid var(--line);border-radius:14px}
+.vf31-valquiz h4{font-size:15px;font-weight:700;color:var(--ink-bright);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.vf31-valquiz .vf31-q-row{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end}
+.vf31-valquiz label{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;font-weight:700}
+.vf31-valquiz select,.vf31-valquiz input{width:100%;padding:9px 10px;background:rgba(0,0,0,0.2);border:1px solid var(--line);color:var(--ink);border-radius:8px;font-size:14px}
+.vf31-valquiz .vf31-result{margin-top:14px;padding:12px;background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.25);border-radius:8px;color:var(--green);font-weight:700;display:none}
+@media(max-width:640px){.vf31-valquiz .vf31-q-row{grid-template-columns:1fr}}
+
+/* E9 Press Logo Strip */
+.vf31-press{display:flex;flex-wrap:wrap;gap:28px;align-items:center;justify-content:center;padding:24px 16px;margin-top:28px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.vf31-press-lbl{font-size:11px;text-transform:uppercase;letter-spacing:0.16em;color:var(--muted);font-weight:700;width:100%;text-align:center;margin-bottom:4px}
+.vf31-press-item{opacity:0.5;transition:opacity 0.2s;font-weight:700;font-size:15px;color:var(--ink);letter-spacing:-0.01em;padding:6px 12px;border:1px dashed var(--line);border-radius:6px}
+.vf31-press-item:hover{opacity:1}
+
+/* E3 Verified Metrics Badge */
+.vf31-verified{display:inline-flex;align-items:center;gap:4px;background:rgba(52,211,153,0.15);color:var(--green);font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;border:1px solid rgba(52,211,153,0.3);text-transform:uppercase;letter-spacing:0.06em;cursor:help;position:relative}
+.vf31-verified:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#1a1428;color:var(--ink);padding:6px 10px;border-radius:6px;font-size:11px;white-space:nowrap;z-index:100;border:1px solid var(--line);text-transform:none;letter-spacing:0;font-weight:500}
+
+/* E4 Three-Metric Card Row */
+.vf31-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:10px;margin:10px 0;background:rgba(0,0,0,0.25);border-radius:8px;border:1px solid var(--line)}
+.vf31-metrics>div{text-align:center}
+.vf31-metrics .vf31-k{display:block;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;font-weight:700}
+.vf31-metrics .vf31-v{display:block;font-weight:700;font-size:14px;color:var(--ink-bright);margin-top:2px}
+
+/* E5 Status pills */
+.vf31-pills{position:absolute;top:12px;left:12px;display:flex;flex-direction:column;gap:4px;z-index:5;pointer-events:none}
+.vf31-pill{font-size:9px;font-weight:800;padding:3px 8px;border-radius:999px;letter-spacing:0.08em;text-transform:uppercase}
+.vf31-pill-new{background:rgba(52,211,153,0.18);color:var(--green);border:1px solid rgba(52,211,153,0.4)}
+.vf31-pill-hot{background:rgba(248,113,113,0.18);color:var(--red);border:1px solid rgba(248,113,113,0.4)}
+.vf31-pill-offer{background:rgba(251,191,36,0.15);color:#fbbf24;border:1px solid rgba(251,191,36,0.35)}
+.vf31-pill-sold{background:rgba(156,163,175,0.18);color:#d1d5db;border:1px solid rgba(156,163,175,0.35)}
+.vf31-pill-reduced{background:rgba(108,60,175,0.25);color:var(--accent-light);border:1px solid var(--accent)}
+
+/* E6 Dual-axis filter panel */
+.vf31-dualfilter{margin:16px 0;padding:16px;background:rgba(255,255,255,0.03);border:1px solid var(--line);border-radius:12px}
+.vf31-dualfilter-row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.vf31-dualfilter h5{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;font-weight:700;margin-bottom:8px}
+.vf31-chips{display:flex;flex-wrap:wrap;gap:6px}
+.vf31-chip{font-size:11px;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,0.05);border:1px solid var(--line);color:var(--ink);cursor:pointer;transition:all 0.15s;user-select:none}
+.vf31-chip:hover{border-color:var(--accent-light);color:var(--ink-bright)}
+.vf31-chip.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.vf31-active-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.vf31-active-pill{font-size:11px;padding:4px 8px 4px 10px;border-radius:999px;background:rgba(108,60,175,0.2);color:var(--accent-light);border:1px solid var(--accent);display:inline-flex;align-items:center;gap:6px}
+.vf31-active-pill button{background:none;border:none;color:inherit;cursor:pointer;font-size:14px;line-height:1;padding:0;margin-left:2px}
+@media(max-width:640px){.vf31-dualfilter-row{grid-template-columns:1fr}}
+
+/* E7 Save search */
+.vf31-save-search{display:flex;justify-content:flex-end;margin:8px 0}
+.vf31-saved-list{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
+.vf31-saved-search{font-size:11px;padding:5px 10px;border-radius:999px;background:rgba(108,60,175,0.15);color:var(--accent-light);border:1px solid var(--accent);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+
+/* E2 Lockwall */
+.vf31-lockwall{position:fixed;inset:0;background:rgba(12,10,20,0.85);backdrop-filter:blur(8px);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px}
+.vf31-lockwall-card{max-width:440px;background:var(--bg2);border:1px solid var(--accent);border-radius:16px;padding:32px;text-align:center;box-shadow:0 20px 60px var(--accent-glow)}
+.vf31-lockwall-card h3{font-size:22px;color:var(--ink-bright);margin-bottom:12px;font-weight:800}
+.vf31-lockwall-card p{color:var(--muted);margin-bottom:20px;font-size:14px;line-height:1.5}
+.vf31-lockwall-card .vf31-preview-metrics{display:flex;gap:10px;margin:16px 0;justify-content:center}
+.vf31-lockwall-card .vf31-preview-metrics>div{flex:1;padding:10px;background:rgba(255,255,255,0.04);border-radius:8px;border:1px solid var(--line)}
+
+/* E10 & E11 Sell page additions */
+.vf31-sell-extras{max-width:720px;margin:32px auto 0}
+.vf31-statblock{display:flex;gap:24px;padding:22px;background:linear-gradient(135deg,rgba(108,60,175,0.1),rgba(52,211,153,0.05));border:1px solid var(--accent);border-radius:14px;margin-bottom:24px;align-items:center}
+.vf31-statblock-num{font-size:2.4rem;font-weight:800;color:var(--accent-light);line-height:1;letter-spacing:-0.02em}
+.vf31-statblock-lbl{color:var(--muted);font-size:13px}
+.vf31-feetable{width:100%;border-collapse:collapse;background:rgba(255,255,255,0.03);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:24px}
+.vf31-feetable th,.vf31-feetable td{padding:12px 14px;text-align:left;font-size:13px;border-bottom:1px solid var(--line)}
+.vf31-feetable th{background:rgba(108,60,175,0.12);color:var(--ink-bright);font-weight:700;text-transform:uppercase;font-size:11px;letter-spacing:0.08em}
+.vf31-feetable tr:last-child td{border-bottom:none}
+.vf31-feetable td.vf31-fee-rate{color:var(--accent-light);font-weight:700}
+
+/* E12 Ownership verification */
+.vf31-verifbox{margin-top:14px;padding:14px;background:rgba(52,211,153,0.06);border:1px dashed rgba(52,211,153,0.35);border-radius:10px}
+.vf31-verifbox h5{font-size:13px;color:var(--green);margin-bottom:8px;font-weight:700}
+.vf31-verif-token{display:inline-block;background:#000;color:var(--green);padding:6px 12px;border-radius:6px;font-family:var(--font-mono,monospace);font-size:14px;font-weight:700;letter-spacing:0.04em;margin:6px 0;border:1px solid rgba(52,211,153,0.3)}
+.vf31-verif-methods{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.vf31-verif-method{font-size:11px;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,0.05);border:1px solid var(--line);cursor:pointer}
+.vf31-verif-method.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+</style>
+
+<script>
+(function vf31Init(){
+  'use strict';
+
+  // ================= E1: Live Trust Counter Bar =================
+  function vf31InjectTrustBar(){
+    const hero = document.querySelector('#hero .container');
+    if (!hero || document.getElementById('vf31-trust-bar')) return;
+    const bar = document.createElement('div');
+    bar.id = 'vf31-trust-bar';
+    bar.className = 'vf31-trust-bar';
+    bar.innerHTML = `
+      <div class="vf31-stat"><span class="vf31-num" data-count="2400000" data-prefix="$" data-suffix="+" data-format="money">$0</span><span class="vf31-lbl">In Listings</span></div>
+      <div class="vf31-stat"><span class="vf31-num" data-count="47">0</span><span class="vf31-lbl">Active Listings</span></div>
+      <div class="vf31-stat"><span class="vf31-num" data-count="222">0</span><span class="vf31-lbl">Weekly Visitors</span></div>
+      <div class="vf31-stat"><span class="vf31-num" data-count="92" data-suffix=" days">0</span><span class="vf31-lbl">Avg Close Time</span></div>
+    `;
+    hero.appendChild(bar);
+    vf31AnimateCounters(bar);
+    try { localStorage.setItem('vf_counter_last_tick', Date.now()); } catch(e){}
+  }
+
+  function vf31AnimateCounters(scope){
+    const els = scope.querySelectorAll('[data-count]');
+    els.forEach(el => {
+      const target = parseFloat(el.dataset.count);
+      const prefix = el.dataset.prefix || '';
+      const suffix = el.dataset.suffix || '';
+      const fmt = el.dataset.format || '';
+      const dur = 1400;
+      const start = performance.now();
+      function tick(t){
+        const p = Math.min(1, (t-start)/dur);
+        const eased = 1 - Math.pow(1-p, 3);
+        const v = target * eased;
+        let s;
+        if (fmt === 'money') {
+          if (v >= 1000000) s = prefix + (v/1000000).toFixed(1).replace(/\.0$/,'') + 'M' + suffix;
+          else if (v >= 1000) s = prefix + Math.round(v/1000) + 'K' + suffix;
+          else s = prefix + Math.round(v) + suffix;
+        } else {
+          s = prefix + Math.round(v).toLocaleString() + suffix;
+        }
+        el.textContent = s;
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  // ================= E8: Valuation Mini Quiz =================
+  function vf31InjectValQuiz(){
+    const hero = document.querySelector('#hero .container');
+    if (!hero || document.getElementById('vf31-valquiz')) return;
+    const box = document.createElement('div');
+    box.id = 'vf31-valquiz';
+    box.className = 'vf31-valquiz';
+    box.innerHTML = `
+      <h4>💰 60-second valuation estimate</h4>
+      <div class="vf31-q-row">
+        <div>
+          <label>Monetization</label>
+          <select id="vf31-val-monet">
+            <option value="2.8">Content / Ads</option>
+            <option value="3.5">Affiliate</option>
+            <option value="4.2" selected>SaaS / Subscription</option>
+            <option value="3.0">eCommerce</option>
+            <option value="3.8">Lead Gen</option>
+            <option value="2.5">App</option>
+          </select>
+        </div>
+        <div>
+          <label>Net Profit / mo ($)</label>
+          <input type="number" id="vf31-val-profit" placeholder="3000" value="3000">
+        </div>
+        <div>
+          <label>Months of history</label>
+          <input type="number" id="vf31-val-age" placeholder="18" value="18">
+        </div>
+        <div>
+          <button class="btn btn-primary" id="vf31-val-go" style="white-space:nowrap">Estimate</button>
+        </div>
+      </div>
+      <div class="vf31-result" id="vf31-val-result"></div>
+    `;
+    hero.appendChild(box);
+    document.getElementById('vf31-val-go').addEventListener('click', vf31RunValQuiz);
+  }
+
+  function vf31RunValQuiz(){
+    const monet = parseFloat(document.getElementById('vf31-val-monet').value) || 3;
+    const profit = parseFloat(document.getElementById('vf31-val-profit').value) || 0;
+    const age = parseFloat(document.getElementById('vf31-val-age').value) || 0;
+    if (profit <= 0) return;
+    const ageBoost = Math.min(1.3, 0.7 + (age/24) * 0.6);
+    const lowMult = monet * ageBoost * 10; // annualized (profit × mult)
+    const highMult = monet * ageBoost * 14;
+    const low = Math.round(profit * lowMult / 1000) * 1000;
+    const high = Math.round(profit * highMult / 1000) * 1000;
+    const res = document.getElementById('vf31-val-result');
+    res.style.display = 'block';
+    res.innerHTML = `Estimated value: <strong>$${low.toLocaleString()} – $${high.toLocaleString()}</strong> · ${(lowMult/12).toFixed(1)}×–${(highMult/12).toFixed(1)}× monthly profit · <a href="#valuations" onclick="navigate('valuations')" style="color:var(--accent-light)">Get full valuation →</a>`;
+    try { localStorage.setItem('vf_valuation_last', JSON.stringify({monet, profit, age, low, high, at: Date.now()})); } catch(e){}
+  }
+
+  // ================= E9: Press Logo Strip =================
+  function vf31InjectPressStrip(){
+    const hero = document.querySelector('#hero .container');
+    if (!hero || document.getElementById('vf31-press')) return;
+    const strip = document.createElement('div');
+    strip.id = 'vf31-press';
+    strip.className = 'vf31-press';
+    strip.innerHTML = `
+      <span class="vf31-press-lbl">Trusted by operators from</span>
+      <span class="vf31-press-item">Indie Hackers</span>
+      <span class="vf31-press-item">Product Hunt</span>
+      <span class="vf31-press-item">Hacker News</span>
+      <span class="vf31-press-item">MicroAcquire Alumni</span>
+      <span class="vf31-press-item">Shopify Partners</span>
+    `;
+    hero.appendChild(strip);
+  }
+
+  // ================= E2/E3/E4/E5: Wrap renderListings =================
+  const MONETIZATIONS = ['Affiliate','Amazon FBA','SaaS','eCommerce','Newsletter','YouTube','Display Ads','Lead Gen','Service','Subscription','Digital Product','Application','DropShipping'];
+  const NICHES = ['AI/ML','Food','E-commerce','Productivity','Education','Marketing','Finance','Health','Beauty','Gaming','Crypto','Travel','Fitness','Pets','Home','Parenting'];
+
+  function vf31GetSeen(){
+    try { return JSON.parse(localStorage.getItem('vf_seen_listings') || '{}'); } catch(e){ return {}; }
+  }
+  function vf31MarkSeen(id){
+    const s = vf31GetSeen();
+    if (!s[id]) { s[id] = Date.now(); try { localStorage.setItem('vf_seen_listings', JSON.stringify(s)); } catch(e){} }
+  }
+  function vf31IsNew(id){
+    const s = vf31GetSeen();
+    if (!s[id]) { vf31MarkSeen(id); return true; }
+    return (Date.now() - s[id]) < 7*24*60*60*1000;
+  }
+
+  function vf31StatusFor(l){
+    // Deterministic pseudo-status by id
+    const mod = l.id % 11;
+    if (mod === 1) return {cls:'vf31-pill-hot', text:'🔥 Hot Deal'};
+    if (mod === 3) return {cls:'vf31-pill-offer', text:'Under Offer'};
+    if (mod === 5) return {cls:'vf31-pill-sold', text:'Pending Sold'};
+    if (mod === 7) return {cls:'vf31-pill-reduced', text:'↓ Price Reduced'};
+    return null;
+  }
+
+  function vf31IsVerified(l){
+    return (l.id % 3) !== 0; // ~67% verified
+  }
+
+  function vf31EnhanceCards(){
+    const cards = document.querySelectorAll('#listingsGrid .listing-card');
+    cards.forEach(card => {
+      if (card.dataset.vf31Enhanced) return;
+      card.dataset.vf31Enhanced = '1';
+      const onclick = card.getAttribute('onclick') || '';
+      const m = onclick.match(/openListing\((\d+)\)/);
+      if (!m) return;
+      const id = parseInt(m[1]);
+      const l = (window.LISTINGS || []).find(x => x.id === id);
+      if (!l) return;
+
+      // E5: Status pills wrapper
+      const pills = document.createElement('div');
+      pills.className = 'vf31-pills';
+      const statuses = [];
+      if (vf31IsNew(id)) statuses.push({cls:'vf31-pill-new', text:'New'});
+      const s = vf31StatusFor(l);
+      if (s) statuses.push(s);
+      if (statuses.length) {
+        pills.innerHTML = statuses.map(st => `<span class="vf31-pill ${st.cls}">${st.text}</span>`).join('');
+        pills.style.pointerEvents = 'none';
+        card.appendChild(pills);
+      }
+
+      // E3: Verified badge next to the name
+      if (vf31IsVerified(l)) {
+        const header = card.querySelector('.listing-card-header h3');
+        if (header && !header.querySelector('.vf31-verified')) {
+          const badge = document.createElement('span');
+          badge.className = 'vf31-verified';
+          badge.dataset.tip = 'Metrics verified via Stripe + Google Analytics';
+          badge.innerHTML = '✓ Verified';
+          badge.style.marginLeft = '6px';
+          badge.addEventListener('click', e => e.stopPropagation());
+          header.appendChild(badge);
+        }
+      }
+
+      // E4: Three-metric row (Price / Net/mo / Multiple) - insert after .revenue
+      if (!card.querySelector('.vf31-metrics')) {
+        const price = l.askingPrice;
+        const profit = l.monthlyProfit;
+        const mult = (l.multiple/10).toFixed(1);
+        const block = document.createElement('div');
+        block.className = 'vf31-metrics';
+        block.innerHTML = `
+          <div><span class="vf31-k">Price</span><span class="vf31-v">${vf31FmtMoney(price)}</span></div>
+          <div><span class="vf31-k">Net /mo</span><span class="vf31-v">${vf31FmtMoney(profit)}</span></div>
+          <div><span class="vf31-k">Multiple</span><span class="vf31-v">${mult}x</span></div>
+        `;
+        const revEl = card.querySelector('.revenue');
+        if (revEl && revEl.parentNode) revEl.parentNode.insertBefore(block, revEl.nextSibling);
+        else card.appendChild(block);
+      }
+    });
+  }
+
+  function vf31FmtMoney(v){
+    if (v >= 1000000) return '$' + (v/1000000).toFixed(1).replace(/\.0$/,'') + 'M';
+    if (v >= 1000) return '$' + Math.round(v/1000) + 'K';
+    return '$' + Math.round(v);
+  }
+
+  // Wrap renderListings
+  if (typeof window.renderListings === 'function') {
+    const _orig = window.renderListings;
+    window.renderListings = function(){
+      const r = _orig.apply(this, arguments);
+      try { vf31EnhanceCards(); } catch(e){ console.warn('vf31 enhance:', e); }
+      return r;
+    };
+  }
+
+  // ================= E2: Unlock-gated listing detail =================
+  // Wrap openListing: if not logged in, show lockwall instead
+  if (typeof window.openListing === 'function') {
+    const _openOrig = window.openListing;
+    window.openListing = function(id){
+      if (typeof isLoggedIn === 'function' && !isLoggedIn()) {
+        const unlocked = JSON.parse(localStorage.getItem('vf_unlocked_listings') || '[]');
+        if (!unlocked.includes(id)) {
+          vf31ShowLockwall(id);
+          return;
+        }
+      }
+      return _openOrig.apply(this, arguments);
+    };
+  }
+
+  function vf31ShowLockwall(id){
+    const l = (window.LISTINGS || []).find(x => x.id === id);
+    if (!l) return;
+    const wall = document.createElement('div');
+    wall.className = 'vf31-lockwall';
+    wall.innerHTML = `
+      <div class="vf31-lockwall-card">
+        <h3>🔒 Unlock this listing</h3>
+        <p>${l.name} — full P&L, traffic sources, seller Q&A, and domain details are available to free members.</p>
+        <div class="vf31-preview-metrics">
+          <div><div style="font-size:10px;color:var(--muted);text-transform:uppercase">Price</div><div style="font-weight:700;color:var(--ink-bright)">${vf31FmtMoney(l.askingPrice)}</div></div>
+          <div><div style="font-size:10px;color:var(--muted);text-transform:uppercase">Net/mo</div><div style="font-weight:700;color:var(--ink-bright)">${vf31FmtMoney(l.monthlyProfit)}</div></div>
+          <div><div style="font-size:10px;color:var(--muted);text-transform:uppercase">Multiple</div><div style="font-weight:700;color:var(--ink-bright)">${(l.multiple/10).toFixed(1)}x</div></div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;margin-bottom:8px" onclick="vf31LockwallSignup(${id})">Create free account to unlock</button>
+        <button class="btn btn-ghost" style="width:100%" onclick="vf31CloseLockwall()">Browse more listings</button>
+      </div>
+    `;
+    wall.addEventListener('click', e => { if (e.target === wall) vf31CloseLockwall(); });
+    document.body.appendChild(wall);
+  }
+  window.vf31CloseLockwall = function(){
+    document.querySelectorAll('.vf31-lockwall').forEach(n => n.remove());
+  };
+  window.vf31LockwallSignup = function(id){
+    // Track intent, close, and route to signup
+    try {
+      const intent = JSON.parse(localStorage.getItem('vf_unlock_intent') || '[]');
+      intent.push({id, at: Date.now()}); localStorage.setItem('vf_unlock_intent', JSON.stringify(intent));
+    } catch(e){}
+    vf31CloseLockwall();
+    if (typeof navigate === 'function') navigate('signup');
+    else window.location.hash = '#signup';
+  };
+
+  // ================= E6: Dual-axis filter =================
+  function vf31GetActiveFilters(){
+    try { return JSON.parse(localStorage.getItem('vf_active_filters') || '{"monet":[],"niche":[]}'); }
+    catch(e){ return {monet:[], niche:[]}; }
+  }
+  function vf31SaveActiveFilters(f){
+    try { localStorage.setItem('vf_active_filters', JSON.stringify(f)); } catch(e){}
+  }
+
+  function vf31InjectDualFilter(){
+    const filterBar = document.querySelector('#marketplace .filter-bar');
+    if (!filterBar || document.getElementById('vf31-dualfilter')) return;
+    const box = document.createElement('div');
+    box.id = 'vf31-dualfilter';
+    box.className = 'vf31-dualfilter';
+    const f = vf31GetActiveFilters();
+    box.innerHTML = `
+      <div class="vf31-dualfilter-row">
+        <div>
+          <h5>Monetization</h5>
+          <div class="vf31-chips" data-axis="monet">
+            ${MONETIZATIONS.map(m => `<span class="vf31-chip ${f.monet.includes(m)?'active':''}" data-val="${m}">${m}</span>`).join('')}
+          </div>
+        </div>
+        <div>
+          <h5>Niche</h5>
+          <div class="vf31-chips" data-axis="niche">
+            ${NICHES.map(n => `<span class="vf31-chip ${f.niche.includes(n)?'active':''}" data-val="${n}">${n}</span>`).join('')}
+          </div>
+        </div>
+      </div>
+      <div class="vf31-active-pills" id="vf31-active-pills"></div>
+      <div class="vf31-save-search">
+        <button class="btn btn-outline btn-sm" onclick="vf31SaveSearch()">💾 Save this search</button>
+      </div>
+      <div class="vf31-saved-list" id="vf31-saved-list"></div>
+    `;
+    filterBar.parentNode.insertBefore(box, filterBar.nextSibling);
+
+    box.querySelectorAll('.vf31-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const axis = chip.parentNode.dataset.axis;
+        const val = chip.dataset.val;
+        const fs = vf31GetActiveFilters();
+        const arr = fs[axis];
+        const i = arr.indexOf(val);
+        if (i >= 0) arr.splice(i,1); else arr.push(val);
+        vf31SaveActiveFilters(fs);
+        chip.classList.toggle('active');
+        vf31RenderActivePills();
+        if (typeof renderListings === 'function') renderListings();
+      });
+    });
+    vf31RenderActivePills();
+    vf31RenderSavedSearches();
+  }
+
+  function vf31RenderActivePills(){
+    const el = document.getElementById('vf31-active-pills');
+    if (!el) return;
+    const f = vf31GetActiveFilters();
+    const all = [...f.monet.map(v=>['monet',v]), ...f.niche.map(v=>['niche',v])];
+    el.innerHTML = all.map(([axis,val]) =>
+      `<span class="vf31-active-pill">${val}<button onclick="vf31RemoveFilter('${axis}','${val}')" aria-label="Remove">×</button></span>`
+    ).join('');
+  }
+
+  window.vf31RemoveFilter = function(axis, val){
+    const f = vf31GetActiveFilters();
+    f[axis] = f[axis].filter(x => x !== val);
+    vf31SaveActiveFilters(f);
+    const chip = document.querySelector(`.vf31-chips[data-axis="${axis}"] .vf31-chip[data-val="${val}"]`);
+    if (chip) chip.classList.remove('active');
+    vf31RenderActivePills();
+    if (typeof renderListings === 'function') renderListings();
+  };
+
+  // ================= E7: Save search =================
+  window.vf31SaveSearch = function(){
+    const name = prompt('Name this search (e.g., "SaaS under $50K"):');
+    if (!name) return;
+    const f = vf31GetActiveFilters();
+    const other = {
+      type: document.getElementById('filterType')?.value || '',
+      minPrice: document.getElementById('filterMinPrice')?.value || '',
+      maxPrice: document.getElementById('filterMaxPrice')?.value || '',
+      minRev: document.getElementById('filterMinRev')?.value || '',
+      niche: document.getElementById('filterNiche')?.value || ''
+    };
+    const saved = JSON.parse(localStorage.getItem('vf_saved_searches') || '[]');
+    saved.push({name, filters: f, other, at: Date.now()});
+    try { localStorage.setItem('vf_saved_searches', JSON.stringify(saved)); } catch(e){}
+    let email = '';
+    if (typeof isLoggedIn === 'function' && !isLoggedIn()) {
+      email = prompt('Get email alerts for this search? (enter email, or cancel to skip)') || '';
+      if (email) try { localStorage.setItem('vf_user_email', email); } catch(e){}
+    }
+    vf31RenderSavedSearches();
+    alert(`Saved "${name}". ${email ? "We'll email you new matches." : "Open your saved searches anytime."}`);
+  };
+
+  function vf31RenderSavedSearches(){
+    const el = document.getElementById('vf31-saved-list');
+    if (!el) return;
+    const saved = JSON.parse(localStorage.getItem('vf_saved_searches') || '[]');
+    el.innerHTML = saved.map((s,i) =>
+      `<span class="vf31-saved-search" onclick="vf31LoadSavedSearch(${i})">🔔 ${s.name}<button onclick="event.stopPropagation();vf31DeleteSavedSearch(${i})" style="background:none;border:none;color:inherit;cursor:pointer;margin-left:4px">×</button></span>`
+    ).join('');
+  }
+  window.vf31LoadSavedSearch = function(i){
+    const saved = JSON.parse(localStorage.getItem('vf_saved_searches') || '[]');
+    const s = saved[i]; if (!s) return;
+    vf31SaveActiveFilters(s.filters);
+    if (s.other) {
+      if (document.getElementById('filterType')) document.getElementById('filterType').value = s.other.type || '';
+      if (document.getElementById('filterMinPrice')) document.getElementById('filterMinPrice').value = s.other.minPrice || '';
+      if (document.getElementById('filterMaxPrice')) document.getElementById('filterMaxPrice').value = s.other.maxPrice || '';
+      if (document.getElementById('filterMinRev')) document.getElementById('filterMinRev').value = s.other.minRev || '';
+      if (document.getElementById('filterNiche')) document.getElementById('filterNiche').value = s.other.niche || '';
+    }
+    // Re-render chip states
+    document.querySelectorAll('#vf31-dualfilter .vf31-chip').forEach(c => {
+      const axis = c.parentNode.dataset.axis; const val = c.dataset.val;
+      c.classList.toggle('active', (s.filters[axis]||[]).includes(val));
+    });
+    vf31RenderActivePills();
+    if (typeof renderListings === 'function') renderListings();
+  };
+  window.vf31DeleteSavedSearch = function(i){
+    const saved = JSON.parse(localStorage.getItem('vf_saved_searches') || '[]');
+    saved.splice(i,1);
+    try { localStorage.setItem('vf_saved_searches', JSON.stringify(saved)); } catch(e){}
+    vf31RenderSavedSearches();
+  };
+
+  // ================= E10 + E11: Sell page additions =================
+  function vf31InjectSellExtras(){
+    const sell = document.querySelector('#sell .container');
+    if (!sell || document.getElementById('vf31-sell-extras')) return;
+    const box = document.createElement('div');
+    box.id = 'vf31-sell-extras';
+    box.className = 'vf31-sell-extras';
+    box.innerHTML = `
+      <div class="vf31-statblock">
+        <div>
+          <div class="vf31-statblock-num">~92 days</div>
+          <div class="vf31-statblock-lbl">average from listing to closed deal</div>
+        </div>
+        <div style="flex:1;border-left:1px solid var(--line);padding-left:22px">
+          <div style="color:var(--ink-bright);font-weight:700;margin-bottom:4px">Transparent process</div>
+          <div style="color:var(--muted);font-size:13px">Valuation → Vetting → Listing → Buyer Match → Escrow → Transfer. You stay in control at every step.</div>
+        </div>
+      </div>
+
+      <h3 style="color:var(--ink-bright);font-weight:700;margin-bottom:12px">Transparent fees — no surprises</h3>
+      <table class="vf31-feetable">
+        <thead><tr><th>Deal Size</th><th>Commission</th><th>Escrow</th></tr></thead>
+        <tbody>
+          <tr><td>Under $50,000</td><td class="vf31-fee-rate">10%</td><td>1% (flat)</td></tr>
+          <tr><td>$50,000 – $500,000</td><td class="vf31-fee-rate">8%</td><td>1% (flat)</td></tr>
+          <tr><td>Above $500,000</td><td class="vf31-fee-rate">5%</td><td>1% (flat)</td></tr>
+          <tr><td colspan="3" style="color:var(--muted);font-size:12px;font-style:italic">Fees deducted at closing. No listing fees, no monthly fees, no success-fee add-ons.</td></tr>
+        </tbody>
+      </table>
+    `;
+    sell.appendChild(box);
+  }
+
+  // ================= E12: Ownership Verification Code =================
+  function vf31InjectVerificationUI(){
+    // Attach to step 4 of the sell form
+    const step4 = document.querySelector('#sellFormContainer .form-panel[data-step="4"]');
+    if (!step4 || document.getElementById('vf31-verifbox')) return;
+    const box = document.createElement('div');
+    box.id = 'vf31-verifbox';
+    box.className = 'vf31-verifbox';
+    const token = vf31GenerateToken();
+    box.innerHTML = `
+      <h5>✓ Ownership verification (optional, earns Verified badge)</h5>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:6px">Place this unique code on your asset to prove ownership:</p>
+      <div class="vf31-verif-token" id="vf31-verif-token">${token}</div>
+      <div class="vf31-verif-methods" id="vf31-verif-methods">
+        <span class="vf31-verif-method active" data-method="meta">HTML &lt;meta&gt; tag</span>
+        <span class="vf31-verif-method" data-method="dns">DNS TXT record</span>
+        <span class="vf31-verif-method" data-method="file">/vf-verify.txt</span>
+        <span class="vf31-verif-method" data-method="social">Social bio</span>
+      </div>
+      <p style="color:var(--muted);font-size:12px;margin-top:6px" id="vf31-verif-hint">Add <code style="background:#000;padding:2px 5px;border-radius:4px">&lt;meta name="vf-verify" content="${token}"&gt;</code> to your site head.</p>
+      <button type="button" class="btn btn-outline btn-sm" style="margin-top:8px" onclick="vf31StartVerification('${token}')">Save & Check ownership</button>
+      <div id="vf31-verif-status" style="margin-top:8px;font-size:13px"></div>
+    `;
+    const nav = step4.querySelector('.form-nav');
+    if (nav) step4.insertBefore(box, nav); else step4.appendChild(box);
+
+    box.querySelectorAll('.vf31-verif-method').forEach(m => {
+      m.addEventListener('click', () => {
+        box.querySelectorAll('.vf31-verif-method').forEach(x => x.classList.remove('active'));
+        m.classList.add('active');
+        const t = document.getElementById('vf31-verif-token').textContent;
+        const hints = {
+          meta: `Add <code style="background:#000;padding:2px 5px;border-radius:4px">&lt;meta name="vf-verify" content="${t}"&gt;</code> to your site head.`,
+          dns: `Add TXT record to your domain: <code style="background:#000;padding:2px 5px;border-radius:4px">vf-verify=${t}</code>`,
+          file: `Upload a file at <code style="background:#000;padding:2px 5px;border-radius:4px">yoursite.com/vf-verify.txt</code> containing: <code style="background:#000;padding:2px 5px;border-radius:4px">${t}</code>`,
+          social: `Paste <code style="background:#000;padding:2px 5px;border-radius:4px">${t}</code> in your social bio (Twitter/IG/LinkedIn) temporarily.`
+        };
+        document.getElementById('vf31-verif-hint').innerHTML = hints[m.dataset.method];
+      });
+    });
+  }
+
+  function vf31GenerateToken(){
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    const seg = (n) => Array.from({length:n}, ()=>chars[Math.floor(Math.random()*chars.length)]).join('');
+    return 'VF-' + seg(4) + '-' + seg(4);
+  }
+
+  window.vf31StartVerification = function(token){
+    const method = document.querySelector('#vf31-verif-methods .vf31-verif-method.active')?.dataset.method || 'meta';
+    const pending = JSON.parse(localStorage.getItem('vf_pending_verifications') || '[]');
+    pending.push({
+      listing_id: 'pending-' + Date.now(),
+      token, method,
+      expires_at: Date.now() + 7*24*60*60*1000,
+      status: 'pending'
+    });
+    try { localStorage.setItem('vf_pending_verifications', JSON.stringify(pending)); } catch(e){}
+    const status = document.getElementById('vf31-verif-status');
+    status.innerHTML = '<span style="color:var(--muted)">⏳ Checking… (this usually takes under 2 minutes in production)</span>';
+    setTimeout(() => {
+      status.innerHTML = '<span style="color:var(--green)">✓ Token saved. Verification will run automatically once you submit the listing.</span>';
+    }, 1200);
+  };
+
+  // ================= Boot =================
+  function vf31Boot(){
+    try { vf31InjectTrustBar(); } catch(e){ console.warn('vf31 E1:', e); }
+    try { vf31InjectPressStrip(); } catch(e){ console.warn('vf31 E9:', e); }
+    try { vf31InjectValQuiz(); } catch(e){ console.warn('vf31 E8:', e); }
+    try { vf31InjectDualFilter(); } catch(e){ console.warn('vf31 E6/E7:', e); }
+    try { vf31InjectSellExtras(); } catch(e){ console.warn('vf31 E10/E11:', e); }
+    try { vf31InjectVerificationUI(); } catch(e){ console.warn('vf31 E12:', e); }
+    // Enhance cards in case renderListings already ran
+    try { vf31EnhanceCards(); } catch(e){}
+    // Re-run enhancements after any navigation to marketplace
+    const origNav = window.navigate;
+    if (typeof origNav === 'function' && !origNav.__vf31Wrapped) {
+      window.navigate = function(id){
+        const r = origNav.apply(this, arguments);
+        setTimeout(() => { try { vf31EnhanceCards(); } catch(e){} }, 80);
+        return r;
+      };
+      window.navigate.__vf31Wrapped = true;
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', vf31Boot);
+  } else {
+    vf31Boot();
+  }
+})();
+</script>
 </body>
 </html>
