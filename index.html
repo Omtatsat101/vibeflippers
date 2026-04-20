@@ -1630,6 +1630,8 @@ a:hover { text-decoration: underline; }
   .fab-action { font-size: 12px; padding: 8px 12px; }
 }
   </style>
+  <!-- v3.2 Supabase sync layer (loaded before inline script; dormant unless V32_CONFIG.syncEnabled=true) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -3607,6 +3609,293 @@ a:hover { text-decoration: underline; }
 </div>
 
 <script>
+// ====== v3.2 SUPABASE SYNC LAYER (offline-first, sync-through) ======
+const V32_CONFIG = {
+  supabaseUrl: 'https://YOUR_PROJECT.supabase.co', // placeholder — Riket fills real URL
+  supabaseAnonKey: 'YOUR_ANON_KEY',                // placeholder
+  platform: 'vf',
+  syncEnabled: false  // default OFF until Riket flips on
+};
+
+const v32 = (function(){
+  let _client = null;
+  let _clientTried = false;
+  const LS_PROFILE_ID = 'vf_supabase_profile_id';
+
+  function enabled(){
+    return !!(V32_CONFIG && V32_CONFIG.syncEnabled
+      && V32_CONFIG.supabaseUrl && V32_CONFIG.supabaseUrl.indexOf('YOUR_PROJECT') === -1
+      && V32_CONFIG.supabaseAnonKey && V32_CONFIG.supabaseAnonKey.indexOf('YOUR_ANON') === -1);
+  }
+  function client(){
+    if (_clientTried) return _client;
+    _clientTried = true;
+    if (!enabled()) return null;
+    try {
+      if (typeof window.supabase === 'undefined' || !window.supabase.createClient) return null;
+      _client = window.supabase.createClient(V32_CONFIG.supabaseUrl, V32_CONFIG.supabaseAnonKey, {
+        auth: { persistSession: true, autoRefreshToken: true }
+      });
+      return _client;
+    } catch(e){ console.warn('v32 client init failed'); return null; }
+  }
+  function localUser(){
+    try { return JSON.parse(localStorage.getItem('vf_auth_user') || 'null'); } catch(e){ return null; }
+  }
+  function authed(){
+    return !!localUser();
+  }
+  function profileId(){
+    try { return localStorage.getItem(LS_PROFILE_ID) || null; } catch(e){ return null; }
+  }
+  function setProfileId(id){
+    try { if (id) localStorage.setItem(LS_PROFILE_ID, id); } catch(e){}
+  }
+  function defer(fn){
+    if (typeof window.requestIdleCallback === 'function') window.requestIdleCallback(fn, { timeout: 2000 });
+    else setTimeout(fn, 0);
+  }
+  // Status: 'green' synced | 'yellow' local-only | 'red' offline
+  let _status = 'yellow';
+  function setStatus(s){
+    _status = s;
+    try {
+      const el = document.getElementById('v32-status-pill');
+      if (!el) return;
+      const map = {
+        green:  { dot:'#34d399', label:'Synced',     bg:'rgba(52,211,153,0.10)', bd:'rgba(52,211,153,0.35)' },
+        yellow: { dot:'#facc15', label:'Local only', bg:'rgba(250,204,21,0.10)', bd:'rgba(250,204,21,0.35)' },
+        red:    { dot:'#f87171', label:'Offline',    bg:'rgba(248,113,113,0.10)', bd:'rgba(248,113,113,0.35)' }
+      };
+      const m = map[s] || map.yellow;
+      el.style.background = m.bg;
+      el.style.border = '1px solid ' + m.bd;
+      el.innerHTML = '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:'+m.dot+';margin-right:6px;vertical-align:middle"></span>'
+                   + '<span style="vertical-align:middle">'+m.label+'</span>';
+    } catch(e){}
+  }
+  function recomputeStatus(){
+    if (!enabled()) return setStatus('yellow');
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) return setStatus('red');
+    if (!authed()) return setStatus('yellow');
+    setStatus('green');
+  }
+
+  const sync = {
+    async savedSearch(payload){
+      if (!enabled() || !client()) return;
+      try {
+        const u = localUser() || {};
+        const filters = (payload && (payload.filters || payload.other)) || {};
+        const row = {
+          profile_id: profileId() || null,
+          email: (u.email || (function(){ try { return localStorage.getItem('vf_user_email') || ''; } catch(e){ return ''; } })()) || 'guest@local',
+          platform: V32_CONFIG.platform,
+          name: (payload && payload.name) || 'Untitled',
+          query: (payload && payload.query) || '',
+          filters: filters,
+          alert_frequency: 'daily'
+        };
+        const r = await client().from('saved_searches').insert(row);
+        if (r && r.error) console.warn('v32 savedSearch sync failed');
+      } catch(e){ console.warn('v32 savedSearch sync exception'); }
+    },
+    async listingUnlock(localId){
+      if (!enabled() || !client() || !authed()) return;
+      try {
+        const ext = 'vf' + String(localId).padStart(3,'0');
+        const lookup = await client().from('listings').select('id').eq('platform', V32_CONFIG.platform).eq('external_id', ext).limit(1).maybeSingle();
+        if (lookup && lookup.error) { console.warn('v32 unlock lookup failed'); return; }
+        const listingUuid = lookup && lookup.data && lookup.data.id;
+        if (!listingUuid) return; // no matching server listing yet
+        const nowIso = new Date().toISOString();
+        const r = await client().from('listing_unlocks').insert({
+          profile_id: profileId() || null,
+          listing_id: listingUuid,
+          platform: V32_CONFIG.platform,
+          nda_accepted_at: nowIso,
+          unlocked_at: nowIso
+        });
+        if (r && r.error) console.warn('v32 unlock sync failed');
+      } catch(e){ console.warn('v32 unlock sync exception'); }
+    },
+    async ownershipToken(payload){
+      if (!enabled() || !client()) return;
+      try {
+        const expires = new Date(Date.now() + 7*24*60*60*1000).toISOString();
+        const row = {
+          token: payload && payload.token,
+          method: (payload && payload.method) || 'meta_tag',
+          target_url: (payload && payload.target_url) || null,
+          listing_id: (payload && payload.listing_id) || null,
+          seller_id: profileId() || null,
+          platform: V32_CONFIG.platform,
+          expires_at: expires
+        };
+        const r = await client().from('ownership_verifications').insert(row);
+        if (r && r.error) console.warn('v32 ownership sync failed');
+      } catch(e){ console.warn('v32 ownership sync exception'); }
+    },
+    async dealMessage(payload){
+      if (!enabled() || !client() || !authed()) return;
+      try {
+        const row = {
+          deal_room_id: (payload && payload.deal_room_id) || '00000000-0000-0000-0000-000000000000',
+          sender_id: profileId() || null,
+          body: (payload && payload.body) || ''
+        };
+        const r = await client().from('deal_messages').insert(row);
+        if (r && r.error) console.warn('v32 dealMessage sync failed');
+      } catch(e){ console.warn('v32 dealMessage sync exception'); }
+    }
+  };
+
+  const realtime = { notifications: null };
+
+  function onNewNotification(n){
+    try {
+      const raw = localStorage.getItem('vf_notifications');
+      const arr = raw ? JSON.parse(raw) : [];
+      arr.unshift({
+        id: 'srv-' + (n.id || Date.now()),
+        title: n.title || 'Notification',
+        body: n.body || '',
+        time: 'just now',
+        unread: true
+      });
+      localStorage.setItem('vf_notifications', JSON.stringify(arr));
+      if (typeof window.vfRenderNotifs === 'function') window.vfRenderNotifs();
+      if (typeof window.renderNotificationBadge === 'function') window.renderNotificationBadge();
+      // tiny toast
+      const t = document.createElement('div');
+      t.style.cssText = 'position:fixed;right:18px;bottom:18px;z-index:9999;background:#101018;color:#fff;border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 14px;font:13px/1.4 system-ui;box-shadow:0 8px 30px rgba(0,0,0,0.4);max-width:300px';
+      t.textContent = (n.title || 'New notification');
+      document.body.appendChild(t);
+      setTimeout(()=>{ try { t.remove(); } catch(e){} }, 4000);
+    } catch(e){ console.warn('v32 onNewNotification handler failed'); }
+  }
+
+  function subscribeNotifications(){
+    if (!enabled() || !client() || !authed()) return;
+    const pid = profileId();
+    if (!pid) return;
+    try {
+      if (realtime.notifications) { try { client().removeChannel(realtime.notifications); } catch(e){} }
+      realtime.notifications = client()
+        .channel('notif-' + pid)
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications', filter: 'profile_id=eq.' + pid },
+          payload => onNewNotification(payload.new))
+        .subscribe();
+    } catch(e){ console.warn('v32 realtime subscribe failed'); }
+  }
+
+  async function initialLoad(){
+    if (!enabled() || !client()) return;
+    try {
+      // Listings — public read, merge by external_id
+      const lr = await client().from('listings').select('*').eq('platform', V32_CONFIG.platform)
+        .in('status', ['live','price_reduced','under_offer']).limit(200);
+      if (lr && !lr.error && Array.isArray(lr.data) && typeof window.LISTINGS !== 'undefined' && Array.isArray(window.LISTINGS)) {
+        lr.data.forEach(srv => {
+          if (!srv.external_id) return;
+          const m = String(srv.external_id).match(/(\d+)/);
+          if (!m) return;
+          const localId = parseInt(m[1], 10);
+          const idx = window.LISTINGS.findIndex(x => x.id === localId);
+          if (idx === -1) return;
+          // Non-destructive merge — only fill blanks
+          ['monthlyRevenue','monthlyProfit','askingPrice','traffic_monthly'].forEach(k => {
+            const srvKey = ({monthlyRevenue:'monthly_revenue', monthlyProfit:'monthly_profit', askingPrice:'asking_price', traffic_monthly:'traffic_monthly'})[k];
+            if (srv[srvKey] != null && (window.LISTINGS[idx][k] == null || window.LISTINGS[idx][k] === 0)) {
+              window.LISTINGS[idx][k] = srv[srvKey];
+            }
+          });
+        });
+      }
+      if (!authed()) return;
+      const pid = profileId();
+      // Profile row
+      const u = localUser() || {};
+      if (u.email) {
+        const pr = await client().from('profiles').select('*').eq('email', u.email).maybeSingle();
+        if (pr && !pr.error && pr.data && pr.data.id) setProfileId(pr.data.id);
+      }
+      const pid2 = profileId();
+      // Saved searches merge
+      if (pid2) {
+        const sr = await client().from('saved_searches').select('*').eq('profile_id', pid2);
+        if (sr && !sr.error && Array.isArray(sr.data)) {
+          try {
+            const local = JSON.parse(localStorage.getItem('vf_saved_searches') || '[]');
+            const byName = {};
+            local.forEach(x => { byName[x.name] = x; });
+            sr.data.forEach(s => { byName[s.name] = { name: s.name, filters: s.filters || {}, other: {}, at: Date.parse(s.created_at) || Date.now() }; });
+            localStorage.setItem('vf_saved_searches', JSON.stringify(Object.values(byName)));
+          } catch(e){}
+        }
+        // Notifications (last 50 unread)
+        const nr = await client().from('notifications').select('*').eq('profile_id', pid2).is('read_at', null)
+          .order('created_at', { ascending: false }).limit(50);
+        if (nr && !nr.error && Array.isArray(nr.data)) {
+          try {
+            const cur = JSON.parse(localStorage.getItem('vf_notifications') || '[]');
+            const incoming = nr.data.map(n => ({
+              id: 'srv-' + n.id, title: n.title, body: n.body || '',
+              time: 'recent', unread: true
+            }));
+            localStorage.setItem('vf_notifications', JSON.stringify(incoming.concat(cur)));
+            if (typeof window.vfRenderNotifs === 'function') window.vfRenderNotifs();
+          } catch(e){}
+        }
+      }
+    } catch(e){ console.warn('v32 initialLoad exception'); }
+    finally { recomputeStatus(); }
+  }
+
+  async function mirrorSignup(user){
+    if (!enabled() || !client() || !user || !user.email) return;
+    try {
+      // Try to find existing profile by email
+      const ex = await client().from('profiles').select('id').eq('email', user.email).maybeSingle();
+      if (ex && ex.data && ex.data.id) { setProfileId(ex.data.id); return; }
+      const ins = await client().from('profiles').insert({
+        email: user.email,
+        name: user.name || null,
+        role: user.role || 'explorer',
+        platform: 'both',
+        country: user.country || null,
+        phone: user.phone || null
+      }).select('id').maybeSingle();
+      if (ins && ins.data && ins.data.id) setProfileId(ins.data.id);
+    } catch(e){ console.warn('v32 mirrorSignup exception'); }
+  }
+
+  function injectStatusPill(){
+    try {
+      if (document.getElementById('v32-status-pill')) return;
+      const pill = document.createElement('span');
+      pill.id = 'v32-status-pill';
+      pill.title = 'v3.2 sync status';
+      pill.style.cssText = 'display:inline-flex;align-items:center;font:11px/1 system-ui,sans-serif;color:#cbd5e1;padding:4px 9px;border-radius:999px;margin-left:10px;letter-spacing:0.02em;cursor:default;background:rgba(250,204,21,0.10);border:1px solid rgba(250,204,21,0.35)';
+      pill.innerHTML = '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#facc15;margin-right:6px"></span><span>Local only</span>';
+      // Try to mount in nav
+      const nav = document.querySelector('nav.nav .container') || document.querySelector('nav .container') || document.querySelector('nav');
+      if (nav) nav.appendChild(pill);
+      else document.body.appendChild(pill);
+    } catch(e){}
+  }
+
+  // Online/offline awareness
+  if (typeof window !== 'undefined' && window.addEventListener){
+    window.addEventListener('online',  () => recomputeStatus());
+    window.addEventListener('offline', () => recomputeStatus());
+  }
+
+  return { enabled, client, authed, profileId, setProfileId, defer, sync, realtime,
+           onNewNotification, subscribeNotifications, initialLoad, mirrorSignup,
+           injectStatusPill, recomputeStatus };
+})();
+
 // ====== SAMPLE LISTINGS DATA ======
 const LISTINGS = [
   {
@@ -6537,6 +6826,107 @@ drRenderMilestones();
     document.addEventListener('DOMContentLoaded', vf31Boot);
   } else {
     vf31Boot();
+  }
+})();
+
+// ====== v3.2 NON-DESTRUCTIVE WRAPPERS + BOOT ======
+(function v32Init(){
+  function v32GetLatestSavedSearch(){
+    try {
+      const arr = JSON.parse(localStorage.getItem('vf_saved_searches') || '[]');
+      return arr.length ? arr[arr.length - 1] : null;
+    } catch(e){ return null; }
+  }
+
+  function wrapSavedSearch(){
+    // The save handler is assigned to a button onclick inside the v3.1 IIFE — we don't have a named global
+    // function. Instead, hook into localStorage 'vf_saved_searches' writes by polling its length on user actions.
+    // Cleaner approach: monkey-patch localStorage.setItem narrowly for this key.
+    try {
+      const _setItem = Storage.prototype.setItem;
+      Storage.prototype.setItem = function(k, v){
+        const r = _setItem.apply(this, arguments);
+        try {
+          if (k === 'vf_saved_searches' && v32.enabled() && v32.recomputeStatus) {
+            v32.defer(function(){
+              const latest = v32GetLatestSavedSearch();
+              if (latest) v32.sync.savedSearch(latest);
+            });
+          }
+          if (k === 'vf_pending_verifications' && v32.enabled()) {
+            v32.defer(function(){
+              try {
+                const arr = JSON.parse(v || '[]');
+                const latest = arr[arr.length - 1];
+                if (latest) v32.sync.ownershipToken({
+                  token: latest.token,
+                  method: ({meta:'meta_tag', dns:'dns_txt', file:'file_upload', social:'social_bio'})[latest.method] || 'meta_tag',
+                  listing_id: null,
+                  target_url: null
+                });
+              } catch(e){}
+            });
+          }
+          if (k === 'vf_dr_messages' && v32.enabled() && v32.authed()) {
+            v32.defer(function(){
+              try {
+                const msgs = JSON.parse(v || '[]');
+                const latest = msgs[msgs.length - 1];
+                if (latest && latest.from === 'You') {
+                  v32.sync.dealMessage({ deal_room_id: '00000000-0000-0000-0000-000000000000', body: latest.text });
+                }
+              } catch(e){}
+            });
+          }
+          if (k === 'vf_auth_user' && v32.enabled()) {
+            v32.defer(function(){
+              try {
+                const u = JSON.parse(v || 'null');
+                if (u && u.email && !v32.profileId()) v32.mirrorSignup(u).then(() => {
+                  v32.subscribeNotifications();
+                  v32.recomputeStatus();
+                });
+              } catch(e){}
+            });
+          }
+        } catch(e){}
+        return r;
+      };
+    } catch(e){ console.warn('v32 setItem hook failed'); }
+  }
+
+  function wrapOpenListing(){
+    // Wrap openListing for unlock sync — fires only when user is authed (lockwall would have blocked otherwise)
+    try {
+      if (typeof window.openListing !== 'function' || window.openListing.__v32Wrapped) return;
+      const _orig = window.openListing;
+      window.openListing = function(id){
+        const r = _orig.apply(this, arguments);
+        try {
+          if (v32.enabled() && v32.authed()) v32.defer(function(){ v32.sync.listingUnlock(id); });
+        } catch(e){}
+        return r;
+      };
+      window.openListing.__v32Wrapped = true;
+    } catch(e){ console.warn('v32 openListing wrap failed'); }
+  }
+
+  function v32Boot(){
+    try { v32.injectStatusPill(); } catch(e){}
+    wrapSavedSearch();
+    wrapOpenListing();
+    // Defer all network work off first paint
+    v32.defer(function(){
+      try { v32.recomputeStatus(); } catch(e){}
+      try { v32.initialLoad(); } catch(e){}
+      try { v32.subscribeNotifications(); } catch(e){}
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', v32Boot);
+  } else {
+    v32Boot();
   }
 })();
 </script>
