@@ -5711,7 +5711,13 @@ document.addEventListener('keydown', function(e) {
 });
 
 // Auth-gate: intercept nav clicks when not logged in (except hero, marketplace, how-it-works, about)
-const AUTH_FREE_SECTIONS = ['hero', 'marketplace', 'how-it-works', 'about'];
+// Public sections (browseable without login — lead-gen + top-of-funnel).
+// Gated sections remain: pipeline, agent, reseller, admin, dealroom.
+const AUTH_FREE_SECTIONS = [
+  'hero', 'dashboard', 'marketplace',
+  'valuations', 'domains', 'brand-box', 'hot-deals', 'nft',
+  'subscriptions', 'how-it-works', 'about'
+];
 const _originalNavigate = navigate;
 navigate = function(sectionId) {
   if (!isLoggedIn() && !AUTH_FREE_SECTIONS.includes(sectionId)) {
