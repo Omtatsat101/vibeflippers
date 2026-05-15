@@ -5165,22 +5165,47 @@ function removeUpload(containerId, idx) {
 }
 
 // ====== SUBSCRIPTIONS ======
+// Stripe live-mode Payment Links — Legacy Bridge Alliance Group (acct_1TMtoVCj7UcGjwai)
+// Generated 2026-05-09. To regenerate, see projects/flipwala-vibeflippers/STATUS.md (REQ-005).
+// Customer Portal for self-service cancel/upgrade lives in the Stripe dashboard.
+const VF_STRIPE_LINKS = {
+  starter:     'https://buy.stripe.com/fZubJ0aumeJf8Sk8CK0oM03',  // $29/mo  — prod_UWTfagK6DokWqt
+  pro:         'https://buy.stripe.com/14A7sK45Y44Bc4waKS0oM04',  // $79/mo  — prod_UWTfXOps8JjfUt
+  enterprise:  'https://buy.stripe.com/8x2eVc8measZgkMf180oM05',  // $199/mo — prod_UWTfcsWSxiNDaN
+  paid_buyer:  'https://buy.stripe.com/4gM6oG6e6bx3d8A7yG0oM06'   // $10/mo  — prod_UWTgpgDMZjSs4a
+};
+
 function selectPlan(plan) {
-  localStorage.setItem('vf_subscription', plan);
-  updatePlanDisplay();
-  alert('Plan selected: ' + plan.charAt(0).toUpperCase() + plan.slice(1) + '. In production this would route to Stripe Checkout.');
+  // Remember intent locally so the UI reflects "current plan" optimistically.
+  // Source of truth = Stripe dashboard. Customer Portal handles cancel/upgrade.
+  localStorage.setItem('vf_subscription_pending', plan);
+  const url = VF_STRIPE_LINKS[plan];
+  if (!url) {
+    alert('Unknown plan: ' + plan);
+    return;
+  }
+  window.location.href = url + '?client_reference_id=vf_' + plan + '&utm_source=vibeflippers_site';
 }
 
 function updatePlanDisplay() {
-  const plan = localStorage.getItem('vf_subscription') || 'free';
+  // Confirmed-paid sub takes precedence; fall back to pending intent
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('subscription') === 'success' && params.get('tier')) {
+    localStorage.setItem('vf_subscription', params.get('tier'));
+    localStorage.removeItem('vf_subscription_pending');
+  }
+  const plan = localStorage.getItem('vf_subscription')
+    || localStorage.getItem('vf_subscription_pending')
+    || 'free';
   const el = document.getElementById('currentPlanDisplay');
   if (el) el.textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
 }
 
 function upgradeToPaidBuyer() {
-  localStorage.setItem('vf_paid_buyer', 'true');
-  closeRevealPopup();
-  alert('Upgraded to Paid Buyer! You now have unlimited listing reveals. In production this routes to Stripe ($10/mo).');
+  localStorage.setItem('vf_paid_buyer_pending', 'true');
+  if (typeof closeRevealPopup === 'function') closeRevealPopup();
+  // Route to the buyer-only $10/mo tier
+  window.location.href = VF_STRIPE_LINKS.paid_buyer + '?client_reference_id=vf_paid_buyer&utm_source=vibeflippers_reveal_popup';
 }
 
 // ====== VERIFICATION GATE ======
