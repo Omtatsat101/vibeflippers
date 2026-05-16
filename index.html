@@ -12,26 +12,72 @@
   <meta property="og:description" content="Buy and sell AI-built digital assets — sites, tools, templates, and micro-SaaS. Valuations, escrow, and deal flow for the AI economy.">
   <meta property="og:url" content="https://vibeflippers.com/">
   <meta property="og:site_name" content="VibeFlippers">
+  <meta property="og:image" content="https://vibeflippers.com/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="VibeFlippers — AI-Built Digital Asset Marketplace">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="VibeFlippers — AI-Built Digital Asset Marketplace">
   <meta name="twitter:description" content="Buy and sell AI-built digital assets. Valuations, escrow, and deal flow for the AI economy.">
+  <meta name="twitter:image" content="https://vibeflippers.com/og-image.svg">
+  <meta name="twitter:image:alt" content="VibeFlippers — AI-Built Digital Asset Marketplace">
+  <meta name="theme-color" content="#0c0a14">
   <meta name="keywords" content="buy website, sell website, digital asset marketplace, AI built tools, micro SaaS, website valuation, digital business broker, escrow, flippa alternative, empire flippers alternative">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://buy.stripe.com">
+  <link rel="dns-prefetch" href="https://wa.me">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "VibeFlippers",
-    "description": "AI-Built Digital Asset Marketplace. Buy, sell, and value websites, SaaS tools, templates, and micro-apps.",
-    "url": "https://vibeflippers.com",
-    "applicationCategory": "BusinessApplication",
-    "operatingSystem": "Web",
-    "offers": {
-      "@type": "AggregateOffer",
-      "priceCurrency": "USD",
-      "lowPrice": "299",
-      "highPrice": "500000",
-      "offerCount": "50+"
-    }
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://vibeflippers.com/#org",
+        "name": "VibeFlippers",
+        "url": "https://vibeflippers.com",
+        "logo": "https://vibeflippers.com/og-image.svg",
+        "description": "AI-built digital asset marketplace inside the VibeFlippers / FlipWala / Vibe Sketch brand ecosystem.",
+        "foundingDate": "2026-04",
+        "sameAs": [
+          "https://github.com/Omtatsat101/vibeflippers",
+          "https://flipwala.com"
+        ]
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "https://vibeflippers.com/#app",
+        "name": "VibeFlippers",
+        "description": "AI-Built Digital Asset Marketplace. Buy, sell, and value websites, SaaS tools, templates, and micro-apps.",
+        "url": "https://vibeflippers.com",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "publisher": {"@id":"https://vibeflippers.com/#org"},
+        "offers": [
+          {"@type":"Offer","name":"Starter","price":"10","priceCurrency":"USD","url":"https://vibeflippers.com/#subscriptions"},
+          {"@type":"Offer","name":"Pro","price":"49","priceCurrency":"USD","url":"https://vibeflippers.com/#subscriptions"},
+          {"@type":"Offer","name":"Enterprise","price":"199","priceCurrency":"USD","url":"https://vibeflippers.com/#subscriptions"}
+        ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type":"ListItem","position":1,"name":"Home","item":"https://vibeflippers.com/"},
+          {"@type":"ListItem","position":2,"name":"Marketplace","item":"https://vibeflippers.com/#marketplace"},
+          {"@type":"ListItem","position":3,"name":"Sell Your Asset","item":"https://vibeflippers.com/#sell"},
+          {"@type":"ListItem","position":4,"name":"Valuations","item":"https://vibeflippers.com/#valuations"},
+          {"@type":"ListItem","position":5,"name":"How It Works","item":"https://vibeflippers.com/#how-it-works"}
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {"@type":"Question","name":"What makes VibeFlippers different from Empire Flippers?","acceptedAnswer":{"@type":"Answer","text":"VibeFlippers specializes in AI-built digital assets (micro-SaaS, AI tools, content sites, agents) with lower commission, integrated escrow, and on-chain NFT ownership records. Listings start at $299 and we work without lengthy due-diligence delays."}},
+          {"@type":"Question","name":"How do AI valuations work?","acceptedAnswer":{"@type":"Answer","text":"Run the calculator at /#valuations. We use industry-standard revenue multiples (2-5x annual) adjusted for traffic, margin, and asset age, then compare against live comps in our database."}},
+          {"@type":"Question","name":"Is the marketplace international?","acceptedAnswer":{"@type":"Answer","text":"Yes. VibeFlippers serves an international audience; sister-brand FlipWala provides the same platform with US regulatory cushion for buyers/sellers who need that jurisdictional anchor."}},
+          {"@type":"Question","name":"What is the Brand-in-a-Box offering?","acceptedAnswer":{"@type":"Answer","text":"Pre-built brand packages from $2,499 (Starter) to $9,999 (Empire) — domain, AI-generated logo, social profiles, Shopify theme, content library, and SEO setup ready to launch."}}
+        ]
+      }
+    ]
   }
   </script>
   <style>
@@ -1632,11 +1678,17 @@ a:hover { text-decoration: underline; }
   </style>
   <!-- v3.2 Supabase sync layer (loaded before inline script; dormant unless V32_CONFIG.syncEnabled=true) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+.skip-link{position:absolute;left:-9999px;top:0;z-index:9999;padding:12px 20px;background:var(--accent);color:#fff;font-weight:800;border-radius:0 0 var(--radius-lg) 0;text-decoration:none}
+.skip-link:focus{left:0;outline:3px solid #fff;outline-offset:2px}
+  </style>
 </head>
 <body>
 
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
 <!-- ====== NAVIGATION ====== -->
-<nav class="nav">
+<nav class="nav" role="navigation" aria-label="Primary">
   <div class="container">
     <div class="nav-brand" onclick="navigate('hero')">
       <div class="mark"></div>
@@ -2220,7 +2272,8 @@ a:hover { text-decoration: underline; }
 </section>
 
 <!-- ====== HERO ====== -->
-<section id="hero" class="section page-section active">
+<a id="main-content" tabindex="-1" aria-hidden="true"></a>
+<section id="hero" class="section page-section active" role="region" aria-label="Hero — flagship pitch">
   <div class="container">
     <div class="hero-inner">
       <div>
@@ -3623,6 +3676,36 @@ a:hover { text-decoration: underline; }
 </div>
 
 <script>
+/* ===== VF CONFIG (centralized contact + tracking) ===== */
+window.VF_CONFIG = {
+  supportEmail:   'hello@vibeflippers.com',
+  dmcaEmail:      'dmca@vibeflippers.com',
+  sisterBrand:    { name: 'FlipWala', url: 'https://flipwala.com' },
+  utmSource:      'vibeflippers_site',
+  utmMedium:      'organic',
+  utmCampaign:    'v33-may2026'
+};
+window.vfAddUtm = function(url){
+  try {
+    var u = new URL(url, location.href);
+    if (u.hostname && u.hostname !== location.hostname) {
+      if (!u.searchParams.has('utm_source')) u.searchParams.set('utm_source', window.VF_CONFIG.utmSource);
+      if (!u.searchParams.has('utm_medium')) u.searchParams.set('utm_medium', window.VF_CONFIG.utmMedium);
+      if (!u.searchParams.has('utm_campaign')) u.searchParams.set('utm_campaign', window.VF_CONFIG.utmCampaign);
+    }
+    return u.toString();
+  } catch(e){ return url; }
+};
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('a[target="_blank"]').forEach(function(a){
+    if (!a.hasAttribute('rel')) a.setAttribute('rel','noopener');
+    var href = a.getAttribute('href') || '';
+    if (/^https?:/.test(href)) {
+      a.setAttribute('href', window.vfAddUtm(href));
+    }
+  });
+});
+
 // ====== v3.2 SUPABASE SYNC LAYER (offline-first, sync-through) ======
 const V32_CONFIG = {
   supabaseUrl: 'https://YOUR_PROJECT.supabase.co', // placeholder — Riket fills real URL

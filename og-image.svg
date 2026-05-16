@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="t d">
+  <title id="t">VibeFlippers — AI-Built Digital Asset Marketplace</title>
+  <desc id="d">Buy and sell AI-built digital assets. Valuations, escrow, and deal flow for the AI economy.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0c0a14"/>
+      <stop offset="1" stop-color="#1c1840"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#6c3caf"/>
+      <stop offset="1" stop-color="#d8ccf0"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.2" cy="0.15" r="0.6">
+      <stop offset="0" stop-color="#9b6dd7" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#6c3caf" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g transform="translate(72,88)">
+    <rect width="76" height="76" rx="18" fill="url(#accent)"/>
+    <text x="38" y="54" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="42" font-weight="900" fill="#0c0a14" text-anchor="middle">V</text>
+    <text x="100" y="34" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" font-weight="700" letter-spacing="3" fill="#9b93c0">AI-BUILT ASSET MARKETPLACE</text>
+    <text x="100" y="68" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="36" font-weight="800" fill="#eae6f8">VibeFlippers<tspan fill="#9b6dd7">.</tspan>com</text>
+  </g>
+  <text x="72" y="310" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="76" font-weight="900" fill="#eae6f8" letter-spacing="-2">The AI economy</text>
+  <text x="72" y="386" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="76" font-weight="900" fill="url(#accent)" letter-spacing="-2">needs a marketplace.</text>
+  <text x="72" y="448" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="26" font-weight="500" fill="#bcb3d8">SaaS · Templates · Micro-apps · Tools · Content sites · AI agents</text>
+  <g transform="translate(72,510)" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+    <rect width="220" height="56" rx="28" fill="#6c3caf"/>
+    <text x="110" y="36" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">List Your Asset</text>
+    <text x="252" y="36" font-size="18" font-weight="600" fill="#9b93c0">From $10/mo · Stripe-secured</text>
+  </g>
+  <g transform="translate(940,72)" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+    <rect width="190" height="68" rx="16" fill="rgba(255,255,255,0.06)" stroke="#9b6dd7" stroke-opacity="0.4"/>
+    <text x="95" y="32" font-size="13" font-weight="600" fill="#9b93c0" text-anchor="middle">4-CHANNEL ECOSYSTEM</text>
+    <text x="95" y="56" font-size="18" font-weight="800" fill="#eae6f8" text-anchor="middle">vibeflippers.com</text>
+  </g>
+</svg>
