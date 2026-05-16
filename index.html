@@ -2488,6 +2488,11 @@ a:hover { text-decoration: underline; }
             <label>Reason for Selling</label>
             <textarea id="sf-reason" placeholder="Why are you selling this asset?"></textarea>
           </div>
+          <div class="form-group">
+            <label>Contact Email</label>
+            <input type="email" id="sf-contact-email" placeholder="you@example.com" required>
+          </div>
+          <input type="text" id="sf-hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;pointer-events:none">
           <div class="form-nav">
             <button class="btn btn-ghost" onclick="sellFormNext(3)">Back</button>
             <button class="btn btn-primary" onclick="submitSellForm()">Submit Listing</button>
@@ -3585,10 +3590,12 @@ a:hover { text-decoration: underline; }
         <p>The premier marketplace for AI-built digital assets. Buy, sell, and flip with confidence.</p>
         <div class="footer-newsletter">
           <p style="font-size:13px;color:var(--muted);margin-bottom:8px;">Subscribe for weekly deal alerts:</p>
-          <form onsubmit="event.preventDefault();this.querySelector('input').value='';alert('Subscribed! You will receive weekly deal alerts.');">
-            <input type="email" placeholder="you@email.com" required>
+          <form onsubmit="vfSubmitNewsletter(event)">
+            <input type="email" id="vfNewsletterEmail" placeholder="you@email.com" required>
+            <input type="text" id="vfNewsletterHp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;pointer-events:none">
             <button type="submit" class="btn btn-primary btn-sm">Subscribe</button>
           </form>
+          <div id="vfNewsletterStatus" style="display:none;font-size:13px;margin-top:8px;"></div>
         </div>
       </div>
       <div class="footer-col">
@@ -3717,11 +3724,34 @@ document.addEventListener('DOMContentLoaded', function(){
 
 // ====== v3.2 SUPABASE SYNC LAYER (offline-first, sync-through) ======
 const V32_CONFIG = {
-  supabaseUrl: 'https://YOUR_PROJECT.supabase.co', // placeholder — Riket fills real URL
-  supabaseAnonKey: 'YOUR_ANON_KEY',                // placeholder
+  supabaseUrl: 'https://doxmbwizpsyqruyrmffs.supabase.co',
+  supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRveG1id2l6cHN5cXJ1eXJtZmZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwNDUwNjMsImV4cCI6MjA5MTYyMTA2M30.o9o4UCBib6L1w3glbSi97fyxTQQH548ACZ8nut91CwI',
   platform: 'vf',
   syncEnabled: false  // default OFF until Riket flips on
 };
+
+async function vfSubmitLeadCapture(form, payload) {
+  const email = String(payload.email || '').trim().toLowerCase();
+  if (!email) throw new Error('missing_email');
+  const res = await fetch(V32_CONFIG.supabaseUrl + '/rest/v1/form_submissions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      apikey: V32_CONFIG.supabaseAnonKey,
+      Authorization: 'Bearer ' + V32_CONFIG.supabaseAnonKey,
+      Prefer: 'return=minimal'
+    },
+    body: JSON.stringify({
+      site: 'vibeflippers',
+      form,
+      email,
+      name: String(payload.name || '').trim().slice(0,255),
+      message: String(payload.message || '').trim().slice(0,5000),
+      payload
+    })
+  });
+  if (!res.ok) throw new Error('submit_failed_' + res.status);
+}
 
 const v32 = (function(){
   let _client = null;
@@ -3770,7 +3800,7 @@ const v32 = (function(){
       if (!el) return;
       const map = {
         green:  { dot:'#34d399', label:'Synced',     bg:'rgba(52,211,153,0.10)', bd:'rgba(52,211,153,0.35)' },
-        yellow: { dot:'#facc15', label:'Local only', bg:'rgba(250,204,21,0.10)', bd:'rgba(250,204,21,0.35)' },
+        yellow: { dot:'#facc15', label:'Browser only', bg:'rgba(250,204,21,0.10)', bd:'rgba(250,204,21,0.35)' },
         red:    { dot:'#f87171', label:'Offline',    bg:'rgba(248,113,113,0.10)', bd:'rgba(248,113,113,0.35)' }
       };
       const m = map[s] || map.yellow;
@@ -3981,9 +4011,9 @@ const v32 = (function(){
       if (document.getElementById('v32-status-pill')) return;
       const pill = document.createElement('span');
       pill.id = 'v32-status-pill';
-      pill.title = 'v3.2 sync status';
+      pill.title = 'Workspace sync status';
       pill.style.cssText = 'display:inline-flex;align-items:center;font:11px/1 system-ui,sans-serif;color:#cbd5e1;padding:4px 9px;border-radius:999px;margin-left:10px;letter-spacing:0.02em;cursor:default;background:rgba(250,204,21,0.10);border:1px solid rgba(250,204,21,0.35)';
-      pill.innerHTML = '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#facc15;margin-right:6px"></span><span>Local only</span>';
+      pill.innerHTML = '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#facc15;margin-right:6px"></span><span>Browser only</span>';
       // Try to mount in nav
       const nav = document.querySelector('nav.nav .container') || document.querySelector('nav .container') || document.querySelector('nav');
       if (nav) nav.appendChild(pill);
@@ -4378,7 +4408,7 @@ function sellFormNext(step) {
   if (stepEl) stepEl.classList.add('active');
 }
 
-function submitSellForm() {
+async function submitSellForm() {
   const data = {
     name: document.getElementById('sf-name').value,
     url: document.getElementById('sf-url').value,
@@ -4393,52 +4423,60 @@ function submitSellForm() {
     tech: document.getElementById('sf-tech').value,
     growth: document.getElementById('sf-growth').value,
     reason: document.getElementById('sf-reason').value,
+    contactEmail: document.getElementById('sf-contact-email').value.trim(),
     submittedAt: new Date().toISOString()
   };
+  if (!data.name || !data.contactEmail) {
+    alert('Please add the asset name and your contact email.');
+    return;
+  }
+  if (document.getElementById('sf-hp').value) return;
   var dealId = 'VF-' + Date.now().toString(36).toUpperCase();
   data.dealId = dealId;
+
+  try {
+    await vfSubmitLeadCapture('seller-intake', {
+      email: data.contactEmail,
+      name: data.name,
+      message: [data.type, data.niche, data.url].filter(Boolean).join(' | '),
+      ...data
+    });
+  } catch (err) {
+    alert('We could not save your listing right now. Please try again in a minute.');
+    return;
+  }
 
   // Save to localStorage (preserves submission for offline / device-recovery)
   const submissions = JSON.parse(localStorage.getItem('vf_submissions') || '[]');
   submissions.push(data);
   localStorage.setItem('vf_submissions', JSON.stringify(submissions));
-
-  // Build mailto fallback so submission actually reaches the team (no backend dep)
-  try {
-    var to = (window.VF_CONFIG && window.VF_CONFIG.supportEmail) || 'hello@vibeflippers.com';
-    var subj = '[New Listing] ' + (data.name || '(unnamed)') + ' — ' + dealId;
-    var bodyLines = [
-      'Deal ID: ' + dealId,
-      'Submitted: ' + data.submittedAt,
-      '',
-      'Business: ' + (data.name || ''),
-      'URL: ' + (data.url || ''),
-      'Type: ' + (data.type || '') + ' — Niche: ' + (data.niche || ''),
-      '',
-      'Revenue (annual): ' + (data.revenue || ''),
-      'Profit  (annual): ' + (data.profit || ''),
-      'Asking  price:    ' + (data.price || ''),
-      'Age (months):     ' + (data.age || ''),
-      'Visitors/mo:      ' + (data.visitors || ''),
-      'Traffic source:   ' + (data.traffic || ''),
-      'Tech stack:       ' + (data.tech || ''),
-      'Growth story:     ' + (data.growth || ''),
-      '',
-      'Reason for selling:',
-      (data.reason || ''),
-      '',
-      '— Sent from vibeflippers.com sell-form'
-    ];
-    var mailto = 'mailto:' + encodeURIComponent(to)
-      + '?subject=' + encodeURIComponent(subj)
-      + '&body=' + encodeURIComponent(bodyLines.join('\n'));
-    window.location.href = mailto;
-  } catch(e){ console.warn('[VibeFlippers] mailto fallback failed:', e); }
-
-  // Show confirmation regardless (localStorage already captured the submission)
+  // Show confirmation after both the server-side capture and local backup succeed.
   document.getElementById('sellFormContainer').style.display = 'none';
   document.getElementById('sellConfirmation').style.display = 'block';
   document.querySelector('.form-steps').style.display = 'none';
+}
+
+async function vfSubmitNewsletter(e) {
+  e.preventDefault();
+  const email = document.getElementById('vfNewsletterEmail').value.trim();
+  const status = document.getElementById('vfNewsletterStatus');
+  if (!email) return;
+  if (document.getElementById('vfNewsletterHp').value) return;
+  try {
+    await vfSubmitLeadCapture('newsletter', {
+      email,
+      name: 'VibeFlippers Weekly Alerts',
+      message: 'Weekly deal alerts signup'
+    });
+    status.textContent = '✓ Subscribed. Weekly deal alerts are on the way.';
+    status.style.color = 'var(--green)';
+    status.style.display = 'block';
+    document.getElementById('vfNewsletterEmail').value = '';
+  } catch (err) {
+    status.textContent = 'We could not save your signup right now. Please try again.';
+    status.style.color = 'var(--red)';
+    status.style.display = 'block';
+  }
 }
 
 // ====== VALUATION TOOL ======
@@ -5317,17 +5355,23 @@ function updatePlanDisplay() {
   // Confirmed-paid sub takes precedence; fall back to pending intent
   const params = new URLSearchParams(window.location.search);
   if (params.get('subscription') === 'success' && params.get('tier')) {
-    localStorage.setItem('vf_subscription', params.get('tier'));
+    const tier = params.get('tier');
+    localStorage.setItem('vf_subscription', tier);
     localStorage.removeItem('vf_subscription_pending');
+    if (tier === 'paid_buyer') localStorage.setItem('vf_paid_buyer', 'true');
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState({}, document.title, window.location.pathname + window.location.hash);
+    }
   }
   const plan = localStorage.getItem('vf_subscription')
     || localStorage.getItem('vf_subscription_pending')
     || 'free';
   const el = document.getElementById('currentPlanDisplay');
-  if (el) el.textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
+  if (el) el.textContent = plan.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 }
 
 function upgradeToPaidBuyer() {
+  localStorage.setItem('vf_subscription_pending', 'paid_buyer');
   localStorage.setItem('vf_paid_buyer_pending', 'true');
   if (typeof closeRevealPopup === 'function') closeRevealPopup();
   // Route to the buyer-only $10/mo tier
@@ -5394,7 +5438,10 @@ function getReveals() {
 }
 
 function canReveal(listingId) {
-  if (localStorage.getItem('vf_paid_buyer') === 'true') return true;
+  const plan = (localStorage.getItem('vf_subscription')
+    || localStorage.getItem('vf_subscription_pending')
+    || '').toLowerCase();
+  if ((plan && plan !== 'free') || localStorage.getItem('vf_paid_buyer') === 'true') return true;
   const reveals = getReveals();
   if (reveals.includes(listingId)) return true;
   return reveals.length < 3;
