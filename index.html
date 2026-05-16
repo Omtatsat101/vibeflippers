@@ -4395,13 +4395,47 @@ function submitSellForm() {
     reason: document.getElementById('sf-reason').value,
     submittedAt: new Date().toISOString()
   };
+  var dealId = 'VF-' + Date.now().toString(36).toUpperCase();
+  data.dealId = dealId;
 
-  // Save to localStorage
+  // Save to localStorage (preserves submission for offline / device-recovery)
   const submissions = JSON.parse(localStorage.getItem('vf_submissions') || '[]');
   submissions.push(data);
   localStorage.setItem('vf_submissions', JSON.stringify(submissions));
 
-  // Show confirmation
+  // Build mailto fallback so submission actually reaches the team (no backend dep)
+  try {
+    var to = (window.VF_CONFIG && window.VF_CONFIG.supportEmail) || 'hello@vibeflippers.com';
+    var subj = '[New Listing] ' + (data.name || '(unnamed)') + ' — ' + dealId;
+    var bodyLines = [
+      'Deal ID: ' + dealId,
+      'Submitted: ' + data.submittedAt,
+      '',
+      'Business: ' + (data.name || ''),
+      'URL: ' + (data.url || ''),
+      'Type: ' + (data.type || '') + ' — Niche: ' + (data.niche || ''),
+      '',
+      'Revenue (annual): ' + (data.revenue || ''),
+      'Profit  (annual): ' + (data.profit || ''),
+      'Asking  price:    ' + (data.price || ''),
+      'Age (months):     ' + (data.age || ''),
+      'Visitors/mo:      ' + (data.visitors || ''),
+      'Traffic source:   ' + (data.traffic || ''),
+      'Tech stack:       ' + (data.tech || ''),
+      'Growth story:     ' + (data.growth || ''),
+      '',
+      'Reason for selling:',
+      (data.reason || ''),
+      '',
+      '— Sent from vibeflippers.com sell-form'
+    ];
+    var mailto = 'mailto:' + encodeURIComponent(to)
+      + '?subject=' + encodeURIComponent(subj)
+      + '&body=' + encodeURIComponent(bodyLines.join('\n'));
+    window.location.href = mailto;
+  } catch(e){ console.warn('[VibeFlippers] mailto fallback failed:', e); }
+
+  // Show confirmation regardless (localStorage already captured the submission)
   document.getElementById('sellFormContainer').style.display = 'none';
   document.getElementById('sellConfirmation').style.display = 'block';
   document.querySelector('.form-steps').style.display = 'none';
