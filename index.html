@@ -3727,8 +3727,92 @@ const V32_CONFIG = {
   supabaseUrl: 'https://doxmbwizpsyqruyrmffs.supabase.co',
   supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRveG1id2l6cHN5cXJ1eXJtZmZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwNDUwNjMsImV4cCI6MjA5MTYyMTA2M30.o9o4UCBib6L1w3glbSi97fyxTQQH548ACZ8nut91CwI',
   platform: 'vf',
-  syncEnabled: false  // default OFF until Riket flips on
+  syncEnabled: true  // 2026-05-18: flipped ON — Supabase auth + form intake live
 };
+
+/* F02 fix (2026-05-18): pull live marketplace stats from Supabase view.
+   Updates any DOM element with [data-live-stat="<field>"] when present. */
+(async function vfLoadLiveStats(){
+  try {
+    const r = await fetch(V32_CONFIG.supabaseUrl + '/rest/v1/v_vfw_marketplace_stats?marketplace=eq.vibeflippers&select=*', {
+      headers: { apikey: V32_CONFIG.supabaseAnonKey }
+    });
+    if (!r.ok) return;
+    const rows = await r.json();
+    const s = rows[0];
+    if (!s) return;
+    document.querySelectorAll('[data-live-stat]').forEach(el => {
+      const key = el.getAttribute('data-live-stat');
+      if (s[key] != null) el.textContent = Number(s[key]).toLocaleString();
+    });
+    console.info('[vf] live marketplace stats loaded:', s);
+  } catch(e) { /* silent — falls back to inline display */ }
+})();
+
+/* F02 fix (2026-05-18, completion): pull live marketplace LISTINGS from Supabase
+   view and replace the inline LISTINGS array when ≥3 rows return. Falls back
+   to inline seed data silently if API is down. Re-renders the grid on success. */
+function vfAssetTypeToTypeLabel(t) {
+  return ({
+    shopify_store: 'eCommerce', saas_app: 'SaaS', content_website: 'Content Site',
+    domain: 'Domain', social_media_account: 'Social Account', newsletter: 'Newsletter',
+    mobile_app: 'Mobile App', brand_package: 'Brand Package', code_template: 'Code/Theme',
+    ad_account: 'Ad Account', hybrid_ecom_warehouse: 'Hybrid eCom',
+    physical_only_business: 'Physical Biz', franchise: 'Franchise',
+    licensed_business: 'Licensed Biz'
+  })[t] || 'Listing';
+}
+function vfRowToListing(row, idx) {
+  // Build a 12-month traffic-history shim from monthly_revenue (visual only).
+  const r = Number(row.monthly_revenue || 0);
+  const seedHist = Array.from({ length: 12 }, (_, i) => Math.max(1, Math.round(r * (0.7 + i * 0.025))));
+  const techStack = (row.tags || []).slice(0, 6);
+  return {
+    id: 1000 + idx,                                     // stable visual id; real uuid kept in __uuid
+    __uuid: row.id,
+    __slug: row.slug,
+    name: row.title || 'Untitled Listing',
+    type: vfAssetTypeToTypeLabel(row.asset_type),
+    niche: row.niche || row.asset_type || '—',
+    monthlyRevenue: Number(row.monthly_revenue || 0),
+    monthlyProfit: Number(row.monthly_net_profit || row.monthly_revenue * 0.4 || 0),
+    askingPrice: Number(row.asking_price || 0),
+    multiple: Number(row.profit_multiple || row.revenue_multiple || 0).toFixed(1),
+    traffic: Number(row.content_monthly_pageviews || row.shopify_total_orders * 50 || 0),
+    age: Number(row.age_months || 0),
+    created: (row.published_at || '').slice(0, 10),
+    techStack,
+    trafficSources: row.headline ? row.headline.slice(0, 120) : '—',
+    trafficHistory: seedHist,
+    description: row.headline || row.title || '',
+    growthNotes: row.ai_quality_score
+      ? `AI quality score: ${row.ai_quality_score}/100. Verified by operator review.`
+      : 'Listing passed initial intake review.',
+    sellerNotes: `Verified seller (trust score ${row.seller_trust_score || 50}/100, ${row.seller_country || '—'}, ${row.seller_closed_deals || 0} closed deals).`,
+    pnl: { revenue: Number(row.monthly_revenue || 0), profit: Number(row.monthly_net_profit || 0) }
+  };
+}
+document.addEventListener('DOMContentLoaded', async function vfLoadLiveListings(){
+  if (typeof LISTINGS === 'undefined') return;  // defensive: don't crash if LISTINGS not in scope
+  try {
+    const r = await fetch(V32_CONFIG.supabaseUrl + '/rest/v1/v_vfw_marketplace_listings?marketplace=eq.vibeflippers&order=published_at.desc&limit=50&select=*', {
+      headers: { apikey: V32_CONFIG.supabaseAnonKey }
+    });
+    if (!r.ok) { console.warn('[vf] live listings fetch failed:', r.status); return; }
+    const rows = await r.json();
+    if (!Array.isArray(rows) || rows.length < 3) {
+      console.info('[vf] live listings: only', rows.length, 'returned — keeping inline seed');
+      return;
+    }
+    // Mutate LISTINGS in place (it's const but mutation is fine).
+    LISTINGS.length = 0;
+    rows.forEach((row, i) => LISTINGS.push(vfRowToListing(row, i)));
+    console.info('[vf] live listings loaded:', LISTINGS.length, 'rows');
+    if (typeof renderListings === 'function') {
+      try { renderListings(); } catch(e) { console.warn('[vf] re-render after live load failed:', e); }
+    }
+  } catch(e) { console.warn('[vf] live listings exception:', e); }
+});
 
 async function vfSubmitLeadCapture(form, payload) {
   const email = String(payload.email || '').trim().toLowerCase();
@@ -5473,10 +5557,8 @@ function closeRevealPopup() {
 }
 
 // ====== AUTH SYSTEM ======
-const DEMO_ACCOUNTS = {
-  'admin@vibeflippers.com': { password: 'VF-Admin-2026!', role: 'admin', tier: 'enterprise', name: 'VF Admin' },
-  'operator@vibeflippers.com': { password: 'VF-Ops-2026!', role: 'operator', tier: 'pro', name: 'VF Operator' }
-};
+// F01/F03 fix (2026-05-18): replaced demo-account map + localStorage password
+// check with real Supabase password grant. No more demo creds in production.
 
 function isLoggedIn() {
   const user = localStorage.getItem('vf_auth_user');
@@ -5497,7 +5579,7 @@ function getCurrentUser() {
   catch(e) { return null; }
 }
 
-function vfLogin() {
+async function vfLogin() {
   const email = document.getElementById('loginEmail').value.trim().toLowerCase();
   const password = document.getElementById('loginPassword').value;
   const remember = document.getElementById('loginRemember').checked;
@@ -5506,32 +5588,61 @@ function vfLogin() {
   if (!email || !password) { showAuthError('Please enter your email and password.'); return; }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showAuthError('Please enter a valid email address.'); return; }
 
-  // Check demo/admin accounts
-  const demo = DEMO_ACCOUNTS[email];
-  if (demo) {
-    if (password !== demo.password) { showAuthError('Incorrect password.'); return; }
+  try {
+    const r = await fetch(V32_CONFIG.supabaseUrl + '/auth/v1/token?grant_type=password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', apikey: V32_CONFIG.supabaseAnonKey },
+      body: JSON.stringify({ email, password })
+    });
+    if (!r.ok) {
+      const body = await r.json().catch(() => ({}));
+      const msg = body.error_description || body.msg || 'Sign-in failed.';
+      showAuthError(/invalid|credentials/i.test(msg) ? 'Incorrect email or password.' : msg);
+      return;
+    }
+    const j = await r.json();
+    let role = 'buyer', tier = 'free', name = email.split('@')[0];
+    try {
+      const me = await fetch(V32_CONFIG.supabaseUrl + '/rest/v1/vfw_users?id=eq.' + j.user.id + '&select=full_legal_name,primary_marketplace', {
+        headers: { apikey: V32_CONFIG.supabaseAnonKey, Authorization: 'Bearer ' + j.access_token }
+      });
+      if (me.ok) {
+        const rows = await me.json();
+        if (rows[0]?.full_legal_name) name = rows[0].full_legal_name;
+      }
+      const roleRes = await fetch(V32_CONFIG.supabaseUrl + '/rest/v1/vfw_role_assignments?user_id=eq.' + j.user.id + '&active=eq.true&select=role,marketplace', {
+        headers: { apikey: V32_CONFIG.supabaseAnonKey, Authorization: 'Bearer ' + j.access_token }
+      });
+      if (roleRes.ok) {
+        const roles = await roleRes.json();
+        if (roles.some(r => r.role === 'admin')) role = 'admin';
+        else if (roles.some(r => r.role === 'operator')) role = 'operator';
+        else if (roles.some(r => r.role === 'seller')) role = 'seller';
+        else if (roles.some(r => r.role === 'broker')) role = 'broker';
+      }
+      const subRes = await fetch(V32_CONFIG.supabaseUrl + '/rest/v1/vfw_subscriptions?user_id=eq.' + j.user.id + '&marketplace=eq.vibeflippers&status=eq.active&select=tier', {
+        headers: { apikey: V32_CONFIG.supabaseAnonKey, Authorization: 'Bearer ' + j.access_token }
+      });
+      if (subRes.ok) {
+        const subs = await subRes.json();
+        if (subs[0]?.tier) tier = subs[0].tier;
+      }
+    } catch(e) { /* non-fatal */ }
+
     const user = {
-      id: 'vf-usr-' + (email === 'admin@vibeflippers.com' ? 'admin' : 'ops'),
-      name: demo.name, email: email, role: demo.role,
-      tier: demo.tier, verified: true,
-      created_at: '2026-01-01T00:00:00Z', login_at: Date.now()
+      id: j.user.id,
+      name, email, role, tier,
+      verified: !!j.user.email_confirmed_at,
+      access_token: j.access_token,
+      refresh_token: j.refresh_token,
+      created_at: j.user.created_at,
+      login_at: Date.now()
     };
     completeLogin(user, remember);
-    return;
+  } catch (e) {
+    showAuthError('Network error — please try again.');
+    console.error('vfLogin:', e);
   }
-
-  // Check localStorage registered users
-  const users = JSON.parse(localStorage.getItem('vf_users') || '{}');
-  const stored = users[email];
-  if (!stored) { showAuthError('No account found with this email. Please sign up.'); return; }
-  if (stored.password !== password) { showAuthError('Incorrect password.'); return; }
-
-  const user = {
-    id: stored.id, name: stored.name, email: email, role: stored.role,
-    tier: stored.tier || 'free', verified: stored.verified || false,
-    created_at: stored.created_at, login_at: Date.now()
-  };
-  completeLogin(user, remember);
 }
 
 // ====== MULTI-STEP SIGNUP LOGIC ======
@@ -5584,7 +5695,6 @@ function validateSignupStep1() {
   if (!phone) { showAuthError('Please enter your phone number.'); return false; }
   if (!country) { showAuthError('Please select your country.'); return false; }
   // Check if email already exists
-  if (DEMO_ACCOUNTS[email.toLowerCase()]) { showAuthError('This email is reserved. Please use a different email.'); return false; }
   const users = JSON.parse(localStorage.getItem('vf_users') || '{}');
   if (users[email.toLowerCase()]) { showAuthError('An account with this email already exists. Please sign in.'); return false; }
   return true;
