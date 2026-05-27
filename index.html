@@ -82,6 +82,19 @@
   </script>
   <style>
 :root {
+  /* ============================================================
+     BRAND TOKENS — edit these 4 values to rebrand. The rest of
+     the palette is theme-neutral and works for any brand.
+     See THEME-TOGGLE-SNIPPET.md for the pattern.
+     ============================================================ */
+  --brand-name: "VibeFlippers";
+  --brand-accent: #6c3caf;        /* primary brand color (purple) */
+  --brand-accent-2: #9b6dd7;      /* secondary (lighter purple) */
+  --brand-accent-3: #d8ccf0;      /* tertiary highlight (very light) */
+
+  /* ============================================================
+     DARK THEME (default) — semantic palette
+     ============================================================ */
   --bg: #0c0a14;
   --bg2: #13102a;
   --panel: rgba(28, 24, 58, 0.82);
@@ -90,15 +103,15 @@
   --ink-bright: #fff;
   --muted: #9b93c0;
   --line: rgba(140, 120, 200, 0.18);
-  --accent: #6c3caf;
-  --accent-light: #9b6dd7;
+  --accent: var(--brand-accent);
+  --accent-light: var(--brand-accent-2);
   --accent-glow: rgba(108, 60, 175, 0.35);
   --green: #34d399;
   --green-bg: rgba(52, 211, 153, 0.12);
   --red: #f87171;
   --yellow: #fbbf24;
   --blue: #60a5fa;
-  --hero: linear-gradient(135deg, #4a2888 0%, #8b5cd0 44%, #d8ccf0 100%);
+  --hero: linear-gradient(135deg, var(--brand-accent) 0%, var(--brand-accent-2) 44%, var(--brand-accent-3) 100%);
   --glass: rgba(28, 24, 58, 0.65);
   --glass-border: rgba(140, 120, 200, 0.22);
   --shadow: 0 24px 70px rgba(10, 6, 30, 0.5);
@@ -111,6 +124,31 @@
   --font-body: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono: "SF Mono", ui-monospace, "Cascadia Code", monospace;
 }
+
+/* ============================================================
+   LIGHT THEME — tuned for readability on white bg.
+   Hero gradient overrides because the dark-mode end (very light
+   lavender) makes white text invisible. Light-mode hero keeps
+   white text on saturated purple end-to-end.
+   ============================================================ */
+[data-theme="light"] {
+  --bg: #f7f5fb;                /* very pale lavender-white — softer than #fafafa */
+  --bg2: #edeaf3;
+  --panel: rgba(255, 255, 255, 0.96);
+  --panel-solid: #ffffff;
+  --ink: #1a1430;               /* near-black with subtle purple tint */
+  --ink-bright: #0c0820;
+  --muted: #5a536e;             /* darker for readable secondary text on white */
+  --line: rgba(20, 16, 40, 0.12);
+  --accent-glow: rgba(108, 60, 175, 0.20);
+  --glass: rgba(255, 255, 255, 0.82);
+  --glass-border: rgba(20, 16, 40, 0.10);
+  --shadow: 0 12px 40px rgba(20, 16, 40, 0.10);
+  /* Hero stays purple all the way through so white text remains readable.
+     We override the gradient instead of dimming the text. */
+  --hero: linear-gradient(135deg, #3a1e6a 0%, var(--brand-accent) 50%, var(--brand-accent-2) 100%);
+}
+html { transition: background-color 0.2s ease, color 0.2s ease; }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1732,6 +1770,10 @@ a:hover { text-decoration: underline; }
         <div id="notifList"></div>
       </div>
     </div>
+    <button id="themeToggle" onclick="toggleTheme()" aria-label="Toggle dark/light mode" title="Toggle theme (Shift+D)"
+            style="background:transparent;border:1px solid var(--line);color:var(--ink);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:16px;display:inline-flex;align-items:center;justify-content:center;margin-right:6px;">
+      <span id="themeToggleIcon">&#9790;</span>
+    </button>
     <div class="nav-auth" id="navAuth">
       <button class="nav-signin" onclick="openAuthModal('login')">Sign In</button>
     </div>
@@ -1790,9 +1832,15 @@ a:hover { text-decoration: underline; }
       </div>
       <div class="auth-row">
         <label><input type="checkbox" id="loginRemember"> Remember me</label>
-        <a href="#" onclick="event.preventDefault();alert('Password reset will be available with Supabase Auth integration.')">Forgot password?</a>
+        <a href="#" onclick="event.preventDefault();vfPasswordReset()">Forgot password?</a>
       </div>
       <button class="auth-submit" onclick="vfLogin()">Sign In</button>
+      <div style="display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--muted);font-size:12px;">
+        <div style="flex:1;height:1px;background:var(--line);"></div>
+        <span>OR</span>
+        <div style="flex:1;height:1px;background:var(--line);"></div>
+      </div>
+      <button class="auth-submit" id="vfMagicLinkBtn" onclick="vfRequestMagicLink()" style="background:transparent;border:1px solid var(--line);color:var(--ink);">&#9889; Email me a magic link</button>
       <div class="auth-switch">Don't have an account? <a onclick="switchAuthTab('signup')">Sign Up</a></div>
     </div>
 
@@ -3814,6 +3862,66 @@ document.addEventListener('DOMContentLoaded', async function vfLoadLiveListings(
   } catch(e) { console.warn('[vf] live listings exception:', e); }
 });
 
+// After Supabase email-confirm redirect, the access_token comes back in
+// the URL hash fragment. Create the client (persistSession=true auto-reads it),
+// then hydrate vf_auth_user so the UI flips to logged-in immediately.
+(function vfHydrateSessionOnLoad(){
+  function init(){
+    if (typeof window.supabase === 'undefined' || !window.supabase.createClient) return;
+    try {
+      const supa = window.supabase.createClient(V32_CONFIG.supabaseUrl, V32_CONFIG.supabaseAnonKey, {
+        auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+      });
+      supa.auth.getSession().then(async ({ data }) => {
+        const sess = data && data.session;
+        if (!sess || !sess.user) return;
+        // If we already have a logged-in user record matching, leave it alone.
+        try {
+          const existing = JSON.parse(localStorage.getItem('vf_auth_user') || 'null');
+          if (existing && existing.id === sess.user.id) return;
+        } catch (e) {}
+        const u = sess.user;
+        const meta = u.user_metadata || {};
+        let role = meta.role || 'buyer', tier = 'free', name = meta.name || (u.email || '').split('@')[0];
+        try {
+          const roleRes = await fetch(V32_CONFIG.supabaseUrl + '/rest/v1/vfw_role_assignments?user_id=eq.' + u.id + '&active=eq.true&select=role,marketplace', {
+            headers: { apikey: V32_CONFIG.supabaseAnonKey, Authorization: 'Bearer ' + sess.access_token }
+          });
+          if (roleRes.ok) {
+            const roles = await roleRes.json();
+            if (roles.some(r => r.role === 'admin')) role = 'admin';
+            else if (roles.some(r => r.role === 'operator')) role = 'operator';
+            else if (roles.some(r => r.role === 'seller')) role = 'seller';
+            else if (roles.some(r => r.role === 'broker')) role = 'broker';
+          }
+          const subRes = await fetch(V32_CONFIG.supabaseUrl + '/rest/v1/vfw_subscriptions?user_id=eq.' + u.id + '&marketplace=eq.vibeflippers&status=eq.active&select=tier', {
+            headers: { apikey: V32_CONFIG.supabaseAnonKey, Authorization: 'Bearer ' + sess.access_token }
+          });
+          if (subRes.ok) {
+            const subs = await subRes.json();
+            if (subs[0]?.tier) tier = subs[0].tier;
+          }
+        } catch(e) { /* non-fatal */ }
+        const user = {
+          id: u.id, name, email: u.email, role, tier,
+          verified: !!u.email_confirmed_at,
+          access_token: sess.access_token, refresh_token: sess.refresh_token,
+          created_at: u.created_at, login_at: Date.now()
+        };
+        if (typeof completeLogin === 'function') completeLogin(user, true);
+        // Clean the URL of the confirm marker
+        if (window.history && window.history.replaceState) {
+          const u2 = new URL(window.location.href);
+          u2.searchParams.delete('auth_confirmed');
+          window.history.replaceState({}, document.title, u2.pathname + u2.search + u2.hash.replace(/^#.*$/, ''));
+        }
+      }).catch(()=>{});
+    } catch(e) { /* silent */ }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+
 async function vfSubmitLeadCapture(form, payload) {
   const email = String(payload.email || '').trim().toLowerCase();
   if (!email) throw new Error('missing_email');
@@ -5694,9 +5802,7 @@ function validateSignupStep1() {
   if (password.length < 8) { showAuthError('Password must be at least 8 characters.'); return false; }
   if (!phone) { showAuthError('Please enter your phone number.'); return false; }
   if (!country) { showAuthError('Please select your country.'); return false; }
-  // Check if email already exists
-  const users = JSON.parse(localStorage.getItem('vf_users') || '{}');
-  if (users[email.toLowerCase()]) { showAuthError('An account with this email already exists. Please sign in.'); return false; }
+  // Email-already-exists is checked server-side by supabase.auth.signUp on step 3.
   return true;
 }
 
@@ -5810,59 +5916,206 @@ function collectRoleData(role) {
   return data;
 }
 
-function vfSignup() {
+// vfSignup — real Supabase Auth signup (replaced localStorage-only stub 2026-05-27).
+// Confirmation email is sent by Supabase Auth (configure SMTP -> Resend in
+// Supabase dashboard for production deliverability). ID document upload is now
+// OPTIONAL at signup — KYC moves to a post-confirm dashboard step so we don't
+// store ID images in localStorage (GDPR/CCPA risk).
+async function vfSignup() {
   hideAuthError();
-  // Final validation on step 3
-  const idType = document.getElementById('signupIdType').value;
   const terms = document.getElementById('signupTerms').checked;
-  const idFiles = JSON.parse(localStorage.getItem('vf_uploads_signup-id-doc') || '[]');
-
-  if (!idType) { showAuthError('Please select your ID type.'); return; }
-  if (!idFiles.length) { showAuthError('Please upload a government-issued ID.'); return; }
   if (!terms) { showAuthError('You must agree to the Terms of Service and Privacy Policy.'); return; }
 
-  // Role-specific agreement checks
   const role = document.getElementById('signupRole').value;
   if (role === 'reseller') {
     const agreed = document.getElementById('resellerAgreement');
     if (agreed && !agreed.checked) { showAuthError('Please agree to the Affiliate Program Terms.'); goToSignupStep(2); return; }
   }
 
-  // Gather all data
   const name = document.getElementById('signupName').value.trim();
   const email = document.getElementById('signupEmail').value.trim().toLowerCase();
   const password = document.getElementById('signupPassword').value;
   const phone = document.getElementById('signupPhone').value.trim();
   const country = document.getElementById('signupCountry').value;
+  const idType = document.getElementById('signupIdType').value;  // optional metadata only
   const roleData = collectRoleData(role);
 
-  const userId = 'vf-usr-' + Date.now().toString(36) + Math.random().toString(36).substr(2, 4);
-  const now = new Date().toISOString();
+  if (typeof window.supabase === 'undefined' || !window.supabase.createClient) {
+    showAuthError('Auth client failed to load. Please refresh and try again.');
+    return;
+  }
+  const supa = window.supabase.createClient(V32_CONFIG.supabaseUrl, V32_CONFIG.supabaseAnonKey);
 
-  const users = JSON.parse(localStorage.getItem('vf_users') || '{}');
-  users[email] = {
-    id: userId, name, password, role, phone, country,
-    tier: 'free', verified: false, created_at: now,
-    idType: idType,
-    idFiles: idFiles,
-    roleData: roleData
-  };
-  localStorage.setItem('vf_users', JSON.stringify(users));
+  const btn = document.querySelector('#signupStep3 .auth-submit');
+  const btnText = btn ? btn.textContent : null;
+  if (btn) { btn.disabled = true; btn.textContent = 'Creating account…'; }
 
-  // Clean up upload localStorage keys
-  ['signup-id-doc', 'signup-revenue-proof', 'signup-license-doc', 'signup-portfolio'].forEach(k => {
-    localStorage.removeItem('vf_uploads_' + k);
-  });
+  try {
+    const redirectTo = window.location.origin + '/?auth_confirmed=1';
+    const { data, error } = await supa.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: redirectTo,
+        data: { name, phone, country, role, id_type_pending: idType || null, marketplace: 'vibeflippers' }
+      }
+    });
+    if (error) {
+      const msg = error.message || '';
+      if (/already registered|already exists/i.test(msg)) {
+        showAuthError('An account with this email already exists. Please sign in instead.');
+      } else if (/password/i.test(msg)) {
+        showAuthError(msg);
+      } else {
+        showAuthError(msg || 'Sign-up failed. Please try again.');
+      }
+      return;
+    }
 
-  const user = {
-    id: userId, name, email, role, phone, country,
-    tier: 'free', verified: false, created_at: now, login_at: Date.now(),
-    idType, roleData
-  };
-  completeLogin(user, false);
+    const userId = data.user && data.user.id;
 
-  // Reset signup form to step 1
-  signupCurrentStep = 1;
+    // Best-effort metadata insert into vfw_users + vfw_role_assignments.
+    // RLS may block these from the anon role; the on-form-submission Edge Function
+    // (server-side, service role) will reconcile from auth metadata on confirm.
+    if (userId) {
+      try {
+        await fetch(V32_CONFIG.supabaseUrl + '/rest/v1/vfw_users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: V32_CONFIG.supabaseAnonKey,
+            Authorization: 'Bearer ' + V32_CONFIG.supabaseAnonKey,
+            Prefer: 'resolution=merge-duplicates,return=minimal'
+          },
+          body: JSON.stringify({
+            id: userId, full_legal_name: name, email, phone, country,
+            primary_marketplace: 'vibeflippers'
+          })
+        });
+        await fetch(V32_CONFIG.supabaseUrl + '/rest/v1/vfw_role_assignments', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: V32_CONFIG.supabaseAnonKey,
+            Authorization: 'Bearer ' + V32_CONFIG.supabaseAnonKey,
+            Prefer: 'return=minimal'
+          },
+          body: JSON.stringify({
+            user_id: userId, role, marketplace: 'vibeflippers', active: true,
+            role_data: roleData
+          })
+        });
+      } catch (e) { /* server-side reconcile will catch this on email confirm */ }
+    }
+
+    // Capture seller intake / broker info as a form_submissions row so ops gets
+    // the seller pipeline notification even before email is confirmed.
+    if (role !== 'buyer') {
+      try {
+        await vfSubmitLeadCapture('signup_role_intake', {
+          email, name,
+          message: 'New ' + role + ' signup — pending email confirmation'
+        });
+      } catch (e) { /* non-fatal */ }
+    }
+
+    // Clean up local upload state (we did NOT send these to backend — see GDPR note)
+    ['signup-id-doc', 'signup-revenue-proof', 'signup-license-doc', 'signup-portfolio'].forEach(k => {
+      localStorage.removeItem('vf_uploads_' + k);
+    });
+
+    // Show check-your-email confirmation. Don't completeLogin — wait for email confirm.
+    const pane = document.getElementById('authPaneSignup');
+    if (pane) {
+      pane.innerHTML =
+        '<div style="text-align:center;padding:20px 10px;">' +
+        '<div style="font-size:48px;margin-bottom:10px;">&#128231;</div>' +
+        '<h3 style="margin:0 0 10px 0;color:var(--ink-bright);">Check your email</h3>' +
+        '<p style="color:var(--muted);margin:0 0 20px 0;">We sent a confirmation link to <strong style="color:var(--ink);">' +
+        email.replace(/[<>&]/g, '') + '</strong>. Click it to activate your account.</p>' +
+        '<button class="auth-submit" onclick="vfResendConfirmation(\'' + email.replace(/['"\\]/g,'') + '\')">Resend email</button>' +
+        '<div class="auth-switch" style="margin-top:14px;">Already confirmed? <a onclick="switchAuthTab(\'login\')">Sign in</a></div>' +
+        '<div id="authError" class="auth-error" style="margin-top:14px;"></div>' +
+        '</div>';
+    }
+    signupCurrentStep = 1;
+  } catch (e) {
+    console.error('vfSignup:', e);
+    showAuthError('Network error — please check your connection and try again.');
+  } finally {
+    if (btn && btnText) { btn.disabled = false; btn.textContent = btnText; }
+  }
+}
+
+async function vfResendConfirmation(email) {
+  if (!email || typeof window.supabase === 'undefined') return;
+  try {
+    const supa = window.supabase.createClient(V32_CONFIG.supabaseUrl, V32_CONFIG.supabaseAnonKey);
+    const { error } = await supa.auth.resend({
+      type: 'signup', email,
+      options: { emailRedirectTo: window.location.origin + '/?auth_confirmed=1' }
+    });
+    const el = document.getElementById('authError');
+    if (el) {
+      if (error) { el.textContent = error.message || 'Could not resend. Try again in a minute.'; el.style.color = 'var(--red)'; }
+      else { el.textContent = '✓ Sent. Check your inbox (and spam folder).'; el.style.color = 'var(--green)'; }
+      el.classList.add('show');
+    }
+  } catch (e) { console.error('vfResendConfirmation:', e); }
+}
+
+async function vfRequestMagicLink() {
+  hideAuthError();
+  const email = (document.getElementById('loginEmail').value || '').trim().toLowerCase();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showAuthError('Enter your email above, then click "Email me a magic link".');
+    return;
+  }
+  if (typeof window.supabase === 'undefined' || !window.supabase.createClient) {
+    showAuthError('Auth client failed to load. Please refresh and try again.'); return;
+  }
+  const supa = window.supabase.createClient(V32_CONFIG.supabaseUrl, V32_CONFIG.supabaseAnonKey);
+  const btn = document.getElementById('vfMagicLinkBtn');
+  const orig = btn ? btn.textContent : null;
+  if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+  try {
+    const { error } = await supa.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: window.location.origin + '/?auth_confirmed=1' }
+    });
+    const el = document.getElementById('authError');
+    if (el) {
+      if (error) { el.textContent = error.message || 'Could not send magic link.'; el.style.color = 'var(--red)'; }
+      else { el.textContent = '✓ Magic link sent to ' + email + '. Check your inbox.'; el.style.color = 'var(--green)'; }
+      el.classList.add('show');
+    }
+  } catch (e) {
+    showAuthError('Network error — please try again.');
+  } finally {
+    if (btn && orig) { btn.disabled = false; btn.textContent = orig; }
+  }
+}
+
+async function vfPasswordReset() {
+  hideAuthError();
+  const email = (document.getElementById('loginEmail').value || '').trim().toLowerCase();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showAuthError('Enter your email above first, then click "Forgot password?".');
+    return;
+  }
+  if (typeof window.supabase === 'undefined') { showAuthError('Auth client failed to load.'); return; }
+  try {
+    const supa = window.supabase.createClient(V32_CONFIG.supabaseUrl, V32_CONFIG.supabaseAnonKey);
+    const { error } = await supa.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/?password_reset=1'
+    });
+    const el = document.getElementById('authError');
+    if (el) {
+      if (error) { el.textContent = error.message; el.style.color = 'var(--red)'; }
+      else { el.textContent = '✓ Reset link sent to ' + email + '.'; el.style.color = 'var(--green)'; }
+      el.classList.add('show');
+    }
+  } catch (e) { showAuthError('Network error — please try again.'); }
 }
 
 function completeLogin(user, remember) {
@@ -7852,6 +8105,44 @@ drRenderMilestones();
   } else {
     v33Boot();
   }
+})();
+</script>
+
+<script>
+/* ============================================================
+   THEME TOGGLE — dark/light, OS-respecting, user-overridable.
+   See projects/flipwala-vibeflippers/THEME-TOGGLE-SNIPPET.md
+   ============================================================ */
+(function() {
+  const stored = localStorage.getItem('theme');
+  const osPref = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  const initial = stored || osPref;
+  document.documentElement.setAttribute('data-theme', initial);
+
+  function syncIcon(theme) {
+    const icon = document.getElementById('themeToggleIcon');
+    if (icon) icon.innerHTML = theme === 'light' ? '&#9728;' : '&#9790;'; /* sun : moon */
+  }
+  window.addEventListener('DOMContentLoaded', () => syncIcon(initial));
+
+  window.toggleTheme = function() {
+    const current = document.documentElement.getAttribute('data-theme') || 'dark';
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    syncIcon(next);
+  };
+
+  document.addEventListener('keydown', e => {
+    if (e.shiftKey && (e.key === 'D' || e.key === 'd') && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) toggleTheme();
+  });
+
+  window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
+    if (localStorage.getItem('theme')) return;
+    const next = e.matches ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    syncIcon(next);
+  });
 })();
 </script>
 
