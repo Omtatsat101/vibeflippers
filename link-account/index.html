@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Link Account — VibeFlippers</title>
+  <meta name="description" content="Link your business + bank account for VibeFlippers. Country-aware: each region uses the right business ID format + payout provider.">
+  <meta name="robots" content="noindex, nofollow">
+
+  <style>
+    :root {
+      --brand-accent: #6c3caf; --brand-accent-2: #9b6dd7;
+      --bg: #0c0a14; --bg2: #13102a; --panel: #1c1840;
+      --ink: #eae6f8; --ink-bright: #fff; --muted: #9b93c0;
+      --line: rgba(140, 120, 200, 0.18); --accent: var(--brand-accent);
+      --green: #34d399; --yellow: #fbbf24; --red: #f87171; --blue: #60a5fa;
+      --radius: 10px; --radius-lg: 16px;
+    }
+    [data-theme="light"] {
+      --bg: #f7f5fb; --bg2: #edeaf3; --panel: #fff;
+      --ink: #1a1430; --ink-bright: #0c0820; --muted: #5a536e;
+      --line: rgba(20, 16, 40, 0.12);
+    }
+    html { transition: background-color 0.2s ease, color 0.2s ease; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--ink); font-family: -apple-system, "Segoe UI", Roboto, sans-serif; min-height: 100vh; line-height: 1.6; }
+    .nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; border-bottom: 1px solid var(--line); background: var(--bg2); }
+    .nav a { color: var(--ink); text-decoration: none; font-weight: 600; }
+    .container { max-width: 760px; margin: 0 auto; padding: 32px 24px 80px; }
+    h1 { font-size: 28px; color: var(--ink-bright); margin-bottom: 4px; }
+    .sub { color: var(--muted); margin-bottom: 24px; font-size: 14px; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 20px; }
+    .card h2 { font-size: 18px; color: var(--ink-bright); margin-bottom: 12px; }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .field input, .field select { width: 100%; padding: 10px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--ink); font-size: 14px; font-family: inherit; }
+    .field .hint { font-size: 11px; color: var(--muted); margin-top: 4px; font-family: ui-monospace, monospace; }
+    .field .err { font-size: 11px; color: var(--red); margin-top: 4px; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 600px) { .row2 { grid-template-columns: 1fr; } }
+    button.primary { background: var(--accent); border: none; color: #fff; padding: 12px 22px; border-radius: var(--radius); cursor: pointer; font-weight: 600; font-size: 14px; }
+    button.ghost { background: transparent; border: 1px solid var(--line); color: var(--ink); padding: 10px 18px; border-radius: var(--radius); cursor: pointer; font-size: 13px; }
+    .status { padding: 12px 16px; border-radius: var(--radius); margin: 16px 0; font-size: 13px; display: none; }
+    .status.show { display: block; }
+    .status.ok { background: rgba(52,211,153,0.10); border: 1px solid rgba(52,211,153,0.30); color: var(--green); }
+    .status.err { background: rgba(248,113,113,0.10); border: 1px solid rgba(248,113,113,0.30); color: var(--red); }
+    .status.info { background: rgba(96,165,250,0.10); border: 1px solid rgba(96,165,250,0.30); color: var(--blue); }
+    .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; background: rgba(108,60,175,0.18); color: var(--accent); margin-left: 6px; }
+    .disclaimer { padding: 12px 14px; background: rgba(251,191,36,0.10); border: 1px solid rgba(251,191,36,0.30); border-radius: var(--radius); font-size: 12px; color: var(--ink); line-height: 1.5; margin-bottom: 20px; }
+    .disclaimer strong { color: var(--yellow); }
+    .provider-card { padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius); margin: 8px 0; background: var(--bg); }
+    .provider-card.recommended { border-color: var(--accent); }
+    .provider-card h4 { font-size: 14px; color: var(--ink-bright); margin-bottom: 2px; }
+    .provider-card p { font-size: 12px; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/">&larr; VibeFlippers</a>
+  <span style="color:var(--muted);font-size:13px;">Link Account</span>
+</nav>
+
+<div class="container">
+  <h1>Link Your Account</h1>
+  <p class="sub">Link the business or bank account for the persona + country you operate in. The form adapts &mdash; each country uses its own business ID format and routes to the right payout provider.</p>
+
+  <div class="disclaimer">
+    &#9888;&#65039; <strong>Privacy:</strong> We store only public-facing routing identifiers (e.g. SWIFT, IFSC, sort code, ABN) and the last 4 digits of any account number. Full account numbers + secrets stay with the verified provider (Stripe Connect / Plaid / Razorpay / Wise). Platform is not party to fund movement &mdash; see <a href="/sop/" style="color:var(--yellow);text-decoration:underline;">Transfer SOPs</a>.
+  </div>
+
+  <div class="card">
+    <h2>1. Who&rsquo;s linking this account?</h2>
+    <div class="row2">
+      <div class="field">
+        <label for="la-persona">Persona</label>
+        <select id="la-persona">
+          <option value="creator">Creator / Builder (FlipWala output)</option>
+          <option value="seller">Seller (list assets on VF)</option>
+          <option value="buyer">Buyer (acquire assets)</option>
+          <option value="broker">Broker / Advisor (cross-platform access)</option>
+          <option value="investor">Investor (accredited buyer)</option>
+          <option value="operator">Operator / Founder</option>
+          <option value="service_provider">Service Provider</option>
+        </select>
+        <div class="hint">You can link multiple personas. Disclosure is mandatory per platform rule.</div>
+      </div>
+      <div class="field">
+        <label for="la-account-type">What are you linking?</label>
+        <select id="la-account-type">
+          <option value="business">Business entity (verify identity)</option>
+          <option value="bank_payout">Bank account &mdash; receive payouts</option>
+          <option value="bank_funding">Bank account &mdash; fund purchases</option>
+          <option value="tax_id">Tax ID only</option>
+          <option value="crypto_wallet">Crypto wallet (for NFT-attached deals)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>2. What country are you in?</h2>
+    <div class="field">
+      <label for="la-country">Country</label>
+      <select id="la-country" onchange="loadCountrySpec()">
+        <option value="">Select country...</option>
+      </select>
+      <div class="hint">The form will adapt to your country&rsquo;s business ID + bank format below.</div>
+    </div>
+    <div id="la-provider-info" style="display:none;"></div>
+  </div>
+
+  <div class="card" id="la-country-fields" style="display:none;">
+    <h2>3. Account details <span id="la-country-name-tag" class="pill"></span></h2>
+    <div id="la-dynamic-fields"></div>
+  </div>
+
+  <div id="la-status" class="status"></div>
+
+  <div style="display:flex;gap:10px;justify-content:flex-end;align-items:center;flex-wrap:wrap;">
+    <a href="/" class="ghost" style="text-decoration:none;display:inline-flex;align-items:center;">Cancel</a>
+    <button class="primary" id="la-submit-btn" onclick="submitLink()" disabled>Save &amp; continue</button>
+  </div>
+
+  <p style="margin-top:24px;font-size:12px;color:var(--muted);text-align:center;">
+    Need a country not listed? <a href="/sop/" style="color:var(--accent);">View Transfer SOPs</a> for the manual workflow.
+  </p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://doxmbwizpsyqruyrmffs.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRveG1id2l6cHN5cXJ1eXJtZmZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwNDUwNjMsImV4cCI6MjA5MTYyMTA2M30.o9o4UCBib6L1w3glbSi97fyxTQQH548ACZ8nut91CwI';
+const supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, { auth: { persistSession: true, storageKey: 'vf_v32_auth' } });
+
+let CURRENT_SPEC = null;
+let ALL_COUNTRIES = [];
+
+function status(msg, cls) {
+  const el = document.getElementById('la-status');
+  el.textContent = msg;
+  el.className = 'status show ' + cls;
+}
+function clearStatus() { document.getElementById('la-status').className = 'status'; }
+
+function esc(s) { return String(s||'').replace(/[<>&"]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c])); }
+
+async function loadCountries() {
+  try {
+    const r = await fetch(SUPABASE_URL + '/functions/v1/link-account', { headers: { apikey: SUPABASE_ANON } });
+    if (!r.ok) throw new Error('link-account function unreachable (' + r.status + ')');
+    const data = await r.json();
+    ALL_COUNTRIES = data.countries || [];
+    const sel = document.getElementById('la-country');
+    ALL_COUNTRIES.sort((a,b) => a.name.localeCompare(b.name)).forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.code;
+      opt.textContent = c.name + ' (' + c.bank_currency + ')';
+      sel.appendChild(opt);
+    });
+  } catch (e) {
+    status('Could not load country list: ' + e.message + ' — the link-account Edge Function may not be deployed yet.', 'err');
+  }
+}
+
+function loadCountrySpec() {
+  const code = document.getElementById('la-country').value;
+  const acctType = document.getElementById('la-account-type').value;
+  if (!code) {
+    document.getElementById('la-country-fields').style.display = 'none';
+    document.getElementById('la-provider-info').style.display = 'none';
+    document.getElementById('la-submit-btn').disabled = true;
+    return;
+  }
+  CURRENT_SPEC = ALL_COUNTRIES.find(c => c.code === code);
+  if (!CURRENT_SPEC) return;
+  document.getElementById('la-country-name-tag').textContent = CURRENT_SPEC.name;
+  renderProviderInfo(acctType);
+  renderDynamicFields(acctType);
+  document.getElementById('la-country-fields').style.display = 'block';
+  document.getElementById('la-submit-btn').disabled = false;
+}
+
+function renderProviderInfo(acctType) {
+  const providerKey = acctType === 'bank_payout' ? 'seller_payout' : acctType === 'bank_funding' ? 'buyer_funding' : 'business_verify';
+  const providers = (CURRENT_SPEC.providers || {})[providerKey] || [];
+  const el = document.getElementById('la-provider-info');
+  if (!providers.length) { el.style.display = 'none'; return; }
+  el.innerHTML = '<div style="font-size:12px;color:var(--muted);margin-top:14px;margin-bottom:6px;">Recommended providers for ' + CURRENT_SPEC.name + ':</div>' +
+    providers.map((p, i) => `
+      <div class="provider-card ${i === 0 ? 'recommended' : ''}">
+        <h4>${esc(p.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()))}${i === 0 ? ' &middot; recommended' : ''}</h4>
+        <p>${providerBlurb(p)}</p>
+      </div>
+    `).join('');
+  el.style.display = 'block';
+}
+
+function providerBlurb(p) {
+  const m = {
+    stripe_connect: 'Full KYC + payout. Multi-country compliance built-in.',
+    plaid: 'Bank account verification via secure open-banking handshake.',
+    razorpay: 'India-native: IFSC + UPI verification, RBI-compliant payouts.',
+    wise: 'Cross-border payouts in 50+ currencies. Cheapest FX.',
+    mercado_pago: 'LATAM-native payouts (BR, AR, MX, CO, CL, PE, UY).',
+    paystack: 'Africa-native payouts (NG, ZA, KE, GH, EG).',
+    opencorporates: 'Free public business entity lookup. Sanity check only.',
+    manual: 'Upload business docs; admin verifies within 48h.'
+  };
+  return m[p] || 'Provider integration available.';
+}
+
+function renderDynamicFields(acctType) {
+  const s = CURRENT_SPEC;
+  const isBusiness = acctType === 'business' || acctType === 'tax_id';
+  const isBank = acctType === 'bank_payout' || acctType === 'bank_funding';
+  let html = '';
+  if (isBusiness || isBank) {
+    html += `
+      <div class="field">
+        <label>Legal business name (or your full legal name if sole prop)</label>
+        <input id="la-business-name" placeholder="e.g. Acme Brands LLC">
+      </div>`;
+  }
+  if (isBusiness || acctType === 'bank_payout') {
+    html += `
+      <div class="field">
+        <label>${esc(s.business_id_label)}</label>
+        <input id="la-business-id" placeholder="${esc(s.business_id_example || '')}">
+        <div class="hint">Format: ${esc(s.business_id_format || 'any')} ${s.business_id_example ? '&middot; e.g. ' + esc(s.business_id_example) : ''}</div>
+      </div>`;
+  }
+  if ((isBusiness || isBank) && s.tax_id_type && s.tax_id_type !== s.business_id_type) {
+    html += `
+      <div class="field">
+        <label>${esc(s.tax_id_label || s.tax_id_type)}</label>
+        <input id="la-tax-id" placeholder="${esc(s.tax_id_label || '')}">
+        ${s.tax_id_format ? '<div class="hint">Format: ' + esc(s.tax_id_format) + '</div>' : ''}
+      </div>`;
+  }
+  if (isBank) {
+    html += `
+      <div class="field">
+        <label>Account holder name</label>
+        <input id="la-bank-holder" placeholder="As shown on bank account">
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>${esc(s.bank_routing_label)}</label>
+          <input id="la-bank-routing" placeholder="${esc(s.bank_routing_example || '')}">
+          <div class="hint">${esc(s.bank_routing_format || '')}</div>
+        </div>
+        <div class="field">
+          <label>Account number</label>
+          <input id="la-bank-account" placeholder="We only store the last 4 digits">
+          <div class="hint">Full number is sent only to ${esc((s.providers.seller_payout || s.providers.buyer_funding || ['the provider'])[0])} for verification.</div>
+        </div>
+      </div>
+      ${(s.bank_swift_label || s.bank_routing_format.startsWith('^DE') || s.bank_routing_format.startsWith('^FR') || s.bank_routing_format.startsWith('^AE')) ? `
+        <div class="field">
+          <label>SWIFT / BIC ${s.bank_swift_label ? '' : '(optional)'}</label>
+          <input id="la-bank-swift" placeholder="e.g. BARCGB22">
+        </div>` : ''}
+      <div class="field">
+        <label>Currency</label>
+        <input id="la-bank-currency" value="${esc(s.bank_currency)}" readonly style="opacity:0.7;">
+      </div>`;
+  }
+  if (acctType === 'crypto_wallet') {
+    html += `
+      <div class="field">
+        <label>Wallet address (Story Protocol / Base / Polygon)</label>
+        <input id="la-wallet-address" placeholder="0x...">
+        <div class="hint">For NFT-attached brand kit transfers. We only store the public address.</div>
+      </div>`;
+  }
+  document.getElementById('la-dynamic-fields').innerHTML = html;
+}
+
+async function submitLink() {
+  clearStatus();
+  const persona = document.getElementById('la-persona').value;
+  const accountType = document.getElementById('la-account-type').value;
+  const country = document.getElementById('la-country').value;
+  if (!country || !persona || !accountType) { status('Pick persona, account type, and country first.', 'err'); return; }
+
+  const { data: sess } = await supa.auth.getSession();
+  if (!sess?.session) { status('Sign in first — open the main site and sign in, then return here.', 'err'); return; }
+
+  const payload = {
+    user_id: sess.session.user.id,
+    persona, country, account_type: accountType,
+    business_legal_name: document.getElementById('la-business-name')?.value?.trim() || null,
+    business_identifier: document.getElementById('la-business-id')?.value?.trim() || null,
+    tax_id: document.getElementById('la-tax-id')?.value?.trim() || null,
+    bank_account_holder: document.getElementById('la-bank-holder')?.value?.trim() || null,
+    bank_account_number: document.getElementById('la-bank-account')?.value?.trim() || null,
+    bank_routing: document.getElementById('la-bank-routing')?.value?.trim() || null,
+    bank_swift: document.getElementById('la-bank-swift')?.value?.trim() || null,
+    bank_currency: document.getElementById('la-bank-currency')?.value?.trim() || null,
+    wallet_address: document.getElementById('la-wallet-address')?.value?.trim() || null,
+  };
+
+  status('Validating + saving...', 'info');
+  try {
+    const r = await fetch(SUPABASE_URL + '/functions/v1/link-account', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', apikey: SUPABASE_ANON, Authorization: 'Bearer ' + sess.session.access_token },
+      body: JSON.stringify(payload)
+    });
+    const data = await r.json();
+    if (!r.ok) {
+      const errMsg = data.error + (data.details ? ': ' + data.details.join(', ') : '');
+      status(errMsg, 'err');
+      return;
+    }
+    status('Linked! Next step: ' + (data.next_step?.instructions || 'await admin verification') + ' (Provider: ' + data.provider + ')', 'ok');
+    document.getElementById('la-submit-btn').disabled = true;
+  } catch (e) {
+    status('Network error: ' + e.message, 'err');
+  }
+}
+
+// Theme honors main site
+(function() {
+  const stored = localStorage.getItem('theme');
+  const os = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', stored || os);
+})();
+
+loadCountries();
+document.getElementById('la-account-type').addEventListener('change', () => {
+  if (CURRENT_SPEC) { renderProviderInfo(document.getElementById('la-account-type').value); renderDynamicFields(document.getElementById('la-account-type').value); }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transfer SOPs — VibeFlippers</title>
+  <meta name="description" content="Standard Operating Procedures for transferring digital assets. Platform provides the SOP — parties execute. Brokers may guide.">
+  <link rel="canonical" href="https://vibeflippers.com/sop/">
+
+  <!-- Brand tokens recycled from the main site so dark/light toggle works here too -->
+  <style>
+    :root {
+      --brand-accent: #6c3caf;
+      --brand-accent-2: #9b6dd7;
+      --bg: #0c0a14;
+      --bg2: #13102a;
+      --panel: #1c1840;
+      --ink: #eae6f8;
+      --ink-bright: #fff;
+      --muted: #9b93c0;
+      --line: rgba(140, 120, 200, 0.18);
+      --accent: var(--brand-accent);
+      --green: #34d399;
+      --yellow: #fbbf24;
+      --red: #f87171;
+      --radius: 12px;
+      --radius-lg: 20px;
+      --font-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+      --font-body: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: "SF Mono", ui-monospace, monospace;
+    }
+    [data-theme="light"] {
+      --bg: #f7f5fb;
+      --bg2: #edeaf3;
+      --panel: #ffffff;
+      --ink: #1a1430;
+      --ink-bright: #0c0820;
+      --muted: #5a536e;
+      --line: rgba(20, 16, 40, 0.12);
+    }
+    html { transition: background-color 0.2s ease, color 0.2s ease; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.6; min-height: 100vh; }
+
+    .nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; border-bottom: 1px solid var(--line); background: var(--bg2); }
+    .nav a { color: var(--ink); text-decoration: none; font-weight: 600; }
+    .nav a:hover { color: var(--accent); }
+
+    .container { max-width: 980px; margin: 0 auto; padding: 32px 24px 80px; }
+    .breadcrumb { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+    .breadcrumb a { color: var(--accent); text-decoration: none; }
+
+    h1.page-title { font-family: var(--font-display); font-size: 36px; color: var(--ink-bright); margin-bottom: 8px; }
+    .sub { color: var(--muted); margin-bottom: 28px; max-width: 720px; }
+
+    .disclaimer { padding: 16px 20px; background: rgba(251, 191, 36, 0.10); border: 1px solid rgba(251, 191, 36, 0.30); border-radius: var(--radius); color: var(--ink); margin-bottom: 32px; font-size: 14px; line-height: 1.55; }
+    .disclaimer strong { color: var(--yellow); }
+
+    .sop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+    .sop-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; cursor: pointer; transition: transform 0.12s ease, border-color 0.12s ease; }
+    .sop-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+    .sop-card h3 { font-size: 16px; color: var(--ink-bright); margin-bottom: 6px; }
+    .sop-card p { font-size: 13px; color: var(--muted); }
+    .sop-card .platform-tag { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 999px; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .sop-card .platform-tag.vf { background: rgba(108, 60, 175, 0.20); color: var(--accent); }
+    .sop-card .platform-tag.fw { background: rgba(227, 133, 64, 0.20); color: #e38540; }
+    .sop-card .platform-tag.both { background: rgba(52, 211, 153, 0.16); color: var(--green); }
+
+    .sop-viewer { display: none; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 28px; }
+    .sop-viewer.active { display: block; }
+    .sop-viewer .back-btn { background: transparent; border: 1px solid var(--line); color: var(--ink); padding: 6px 12px; border-radius: var(--radius); cursor: pointer; font-size: 13px; margin-bottom: 20px; }
+    .sop-viewer .back-btn:hover { border-color: var(--accent); }
+
+    /* Markdown rendered content */
+    .md-content { color: var(--ink); }
+    .md-content h1 { font-family: var(--font-display); font-size: 30px; color: var(--ink-bright); margin: 20px 0 12px 0; }
+    .md-content h2 { font-size: 22px; color: var(--ink-bright); margin: 28px 0 12px 0; padding-top: 16px; border-top: 1px solid var(--line); }
+    .md-content h3 { font-size: 18px; color: var(--ink-bright); margin: 20px 0 8px 0; }
+    .md-content h4 { font-size: 15px; color: var(--ink-bright); margin: 16px 0 6px 0; }
+    .md-content p { margin: 8px 0 12px 0; }
+    .md-content ul, .md-content ol { margin: 8px 0 14px 24px; }
+    .md-content li { margin: 4px 0; }
+    .md-content code { background: rgba(108, 60, 175, 0.16); padding: 1px 6px; border-radius: 4px; font-family: var(--font-mono); font-size: 13px; }
+    .md-content pre { background: rgba(0,0,0,0.30); border: 1px solid var(--line); padding: 14px; border-radius: var(--radius); overflow-x: auto; margin: 12px 0; }
+    .md-content pre code { background: transparent; padding: 0; }
+    .md-content table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 13px; }
+    .md-content th, .md-content td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; }
+    .md-content th { background: var(--bg2); color: var(--ink-bright); font-weight: 600; }
+    .md-content hr { border: none; border-top: 1px solid var(--line); margin: 24px 0; }
+    .md-content blockquote { border-left: 3px solid var(--accent); padding: 6px 14px; margin: 12px 0; color: var(--muted); background: rgba(108, 60, 175, 0.06); }
+    .md-content a { color: var(--accent); }
+    .md-content strong { color: var(--ink-bright); }
+
+    .loading { padding: 40px; text-align: center; color: var(--muted); }
+    .error { padding: 40px; text-align: center; color: var(--red); }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/">&larr; VibeFlippers</a>
+  <a href="https://flipwala.com">FlipWala &rarr;</a>
+</nav>
+
+<div class="container">
+  <div class="breadcrumb"><a href="/">Home</a> &rsaquo; Transfer SOPs</div>
+
+  <h1 class="page-title">Asset Transfer SOPs</h1>
+  <p class="sub">Standard Operating Procedures for transferring 14 categories of digital and physical assets. Built from Empire Flippers' vetted-marketplace process, adapted for the VibeFlippers + FlipWala ecosystem.</p>
+
+  <div class="disclaimer">
+    <strong>&#9888;&#65039; Important &mdash; how this works:</strong> VibeFlippers and FlipWala provide these SOPs as guidance.
+    The platform is <strong>not a party</strong> to any transaction between buyer and seller.
+    Parties execute their own transfers per the steps below; brokers may guide and help renegotiate, but are <strong>not responsible</strong> for execution.
+    Use a qualified attorney for legal review on deals over $10K. Use Escrow.com (linked in deal rooms) for funds custody on deals over $1K.
+  </div>
+
+  <div id="sopGrid" class="sop-grid"></div>
+
+  <div id="sopViewer" class="sop-viewer">
+    <button class="back-btn" onclick="showGrid()">&larr; All SOPs</button>
+    <div id="sopContent" class="md-content"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked@13.0.0/marked.min.js"></script>
+<script>
+const SOPS = [
+  { file: '01_shopify_store',         title: 'Shopify E-Commerce Store',   sub: 'Theme, products, customers, payment processors',   plat: 'vf' },
+  { file: '02_saas_app',              title: 'SaaS App',                    sub: 'Source code, infra, customers, Stripe migration',  plat: 'vf' },
+  { file: '03_content_website',       title: 'Content Site / Blog',         sub: 'Content, SEO assets, affiliate accounts, email list', plat: 'vf' },
+  { file: '04_domain',                title: 'Premium / Aged Domain',       sub: 'Registrar transfer, EPP code, DNS handoff',         plat: 'vf' },
+  { file: '05_social_media_account',  title: 'Social Media Account',        sub: 'Handle transfer, audience continuity, NFT proof',   plat: 'vf' },
+  { file: '06_hybrid_ecom_warehouse', title: 'Hybrid E-Comm + Warehouse',   sub: 'Digital store + physical inventory + lease',        plat: 'fw' },
+  { file: '07_newsletter',            title: 'Newsletter',                  sub: 'List, ESP migration, sponsor contracts',            plat: 'vf' },
+  { file: '08_mobile_app',            title: 'Mobile App (iOS/Android)',    sub: 'App Store transfer, codebases, push notifications', plat: 'vf' },
+  { file: '09_brand_package',         title: 'Brand Package',               sub: 'Name, logo, domain, social bundle (FlipWala output)', plat: 'both' },
+  { file: '10_code_template',         title: 'Code Repo / Template',        sub: 'License transfer, repo migration, doc handoff',     plat: 'vf' },
+  { file: '11_ad_account',            title: 'Ad Account',                  sub: 'Google/Meta/TikTok account, pixel history, audiences', plat: 'vf' },
+  { file: '12_physical_only_business',title: 'Physical-Only Business',      sub: 'Lease, equipment, staff, local licenses',           plat: 'fw' },
+  { file: '13_franchise',             title: 'Franchise',                   sub: 'Franchisor approval, territory, operations manual', plat: 'fw' },
+  { file: '14_licensed_business',     title: 'Licensed Business',           sub: 'Professional license transfer, regulator approval', plat: 'fw' },
+  { file: '00_master_template',       title: 'Master Template',             sub: 'Generic 8-stage template for any asset type',       plat: 'both' },
+];
+
+function platLabel(p) {
+  return p === 'vf' ? '<span class="platform-tag vf">Primary: VibeFlippers</span>'
+       : p === 'fw' ? '<span class="platform-tag fw">Primary: FlipWala</span>'
+       : '<span class="platform-tag both">Both platforms</span>';
+}
+
+function renderGrid() {
+  const grid = document.getElementById('sopGrid');
+  grid.innerHTML = SOPS.map(s => `
+    <div class="sop-card" onclick="openSop('${s.file}')">
+      <h3>${s.title}</h3>
+      <p>${s.sub}</p>
+      ${platLabel(s.plat)}
+    </div>
+  `).join('');
+  document.getElementById('sopViewer').classList.remove('active');
+  grid.style.display = 'grid';
+}
+
+async function openSop(file) {
+  document.getElementById('sopGrid').style.display = 'none';
+  const viewer = document.getElementById('sopViewer');
+  viewer.classList.add('active');
+  const content = document.getElementById('sopContent');
+  content.innerHTML = '<div class="loading">Loading SOP...</div>';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  try {
+    const r = await fetch(file + '.md');
+    if (!r.ok) throw new Error('Could not load ' + file + '.md (' + r.status + ')');
+    const md = await r.text();
+    // Strip front-matter
+    const stripped = md.replace(/^---[\s\S]*?---\n?/, '');
+    content.innerHTML = marked.parse(stripped);
+    // Update URL for shareability
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState({}, '', '?type=' + file);
+    }
+  } catch (e) {
+    content.innerHTML = '<div class="error">' + e.message + '</div>';
+  }
+}
+
+function showGrid() {
+  if (window.history && window.history.replaceState) {
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+  renderGrid();
+}
+
+// Honor ?type= deep-link
+const initialType = new URLSearchParams(window.location.search).get('type');
+renderGrid();
+if (initialType && SOPS.find(s => s.file === initialType)) {
+  openSop(initialType);
+}
+
+// Theme toggle integration — honor the same data-theme as the main site
+(function() {
+  const stored = localStorage.getItem('theme');
+  const os = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', stored || os);
+})();
+</script>
+</body>
+</html>

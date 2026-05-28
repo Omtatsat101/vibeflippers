@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VibeFlippers — AI-Built Digital Asset Marketplace</title>
-  <meta name="description" content="Buy and sell AI-built digital assets — sites, tools, templates, and micro-SaaS. Valuations, escrow, and deal flow for the AI economy.">
+  <title>VibeFlippers — Open Marketplace + Deal Engine</title>
+  <meta name="description" content="The open marketplace + deal engine for digital businesses, brand kits, content sites, and micro-SaaS. List as broker, owner, operator, or push from FlipWala. Transparent, verified, cross-platform.">
   <link rel="canonical" href="https://vibeflippers.com/">
   <meta name="robots" content="index, follow">
   <meta property="og:type" content="website">
@@ -382,6 +382,37 @@ a:hover { text-decoration: underline; }
 .dd-checklist label { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--radius-sm); cursor: pointer; transition: background 0.2s; font-size: 14px; color: var(--muted); }
 .dd-checklist label:hover { background: rgba(255,255,255,0.04); }
 .dd-checklist input[type="checkbox"] { accent-color: var(--accent); width: 18px; height: 18px; }
+.vf-analytics-panel { margin-top: 18px; padding: 18px; border: 1px solid var(--line); border-radius: var(--radius-md); background: rgba(52,211,153,0.05); }
+.vf-analytics-panel h4 { margin: 0 0 8px; color: var(--ink-bright); font-size: 18px; }
+.vf-analytics-panel p { margin: 0 0 14px; }
+.vf-analytics-status { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+.vf-analytics-status.success { color: var(--green); }
+.vf-analytics-status.error { color: var(--red); }
+.vf-analytics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+.vf-analytics-card { padding: 14px; border-radius: var(--radius-md); border: 1px solid var(--line); background: rgba(255,255,255,0.03); }
+.vf-analytics-card h5 { margin: 0 0 6px; font-size: 14px; color: var(--ink-bright); }
+.vf-analytics-meta { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+.vf-analytics-note { font-size: 12px; color: var(--muted); min-height: 36px; margin-bottom: 10px; }
+.vf-analytics-inline { margin-top: 14px; padding: 16px; border: 1px solid rgba(108,60,175,0.35); border-radius: var(--radius-md); background: rgba(108,60,175,0.08); }
+.vf-analytics-inline h5 { margin: 0 0 10px; font-size: 14px; color: var(--ink-bright); }
+.vf-analytics-inline-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.vf-analytics-inline .form-group { margin-bottom: 12px; }
+.vf-analytics-inline-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.vf-analytics-connected { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.vf-analytics-chip { padding: 6px 10px; border-radius: 999px; background: rgba(52,211,153,0.15); color: var(--green); border: 1px solid rgba(52,211,153,0.28); font-size: 11px; font-weight: 700; }
+.vf-analytics-list { display: grid; gap: 12px; }
+.vf-analytics-snapshot { padding: 14px; border: 1px solid var(--line); border-radius: var(--radius-md); background: rgba(255,255,255,0.03); }
+.vf-analytics-snapshot-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; margin-bottom: 10px; }
+.vf-analytics-snapshot-head h4 { margin: 0; font-size: 15px; color: var(--ink-bright); }
+.vf-analytics-snapshot-head p { margin: 4px 0 0; font-size: 12px; color: var(--muted); }
+.vf-analytics-metrics { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.vf-analytics-metric { padding: 8px 10px; border-radius: var(--radius-sm); border: 1px solid var(--line); background: rgba(0,0,0,0.14); min-width: 110px; }
+.vf-analytics-metric .label { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 4px; }
+.vf-analytics-metric .value { color: var(--ink-bright); font-weight: 700; font-size: 14px; }
+.vf-analytics-verify { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.vf-analytics-verify-status { font-size: 12px; color: var(--muted); }
+.vf-analytics-verify-status.ok { color: var(--green); }
+.vf-analytics-verify-status.bad { color: var(--red); }
 
 /* ====== SELL FORM ====== */
 .form-steps { display: flex; gap: 8px; margin-bottom: 32px; flex-wrap: wrap; }
@@ -704,6 +735,7 @@ a:hover { text-decoration: underline; }
   .modal-grid { grid-template-columns: 1fr 1fr; }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
   .form-row { grid-template-columns: 1fr; }
+  .vf-analytics-inline-grid { grid-template-columns: 1fr; }
   .service-tiers { grid-template-columns: 1fr; }
   .why-domains { grid-template-columns: 1fr 1fr; }
   .payment-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
@@ -719,6 +751,7 @@ a:hover { text-decoration: underline; }
   .listings-grid { grid-template-columns: 1fr; }
   .modal { padding: 24px; }
   .modal-grid { grid-template-columns: 1fr; }
+  .vf-analytics-grid { grid-template-columns: 1fr; }
   .filter-bar { flex-direction: column; align-items: stretch; }
   .sort-bar { margin-left: 0; }
   .domain-results { grid-template-columns: 1fr; }
@@ -1741,6 +1774,7 @@ a:hover { text-decoration: underline; }
       <a href="#pipeline" onclick="navigate('pipeline')">Deal Pipeline</a>
       <a href="#domains" onclick="navigate('domains')">Domains</a>
       <a href="#how-it-works" onclick="navigate('how-it-works')">How It Works</a>
+      <a href="/sop/">Transfer SOPs</a>
       <a href="#about" onclick="navigate('about')">About</a>
       <a href="#roadmap" onclick="navigate('roadmap')">Roadmap</a>
       <a href="#agent" onclick="navigate('agent')">AI Agent</a>
@@ -2325,13 +2359,20 @@ a:hover { text-decoration: underline; }
   <div class="container">
     <div class="hero-inner">
       <div>
-        <p class="hero-kicker">The AI Asset Marketplace</p>
-        <h1 class="hero-title">Buy & sell <span>AI-built</span> digital assets.</h1>
-        <p class="hero-copy">VibeFlippers is the premier marketplace for AI-generated digital properties. Sites, tools, templates, micro-SaaS -- vetted, valued, and ready for acquisition.</p>
+        <p class="hero-kicker">Open Marketplace + Deal Engine</p>
+        <h1 class="hero-title">Where <span>builders</span>, <span>brokers</span>, and <span>buyers</span> close deals.</h1>
+        <p class="hero-copy">The open marketplace for digital businesses, brand kits, content sites, micro-SaaS, and ready-to-launch opportunities. List as a broker, owner, operator, or push directly from <a href="https://flipwala.com" style="color:var(--accent-light);">FlipWala</a> after AI builds your brand. Transparent listings &middot; verified roles &middot; cross-platform broker access.</p>
         <div class="hero-actions">
           <a href="#marketplace" class="btn btn-primary" onclick="navigate('marketplace')">Browse Listings</a>
-          <a href="#sell" class="btn btn-outline" onclick="navigate('sell')">Sell Your Asset</a>
+          <a href="#sell" class="btn btn-outline" onclick="navigate('sell')">List an Opportunity</a>
           <a href="#valuations" class="btn btn-ghost" onclick="navigate('valuations')">Free Valuation</a>
+        </div>
+        <!-- 4 listing entry paths (per ECOSYSTEM-FLOW-v1.md) -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:18px;font-size:12px;color:var(--muted);">
+          <div style="padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel);"><strong style="color:var(--ink);">A &middot; Brokers</strong><br/>list opportunities</div>
+          <div style="padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel);"><strong style="color:var(--ink);">B &middot; Owners</strong><br/>list own assets</div>
+          <div style="padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel);"><strong style="color:var(--ink);">C &middot; Operators</strong><br/>list businesses</div>
+          <div style="padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel);"><strong style="color:var(--ink);">D &middot; FlipWala</strong><br/>push from creator flow</div>
         </div>
       </div>
       <div class="hero-stats">
@@ -2366,6 +2407,20 @@ a:hover { text-decoration: underline; }
     <div class="section-header">
       <h2>Marketplace</h2>
       <p>Vetted AI-built digital assets. Every listing includes verified revenue, traffic data, and full tech-stack disclosure.</p>
+    </div>
+
+    <!-- AI Smart Search — client-side TF-IDF over LISTINGS. Honest:
+         shows which keywords matched + acknowledges it's heuristic, not full RAG. -->
+    <div class="glass" style="padding:18px 20px;margin-bottom:16px;border:1px solid var(--line);border-radius:var(--radius-lg);">
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <div style="flex:1;min-width:200px;">
+          <label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.05em;">&#129504; AI Smart Search</label>
+          <input type="text" id="aiSmartSearchInput" placeholder="Describe what you want — e.g. 'AI tool for parents with recurring revenue'" onkeydown="if(event.key==='Enter')runAiSmartSearch()" style="width:100%;padding:10px 14px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--bg);color:var(--ink);font-size:14px;font-family:inherit;">
+        </div>
+        <button class="btn btn-primary" onclick="runAiSmartSearch()" style="align-self:flex-end;">Smart Search</button>
+        <button class="btn btn-ghost btn-sm" onclick="clearAiSmartSearch()" id="aiSmartClearBtn" style="display:none;align-self:flex-end;">Clear</button>
+      </div>
+      <div id="aiSmartSearchStatus" style="font-size:11px;color:var(--muted);margin-top:8px;display:none;"></div>
     </div>
 
     <div class="glass filter-bar">
@@ -2516,6 +2571,15 @@ a:hover { text-decoration: underline; }
             <label>Primary Traffic Sources</label>
             <textarea id="sf-traffic" placeholder="e.g., 60% organic search, 25% social media, 15% direct"></textarea>
           </div>
+          <div class="vf-analytics-panel">
+            <h4>Verified Analytics</h4>
+            <p>Connect read-only analytics before review so buyers can see verified traffic, revenue, and proof-of-integrity instead of screenshots alone.</p>
+            <div class="vf-analytics-status" id="sf-analytics-status">Loading provider options...</div>
+            <input type="hidden" id="sf-draft-listing-id">
+            <div class="vf-analytics-grid" id="sf-analytics-provider-grid"></div>
+            <div class="vf-analytics-inline" id="sf-analytics-inline-form" style="display:none;"></div>
+            <div class="vf-analytics-connected" id="sf-analytics-connected"></div>
+          </div>
           <div class="form-nav">
             <button class="btn btn-ghost" onclick="sellFormNext(2)">Back</button>
             <button class="btn btn-primary" onclick="sellFormNext(4)">Next: Tech & Growth</button>
@@ -2536,6 +2600,50 @@ a:hover { text-decoration: underline; }
             <label>Reason for Selling</label>
             <textarea id="sf-reason" placeholder="Why are you selling this asset?"></textarea>
           </div>
+
+          <!-- ============================================================
+               Seller Setup Help (optional upsell) — sellers who are expert
+               operators can offer paid handoff help on top of the asset.
+               Per Riket's directive: platforms provide SOPs but parties
+               execute. Setup-help sellers help buyers execute faster.
+               ============================================================ -->
+          <div class="form-group" style="padding:18px;border:1px solid var(--line);border-radius:var(--radius-md);background:rgba(96,165,250,0.06);">
+            <label style="display:flex;gap:8px;align-items:center;cursor:pointer;font-weight:600;color:var(--ink);">
+              <input type="checkbox" id="sf-setup-help-offered" onchange="vfToggleSetupHelpFields(this.checked)" style="margin:0;">
+              <span>&#129309; I&rsquo;ll help the buyer get set up</span>
+              <span style="font-size:11px;color:var(--muted);font-weight:400;">&middot; charge extra for white-glove handoff</span>
+            </label>
+            <div id="sf-setup-help-fields" style="display:none;margin-top:14px;">
+              <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">
+                Many buyers want help with Stripe / DNS / email / analytics / vendor accounts after acquisition.
+                If you&rsquo;re an expert operator who can guide them through the SOP, list your add-on price here.
+                Platform doesn&rsquo;t take a cut on the setup-help fee &mdash; it&rsquo;s a separate engagement.
+              </p>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+                <div>
+                  <label style="font-size:12px;color:var(--muted);">Add-on price (USD)</label>
+                  <input type="number" id="sf-setup-help-price" placeholder="e.g. 500" min="50" step="10">
+                </div>
+                <div>
+                  <label style="font-size:12px;color:var(--muted);">Estimated hours</label>
+                  <input type="number" id="sf-setup-help-hours" placeholder="e.g. 4" min="1" step="0.5">
+                </div>
+              </div>
+              <div style="margin-bottom:12px;">
+                <label style="font-size:12px;color:var(--muted);">What&rsquo;s included (one per line)</label>
+                <textarea id="sf-setup-help-includes" rows="4" placeholder="Stripe account migration&#10;DNS + email forwards&#10;Analytics access + GA4 setup&#10;Vendor account intros&#10;30-min handoff call"></textarea>
+              </div>
+              <div style="margin-bottom:12px;">
+                <label style="font-size:12px;color:var(--muted);">Description (the pitch)</label>
+                <textarea id="sf-setup-help-desc" rows="3" placeholder="I&rsquo;ve run this business for 18 months. I&rsquo;ll get you running on the same stack in a week with zero downtime..."></textarea>
+              </div>
+              <label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer;font-size:12px;color:var(--muted);line-height:1.5;">
+                <input type="checkbox" id="sf-seller-expert-declare" style="margin-top:3px;">
+                <span>I&rsquo;m the original operator (or equivalent) and have hands-on expertise with this asset. The platform may request verification before highlighting this offer publicly.</span>
+              </label>
+            </div>
+          </div>
+
           <div class="form-group">
             <label>Contact Email</label>
             <input type="email" id="sf-contact-email" placeholder="you@example.com" required>
@@ -2622,12 +2730,12 @@ a:hover { text-decoration: underline; }
   <div class="container">
     <div class="section-header">
       <h2>How It Works</h2>
-      <p>A simple, secure process for buying and selling AI-built digital assets.</p>
+      <p>The marketplace + deal engine accepts listings from <strong>4 entry paths</strong>: brokers, business owners, operators/founders, and FlipWala creators who push their packaged brand kits. Buyers browse one unified marketplace; sellers list once.</p>
     </div>
 
     <div class="hiw-tabs">
       <button class="hiw-tab active" onclick="switchHIW('buyers', this)">For Buyers</button>
-      <button class="hiw-tab" onclick="switchHIW('sellers', this)">For Sellers</button>
+      <button class="hiw-tab" onclick="switchHIW('sellers', this)">For Sellers / Brokers</button>
     </div>
 
     <div id="hiw-buyers" class="hiw-steps">
@@ -3674,9 +3782,11 @@ a:hover { text-decoration: underline; }
         <a href="#" onclick="event.preventDefault();alert('API Docs — coming soon');">API Docs</a>
       </div>
       <div class="footer-col">
-        <h4>Sister Brands</h4>
+        <h4>Ecosystem</h4>
         <a href="https://flipwala.com" target="_blank" rel="noopener">FlipWala &rarr;</a>
-        <span style="display:block;color:var(--muted);font-size:12px;padding:0 0 8px 0;">US-HQ digital business broker</span>
+        <span style="display:block;color:var(--muted);font-size:12px;padding:0 0 8px 0;">AI Creator Platform &mdash; build the brand kit</span>
+        <span style="display:block;color:var(--ink);font-size:13px;font-weight:600;padding:0 0 4px 0;">VibeFlippers (you are here)</span>
+        <span style="display:block;color:var(--muted);font-size:12px;padding:0 0 12px 0;">Open Marketplace &mdash; sell, broker, buy</span>
         <a href="https://vibe-sketch.com" target="_blank" rel="noopener">Vibe Sketch &rarr;</a>
         <span style="display:block;color:var(--muted);font-size:12px;padding:0 0 8px 0;">POD personalization (Shopify app)</span>
         <a href="https://kiddiesketch.com" target="_blank" rel="noopener">KiddieSketch &rarr;</a>
@@ -3687,9 +3797,14 @@ a:hover { text-decoration: underline; }
         <a href="#" onclick="event.preventDefault();v33OpenLegal('terms')">Terms of Service</a>
         <a href="#" onclick="event.preventDefault();v33OpenLegal('privacy')">Privacy Policy</a>
         <a href="#" onclick="event.preventDefault();v33OpenLegal('escrow')">Escrow Terms</a>
+        <a href="/sop/">Transfer SOPs</a>
+        <a href="/link-account/">Link Bank / Business</a>
         <a href="#" onclick="event.preventDefault();v33OpenLegal('dmca')">DMCA / IP Takedown</a>
         <a href="#" onclick="event.preventDefault();alert('Contact: hello@vibeflippers.com');">Contact</a>
         <a href="https://www.legalzoom.com/business/business-compliance/" target="_blank" rel="noopener">Need a real attorney?</a>
+        <div style="margin-top:10px;padding:8px 10px;background:rgba(251,191,36,0.10);border:1px solid rgba(251,191,36,0.25);border-radius:6px;font-size:11px;color:var(--ink);line-height:1.4;">
+          &#9888;&#65039; <strong>VibeFlippers is not a party</strong> to any transaction. Parties execute transfers per the <a href="/sop/" style="color:var(--yellow);text-decoration:underline;">SOPs</a>; brokers may guide.
+        </div>
         <div style="margin-top:10px;font-size:11px;color:var(--muted);opacity:.75;">⚖️ Legal docs auto-updated via Termly</div>
       </div>
     </div>
@@ -4406,6 +4521,82 @@ function sortListings(key, btn) {
   renderListings();
 }
 
+/* ============================================================
+   AI SMART SEARCH — client-side TF-IDF-ish scoring over LISTINGS.
+   Honest UI: surfaces which keywords matched, labels itself as
+   "heuristic match" (not full RAG). Sets the hook for a future
+   LlamaIndex+ChromaDB-backed semantic search upgrade.
+   ============================================================ */
+let aiSearchActive = false;
+let aiSearchTerms = [];
+
+const AI_STOPWORDS = new Set(['a','an','the','and','or','for','of','to','in','on','with','that','is','it','be','want','find','show','me','i']);
+
+function aiTokenize(s) {
+  return String(s || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter(t => t.length > 2 && !AI_STOPWORDS.has(t));
+}
+
+function aiScoreListing(listing, queryTerms) {
+  const haystack = [
+    listing.name, listing.description, listing.type, listing.niche,
+    (listing.tags || []).join(' '), (listing.tech || []).join(' ')
+  ].join(' ').toLowerCase();
+  let score = 0;
+  const matched = [];
+  for (const t of queryTerms) {
+    if (haystack.includes(t)) {
+      // basic TF: count occurrences, weight title matches higher
+      const inName = (listing.name || '').toLowerCase().includes(t) ? 3 : 0;
+      const occ = (haystack.match(new RegExp('\\b' + t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'g')) || []).length;
+      score += inName + occ;
+      matched.push(t);
+    }
+  }
+  return { score, matched };
+}
+
+function runAiSmartSearch() {
+  const q = (document.getElementById('aiSmartSearchInput')?.value || '').trim();
+  const status = document.getElementById('aiSmartSearchStatus');
+  const clearBtn = document.getElementById('aiSmartClearBtn');
+  if (!q) {
+    aiSearchActive = false;
+    aiSearchTerms = [];
+    if (status) status.style.display = 'none';
+    if (clearBtn) clearBtn.style.display = 'none';
+    renderListings();
+    return;
+  }
+  aiSearchTerms = aiTokenize(q);
+  aiSearchActive = aiSearchTerms.length > 0;
+  if (status) {
+    status.style.display = 'block';
+    status.innerHTML = aiSearchActive
+      ? '&#129504; <strong>AI heuristic match active.</strong> Matched on: ' +
+        aiSearchTerms.map(t => '<code style="padding:1px 6px;background:rgba(108,60,175,0.18);border-radius:4px;">' + t + '</code>').join(' ') +
+        ' &middot; <em>Not yet semantic RAG; LlamaIndex upgrade in progress.</em>'
+      : 'No usable keywords found in query. Try different words.';
+  }
+  if (clearBtn) clearBtn.style.display = aiSearchActive ? 'inline-flex' : 'none';
+  renderListings();
+}
+
+function clearAiSmartSearch() {
+  const input = document.getElementById('aiSmartSearchInput');
+  if (input) input.value = '';
+  aiSearchActive = false;
+  aiSearchTerms = [];
+  const status = document.getElementById('aiSmartSearchStatus');
+  if (status) status.style.display = 'none';
+  const clearBtn = document.getElementById('aiSmartClearBtn');
+  if (clearBtn) clearBtn.style.display = 'none';
+  renderListings();
+}
+
 function getFilteredListings() {
   let items = [...LISTINGS];
   const type = document.getElementById('filterType')?.value;
@@ -4417,6 +4608,15 @@ function getFilteredListings() {
   if (type) items = items.filter(l => l.type === type);
   if (niche) items = items.filter(l => l.niche === niche);
   items = items.filter(l => l.askingPrice >= minPrice && l.askingPrice <= maxPrice && l.monthlyRevenue >= minRev);
+
+  // AI Smart Search overrides sort when active — rank by relevance score
+  if (aiSearchActive && aiSearchTerms.length) {
+    items = items
+      .map(l => { const r = aiScoreListing(l, aiSearchTerms); return { ...l, _aiScore: r.score, _aiMatched: r.matched }; })
+      .filter(l => l._aiScore > 0)
+      .sort((a, b) => b._aiScore - a._aiScore);
+    return items;
+  }
 
   items.sort((a, b) => {
     if (currentSort === 'price') return (a.askingPrice - b.askingPrice) * sortDir;
@@ -4433,13 +4633,44 @@ function renderListings() {
   if (!grid) return;
   const items = getFilteredListings();
 
-  grid.innerHTML = items.map(l => `
+  grid.innerHTML = items.map(l => {
+    // Provenance + voice + disclosure badges. All optional — if the field
+    // isn't on the listing, the badge silently omits. Honest UI: each
+    // badge has a tooltip explaining what it means.
+    const builtOnFw = l.builtOnFlipwala || l.fw_brand_package_id;
+    const brandVoice = l.brandVoiceName || l.brand_voice_name;
+    const brandVoicePreview = l.brandVoicePreviewUrl || l.brand_voice_preview_url;
+    const charVoice = l.characterVoiceName || l.character_voice_name;
+    const nftToken = l.nftTokenId || l.nft_token_id;
+    const disclosures = l.disclosures || [];
+    const setupHelpOffered = l.setupHelpOffered || l.setup_help_offered;
+    const setupHelpPrice = l.setupHelpPriceUsd || l.setup_help_price_usd;
+    const sellerExpertVerified = l.sellerIsExpertVerified || l.seller_is_expert_verified;
+    const provenancePills = [
+      builtOnFw && `<span title="This brand was created on FlipWala — full provenance chain available" style="font-size:10px;padding:3px 7px;background:rgba(227,133,64,0.16);color:#e38540;border-radius:var(--radius-pill);font-weight:600;">&#10024; Built on FlipWala</span>`,
+      brandVoice && `<span title="ElevenLabs brand voice: ${esc(brandVoice)} — click play in detail view" style="font-size:10px;padding:3px 7px;background:rgba(108,60,175,0.16);color:var(--accent-light);border-radius:var(--radius-pill);font-weight:600;cursor:pointer;" onclick="event.stopPropagation();vfPlayVoice('${esc(brandVoicePreview||'')}')">&#127908; ${esc(brandVoice)}</span>`,
+      charVoice && `<span title="Character voice: ${esc(charVoice)}" style="font-size:10px;padding:3px 7px;background:rgba(108,60,175,0.10);color:var(--accent-light);border-radius:var(--radius-pill);">&#129302; ${esc(charVoice)}</span>`,
+      nftToken && `<span title="NFT provenance — Story Protocol token ${esc(String(nftToken))}" style="font-size:10px;padding:3px 7px;background:rgba(52,211,153,0.16);color:var(--green);border-radius:var(--radius-pill);font-weight:600;">&#128274; NFT</span>`,
+      setupHelpOffered && `<span title="Seller offers paid setup help — gets buyer running on accounts/processes. Add-on fee." style="font-size:10px;padding:3px 7px;background:rgba(96,165,250,0.18);color:var(--blue);border-radius:var(--radius-pill);font-weight:600;">&#129309; +$${setupHelpPrice||'?'} setup help${sellerExpertVerified ? ' &#10003;' : ''}</span>`,
+    ].filter(Boolean).join('');
+    const disclosurePills = disclosures.length
+      ? `<div style="font-size:10px;color:var(--muted);margin-top:6px;padding:6px 8px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.25);border-radius:var(--radius-sm);">
+           &#129509; <strong>Disclosure:</strong> ${disclosures.map(d => `<span title="${esc(d.summary||'')}">${esc(d.role)}${d.verified ? ' ✓' : ''}</span>`).join(' &middot; ')}
+         </div>`
+      : '';
+    // AI Smart Search match preview
+    const aiMatchPill = aiSearchActive && l._aiMatched && l._aiMatched.length
+      ? `<div style="font-size:10px;color:var(--accent-light);margin-bottom:6px;">&#129504; Matched: ${l._aiMatched.map(t => `<code style="padding:0 4px;background:rgba(108,60,175,0.14);border-radius:3px;">${esc(t)}</code>`).join(' ')}</div>`
+      : '';
+    return `
     <div class="listing-card" onclick="openListing(${l.id})">
       <span class="vf-platform-badge">VF</span>
+      ${aiMatchPill}
       <div class="listing-card-header">
         <h3>${l.name}</h3>
         <span class="badge ${getBadgeClass(l.type)}">${l.type}</span>
       </div>
+      ${provenancePills ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px 0;">${provenancePills}</div>` : ''}
       <div class="price">${fmtFull(l.askingPrice)}</div>
       <div class="revenue">${fmtFull(l.monthlyRevenue)}/mo revenue</div>
       <div class="meta-row">
@@ -4449,9 +4680,46 @@ function renderListings() {
         <span><span class="mlabel">Age</span><span class="mval">${l.age}mo</span></span>
       </div>
       <div class="tags">${l.techStack.slice(0,4).map(t => `<span>${t}</span>`).join('')}</div>
-      <div class="card-btn"><button class="btn btn-outline btn-sm" style="width:100%;justify-content:center;">View Details</button></div>
-    </div>
-  `).join('');
+      ${disclosurePills}
+      <div style="display:flex;gap:6px;align-items:center;margin-top:8px;">
+        <button class="btn btn-outline btn-sm" style="flex:1;justify-content:center;">View Details</button>
+        <a href="/sop/?type=${assetTypeToSopFile(l.type)}" target="_blank" rel="noopener" onclick="event.stopPropagation();" title="Transfer SOP for ${esc(l.type)}"
+           style="padding:6px 10px;border:1px solid var(--line);border-radius:var(--radius-md);color:var(--muted);font-size:11px;text-decoration:none;white-space:nowrap;">&#128221; SOP</a>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// Map a listing's display type to its SOP filename in /sop/
+function assetTypeToSopFile(type) {
+  const map = {
+    'SaaS': '02_saas_app',
+    'Content Site': '03_content_website',
+    'Tool': '02_saas_app',
+    'Template': '10_code_template',
+    'Shopify Store': '01_shopify_store',
+    'App': '08_mobile_app',
+    'Newsletter': '07_newsletter',
+    'Domain': '04_domain',
+    'Social': '05_social_media_account',
+    'Brand': '09_brand_package',
+    'Code/Theme': '10_code_template',
+    'Ad Account': '11_ad_account',
+    'Hybrid eCom': '06_hybrid_ecom_warehouse',
+    'Physical': '12_physical_only_business',
+    'Franchise': '13_franchise',
+    'Licensed': '14_licensed_business'
+  };
+  return map[type] || '00_master_template';
+}
+
+// Helper for listing-card voice play + esc (used in renderListings template)
+function esc(s){ return String(s).replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
+function vfPlayVoice(url){
+  if (!url) return;
+  if (!window._vfAudio) window._vfAudio = new Audio();
+  window._vfAudio.src = url;
+  window._vfAudio.play().catch(e => console.warn('audio play blocked:', e));
 }
 
 // ====== LISTING DETAIL MODAL ======
@@ -4492,6 +4760,11 @@ function openListing(id) {
     <h3>Monthly Traffic (12-month trend)</h3>
     <div class="traffic-chart" style="padding-bottom:28px;">${trafficBars}</div>
     <p style="font-size:12px;color:var(--muted);">Sources: ${l.trafficSources}</p>
+
+    <h3>Verified Analytics</h3>
+    <div id="vfListingAnalyticsMount" class="vf-analytics-list">
+      <div class="vf-analytics-note">Loading latest verified snapshots...</div>
+    </div>
 
     <h3>P&L Breakdown</h3>
     <div style="background:rgba(255,255,255,0.03);border:1px solid var(--line);border-radius:var(--radius-md);padding:4px 14px;">
@@ -4558,6 +4831,7 @@ function openListing(id) {
   `;
 
   document.getElementById('modalContent').innerHTML = content;
+  vfHydrateListingAnalytics(l);
   document.getElementById('listingModal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -4585,6 +4859,380 @@ function addListingToPipeline(id) {
   alert(`"${l.name}" added to your deal pipeline.`);
 }
 
+const VF_ANALYTICS_STATE = { providers: [], connected: [] };
+
+function vfAnalyticsEsc(value) {
+  return String(value || '').replace(/[<>&"']/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function vfAnalyticsFnBase() {
+  return (V32_CONFIG.supabaseUrl || 'https://doxmbwizpsyqruyrmffs.supabase.co') + '/functions/v1';
+}
+
+function vfAnalyticsHeaders(extra, authToken) {
+  const headers = Object.assign({ apikey: V32_CONFIG.supabaseAnonKey || '' }, extra || {});
+  if (authToken) headers.Authorization = 'Bearer ' + authToken;
+  return headers;
+}
+
+function vfCurrentAuthUser() {
+  try { return JSON.parse(localStorage.getItem('vf_auth_user') || 'null'); } catch (e) { return null; }
+}
+
+function vfSetAnalyticsStatus(message, tone) {
+  const el = document.getElementById('sf-analytics-status');
+  if (!el) return;
+  el.textContent = message;
+  el.className = 'vf-analytics-status' + (tone ? ' ' + tone : '');
+}
+
+function vfAssetTypeToListingAssetType(type) {
+  return ({
+    'SaaS': 'saas_app',
+    'Content Site': 'content_website',
+    'Tool': 'code_template',
+    'Template': 'code_template',
+    'Shopify Store': 'shopify_store',
+    'App': 'mobile_app'
+  })[type] || 'content_website';
+}
+
+function vfRenderConnectedAnalytics() {
+  const mount = document.getElementById('sf-analytics-connected');
+  if (!mount) return;
+  if (!VF_ANALYTICS_STATE.connected.length) {
+    mount.innerHTML = '';
+    return;
+  }
+  mount.innerHTML = VF_ANALYTICS_STATE.connected.map(item =>
+    `<span class="vf-analytics-chip">${vfAnalyticsEsc(item.label)} connected${item.snapshotId ? ' + snapshot pulled' : ''}</span>`
+  ).join('');
+}
+
+function vfRenderAnalyticsProviders() {
+  const grid = document.getElementById('sf-analytics-provider-grid');
+  if (!grid) return;
+  const providers = VF_ANALYTICS_STATE.providers || [];
+  grid.innerHTML = providers.map(provider => {
+    const modeLabel = provider.connect_mode === 'oauth_redirect'
+      ? 'OAuth'
+      : provider.connect_mode === 'api_key_inline'
+        ? 'API key'
+        : 'Manual proof';
+    const note = provider.ready
+      ? provider.connect_mode === 'oauth_redirect'
+        ? 'Launch read-only provider auth.'
+        : provider.connect_mode === 'api_key_inline'
+          ? 'Paste a read-only key and pull a first snapshot.'
+          : 'Attach manual evidence for review.'
+      : (provider.skeleton_note || 'Provider config is not ready yet.');
+    const actionLabel = provider.connect_mode === 'oauth_redirect'
+      ? (provider.ready ? 'Connect OAuth' : 'Config pending')
+      : provider.connect_mode === 'api_key_inline'
+        ? 'Add API Key'
+        : 'Add Manual Proof';
+    return `
+      <div class="vf-analytics-card">
+        <div class="vf-analytics-meta">${vfAnalyticsEsc(modeLabel)}</div>
+        <h5>${vfAnalyticsEsc(provider.label)}</h5>
+        <div class="vf-analytics-note">${vfAnalyticsEsc(note)}</div>
+        <button class="btn btn-outline btn-sm" style="justify-content:center;width:100%;" ${provider.ready ? '' : 'disabled'} onclick="vfHandleAnalyticsProvider('${vfAnalyticsEsc(provider.slug)}')">${vfAnalyticsEsc(actionLabel)}</button>
+      </div>
+    `;
+  }).join('');
+}
+
+async function vfLoadAnalyticsProviders() {
+  try {
+    const res = await fetch(vfAnalyticsFnBase() + '/analytics-connect', {
+      headers: vfAnalyticsHeaders()
+    });
+    if (!res.ok) throw new Error('provider_list_' + res.status);
+    const data = await res.json();
+    VF_ANALYTICS_STATE.providers = (data.providers || []).sort((a, b) => {
+      const order = ['ga4', 'stripe_connect_read', 'shopify', 'gsc', 'youtube', 'github', 'plausible', 'umami', 'matomo', 'cloudflare', 'substack', 'manual'];
+      const ai = order.indexOf(a.slug);
+      const bi = order.indexOf(b.slug);
+      return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+    });
+    vfRenderAnalyticsProviders();
+    const authUser = vfCurrentAuthUser();
+    vfSetAnalyticsStatus(
+      authUser && authUser.access_token
+        ? 'Connect a provider now to seed a verified snapshot before review.'
+        : 'Browse providers now. Log in before connecting read-only analytics to a draft listing.',
+      authUser && authUser.access_token ? 'success' : ''
+    );
+  } catch (err) {
+    vfSetAnalyticsStatus('Could not load analytics providers right now.', 'error');
+  }
+}
+
+async function vfEnsureDraftListingForAnalytics() {
+  const existing = document.getElementById('sf-draft-listing-id')?.value;
+  if (existing) return existing;
+  const authUser = vfCurrentAuthUser();
+  if (!authUser || !authUser.access_token || !authUser.id) {
+    vfSetAnalyticsStatus('Log in first to connect verified analytics. You can still submit the listing without it.', 'error');
+    return null;
+  }
+  const title = document.getElementById('sf-name')?.value?.trim();
+  if (!title) {
+    vfSetAnalyticsStatus('Enter the asset name first so VibeFlippers can open a draft listing for analytics.', 'error');
+    return null;
+  }
+  const payload = {
+    entry_path: 'owner',
+    lister_user_id: authUser.id,
+    title,
+    description: document.getElementById('sf-growth')?.value?.trim() || document.getElementById('sf-reason')?.value?.trim() || '',
+    asset_type: vfAssetTypeToListingAssetType(document.getElementById('sf-type')?.value),
+    niche: document.getElementById('sf-niche')?.value || null,
+    asking_price_usd: parseFloat(document.getElementById('sf-price')?.value || '') || null,
+    monthly_revenue_usd: parseFloat(document.getElementById('sf-revenue')?.value || '') || null,
+    monthly_profit_usd: parseFloat(document.getElementById('sf-profit')?.value || '') || null,
+    age_months: parseInt(document.getElementById('sf-age')?.value || '', 10) || null,
+    traffic_monthly: parseInt(document.getElementById('sf-visitors')?.value || '', 10) || null,
+    status: 'draft'
+  };
+  vfSetAnalyticsStatus('Creating a seller draft so providers can attach verified analytics to this listing...', '');
+  const res = await fetch(V32_CONFIG.supabaseUrl + '/rest/v1/listings?select=id', {
+    method: 'POST',
+    headers: vfAnalyticsHeaders({
+      'Content-Type': 'application/json',
+      Prefer: 'return=representation'
+    }, authUser.access_token),
+    body: JSON.stringify(payload)
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    vfSetAnalyticsStatus('Draft listing creation failed. Submit the listing first or try again after reloading.', 'error');
+    throw new Error(text || ('draft_listing_' + res.status));
+  }
+  const rows = await res.json();
+  const listingId = Array.isArray(rows) ? rows[0]?.id : rows?.id;
+  if (!listingId) throw new Error('draft_listing_missing_id');
+  document.getElementById('sf-draft-listing-id').value = listingId;
+  vfSetAnalyticsStatus('Draft listing ready. Provider connections can now attach verified analytics to it.', 'success');
+  return listingId;
+}
+
+function vfCloseAnalyticsInlineForm() {
+  const mount = document.getElementById('sf-analytics-inline-form');
+  if (!mount) return;
+  mount.style.display = 'none';
+  mount.innerHTML = '';
+}
+
+function vfRenderAnalyticsInlineForm(provider) {
+  const mount = document.getElementById('sf-analytics-inline-form');
+  if (!mount) return;
+  mount.style.display = 'block';
+  mount.innerHTML = `
+    <h5>${vfAnalyticsEsc(provider.label)}</h5>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Paste read-only credentials only. We pull a fresh snapshot immediately after saving the connection.</p>
+    <div class="vf-analytics-inline-grid">
+      ${(provider.inline_fields || []).map(field => `
+        <div class="form-group" style="${field.type === 'textarea' ? 'grid-column:1 / -1;' : ''}">
+          <label>${vfAnalyticsEsc(field.label)}</label>
+          ${field.type === 'textarea'
+            ? `<textarea id="sf-analytics-field-${vfAnalyticsEsc(field.key)}" placeholder="${vfAnalyticsEsc(field.placeholder || '')}"></textarea>`
+            : `<input type="${vfAnalyticsEsc(field.type || 'text')}" id="sf-analytics-field-${vfAnalyticsEsc(field.key)}" placeholder="${vfAnalyticsEsc(field.placeholder || '')}">`}
+        </div>
+      `).join('')}
+      <div class="form-group">
+        <label>Account label</label>
+        <input type="text" id="sf-analytics-account-name" placeholder="Optional seller-facing label">
+      </div>
+    </div>
+    <div class="vf-analytics-inline-actions">
+      <button class="btn btn-primary" onclick="vfSubmitAnalyticsInline('${vfAnalyticsEsc(provider.slug)}')">Save & Pull Snapshot</button>
+      <button class="btn btn-ghost" onclick="vfCloseAnalyticsInlineForm()">Cancel</button>
+    </div>
+  `;
+}
+
+async function vfHandleAnalyticsProvider(slug) {
+  const provider = (VF_ANALYTICS_STATE.providers || []).find(p => p.slug === slug);
+  if (!provider) return;
+  try {
+    const listingId = await vfEnsureDraftListingForAnalytics();
+    if (!listingId) return;
+    const authUser = vfCurrentAuthUser();
+    const detailRes = await fetch(vfAnalyticsFnBase() + '/analytics-connect?provider=' + encodeURIComponent(slug) + '&listing_id=' + encodeURIComponent(listingId) + '&callback_base=' + encodeURIComponent(window.location.origin), {
+      headers: vfAnalyticsHeaders({}, authUser?.access_token)
+    });
+    if (!detailRes.ok) throw new Error('provider_detail_' + detailRes.status);
+    const detail = await detailRes.json();
+    if (detail.connect_mode === 'oauth_redirect') {
+      if (!detail.ready || !detail.authorize_url) {
+        vfSetAnalyticsStatus(detail.skeleton_note || 'This provider still needs secret configuration before OAuth can go live.', 'error');
+        return;
+      }
+      let redirectUrl = detail.authorize_url;
+      if (redirectUrl.indexOf('{shop}') !== -1) {
+        const shop = window.prompt('Enter the Shopify subdomain for this asset, for example "my-store" from my-store.myshopify.com');
+        if (!shop) return;
+        redirectUrl = redirectUrl.replace('{shop}', shop.trim());
+      }
+      vfSetAnalyticsStatus(detail.label + ' OAuth opened in a new tab. Finish the provider auth flow there, then return here.', 'success');
+      window.open(redirectUrl, '_blank', 'noopener');
+      vfCloseAnalyticsInlineForm();
+      return;
+    }
+    vfRenderAnalyticsInlineForm(detail);
+    vfSetAnalyticsStatus('Fill the inline fields for ' + detail.label + ' and VibeFlippers will pull a first snapshot immediately.', '');
+  } catch (err) {
+    vfSetAnalyticsStatus('Could not prepare that analytics provider right now.', 'error');
+  }
+}
+
+async function vfSubmitAnalyticsInline(slug) {
+  const provider = (VF_ANALYTICS_STATE.providers || []).find(p => p.slug === slug);
+  if (!provider) return;
+  const authUser = vfCurrentAuthUser();
+  if (!authUser || !authUser.access_token) {
+    vfSetAnalyticsStatus('Log in first so the provider can attach to your seller draft.', 'error');
+    return;
+  }
+  try {
+    const listingId = await vfEnsureDraftListingForAnalytics();
+    if (!listingId) return;
+    const body = {
+      provider: slug,
+      listing_id: listingId,
+      account_name: document.getElementById('sf-analytics-account-name')?.value?.trim() || undefined
+    };
+    (provider.inline_fields || []).forEach(field => {
+      const value = document.getElementById('sf-analytics-field-' + field.key)?.value;
+      if (value) body[field.key] = value.trim ? value.trim() : value;
+    });
+    const connectRes = await fetch(vfAnalyticsFnBase() + '/analytics-connect', {
+      method: 'POST',
+      headers: vfAnalyticsHeaders({ 'Content-Type': 'application/json' }, authUser.access_token),
+      body: JSON.stringify(body)
+    });
+    const connectData = await connectRes.json();
+    if (!connectRes.ok || !connectData.connection_id) {
+      throw new Error(connectData.error || ('analytics_connect_' + connectRes.status));
+    }
+    const fetchRes = await fetch(vfAnalyticsFnBase() + '/analytics-fetch', {
+      method: 'POST',
+      headers: vfAnalyticsHeaders({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify({ connection_id: connectData.connection_id })
+    });
+    const fetchData = await fetchRes.json();
+    if (!fetchRes.ok) throw new Error(fetchData.error || ('analytics_fetch_' + fetchRes.status));
+    const firstResult = Array.isArray(fetchData.results) ? fetchData.results[0] : null;
+    VF_ANALYTICS_STATE.connected = VF_ANALYTICS_STATE.connected.filter(item => item.slug !== slug);
+    VF_ANALYTICS_STATE.connected.push({
+      slug,
+      label: provider.label,
+      snapshotId: firstResult?.snapshot_id || null
+    });
+    vfRenderConnectedAnalytics();
+    vfCloseAnalyticsInlineForm();
+    vfSetAnalyticsStatus(
+      firstResult?.ok
+        ? provider.label + ' connected and first snapshot pulled.'
+        : provider.label + ' connected, but the first fetch is waiting on provider credentials or config.',
+      firstResult?.ok ? 'success' : ''
+    );
+  } catch (err) {
+    vfSetAnalyticsStatus('Saving that provider failed. Re-check the credentials and try again.', 'error');
+  }
+}
+
+function vfBuildAnalyticsMetricCards(row) {
+  const metrics = [
+    ['Visitors', row.headline_visitors],
+    ['Pageviews', row.headline_pageviews],
+    ['Revenue', row.headline_revenue_usd != null ? fmtFull(Number(row.headline_revenue_usd)) : null],
+    ['Orders', row.headline_orders],
+    ['Subscribers', row.headline_subscribers],
+    ['Stars', row.headline_stars]
+  ].filter(([, value]) => value !== null && value !== undefined && value !== '');
+  if (!metrics.length) {
+    return '<div class="vf-analytics-note">Snapshot stored successfully, but this provider did not expose headline metrics for the current period.</div>';
+  }
+  return `<div class="vf-analytics-metrics">${metrics.map(([label, value]) => `
+    <div class="vf-analytics-metric">
+      <span class="label">${vfAnalyticsEsc(label)}</span>
+      <span class="value">${typeof value === 'number' ? Number(value).toLocaleString() : vfAnalyticsEsc(value)}</span>
+    </div>
+  `).join('')}</div>`;
+}
+
+async function vfHydrateListingAnalytics(listing) {
+  const mount = document.getElementById('vfListingAnalyticsMount');
+  if (!mount) return;
+  if (!listing.__uuid) {
+    mount.innerHTML = '<div class="vf-analytics-note">Verified analytics will appear on live Supabase-backed listings. Seed demo listings still use inline showcase data.</div>';
+    return;
+  }
+  mount.innerHTML = '<div class="vf-analytics-note">Loading latest verified snapshots...</div>';
+  try {
+    const res = await fetch(V32_CONFIG.supabaseUrl + '/rest/v1/v_listing_analytics_latest?listing_id=eq.' + encodeURIComponent(listing.__uuid) + '&select=*', {
+      headers: vfAnalyticsHeaders()
+    });
+    if (!res.ok) throw new Error('listing_analytics_' + res.status);
+    const rows = await res.json();
+    if (!Array.isArray(rows) || !rows.length) {
+      mount.innerHTML = '<div class="vf-analytics-note">No verified analytics snapshots are surfaced for this listing yet.</div>';
+      return;
+    }
+    mount.innerHTML = `<div class="vf-analytics-list">${rows.map(row => `
+      <div class="vf-analytics-snapshot">
+        <div class="vf-analytics-snapshot-head">
+          <div>
+            <h4>${vfAnalyticsEsc(String(row.provider || '').replace(/_/g, ' '))}</h4>
+            <p>${vfAnalyticsEsc(new Date(row.period_start).toLocaleDateString())} to ${vfAnalyticsEsc(new Date(row.period_end).toLocaleDateString())} · pulled ${vfAnalyticsEsc(new Date(row.fetched_at).toLocaleString())}</p>
+          </div>
+          <span class="badge" style="background:${row.is_seller_uploaded ? 'rgba(251,191,36,0.18)' : 'rgba(52,211,153,0.16)'};color:${row.is_seller_uploaded ? '#fbbf24' : 'var(--green)'};border:1px solid ${row.is_seller_uploaded ? 'rgba(251,191,36,0.32)' : 'rgba(52,211,153,0.28)'};">${row.is_seller_uploaded ? 'Seller upload' : 'Edge fetched'}</span>
+        </div>
+        ${vfBuildAnalyticsMetricCards(row)}
+        <div class="vf-analytics-verify">
+          <button class="btn btn-outline btn-sm" onclick="vfVerifyAnalyticsSnapshot('${vfAnalyticsEsc(row.id)}', this)">Verify hash</button>
+          <span class="vf-analytics-verify-status" data-verify-status="snapshot-${vfAnalyticsEsc(row.id)}">Hash not checked yet.</span>
+        </div>
+      </div>
+    `).join('')}</div>`;
+  } catch (err) {
+    mount.innerHTML = '<div class="vf-analytics-note">Verified analytics could not be loaded right now.</div>';
+  }
+}
+
+async function vfVerifyAnalyticsSnapshot(snapshotId, buttonEl) {
+  const statusEl = document.querySelector('[data-verify-status="snapshot-' + snapshotId + '"]');
+  if (statusEl) {
+    statusEl.textContent = 'Verifying hash...';
+    statusEl.className = 'vf-analytics-verify-status';
+  }
+  if (buttonEl) buttonEl.disabled = true;
+  try {
+    const res = await fetch(vfAnalyticsFnBase() + '/analytics-verify?snapshot_id=' + encodeURIComponent(snapshotId), {
+      headers: vfAnalyticsHeaders()
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || ('analytics_verify_' + res.status));
+    if (statusEl) {
+      statusEl.textContent = data.integrity?.verified
+        ? 'Hash verified. Snapshot matches the stored SHA-256 signature.'
+        : 'Tamper detected. This snapshot no longer matches its stored signature.';
+      statusEl.className = 'vf-analytics-verify-status ' + (data.integrity?.verified ? 'ok' : 'bad');
+    }
+  } catch (err) {
+    if (statusEl) {
+      statusEl.textContent = 'Verification failed. Try again in a moment.';
+      statusEl.className = 'vf-analytics-verify-status bad';
+    }
+  } finally {
+    if (buttonEl) buttonEl.disabled = false;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', vfLoadAnalyticsProviders);
+
 // ====== SELL FORM ======
 function sellFormNext(step) {
   document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
@@ -4600,7 +5248,21 @@ function sellFormNext(step) {
   if (stepEl) stepEl.classList.add('active');
 }
 
+// Toggle the Setup Help fieldset visibility
+function vfToggleSetupHelpFields(checked) {
+  const el = document.getElementById('sf-setup-help-fields');
+  if (el) el.style.display = checked ? 'block' : 'none';
+}
+
 async function submitSellForm() {
+  // Setup-help upsell fields
+  const setupHelpOffered = !!document.getElementById('sf-setup-help-offered')?.checked;
+  const setupHelpPrice = parseFloat(document.getElementById('sf-setup-help-price')?.value || '0') || null;
+  const setupHelpHours = parseFloat(document.getElementById('sf-setup-help-hours')?.value || '0') || null;
+  const setupHelpIncludes = (document.getElementById('sf-setup-help-includes')?.value || '')
+    .split('\n').map(s => s.trim()).filter(Boolean);
+  const setupHelpDesc = document.getElementById('sf-setup-help-desc')?.value?.trim() || '';
+  const sellerExpertSelfDeclared = !!document.getElementById('sf-seller-expert-declare')?.checked;
   const data = {
     name: document.getElementById('sf-name').value,
     url: document.getElementById('sf-url').value,
@@ -4615,6 +5277,13 @@ async function submitSellForm() {
     tech: document.getElementById('sf-tech').value,
     growth: document.getElementById('sf-growth').value,
     reason: document.getElementById('sf-reason').value,
+    draftListingId: document.getElementById('sf-draft-listing-id')?.value || null,
+    verifiedAnalyticsProviders: VF_ANALYTICS_STATE.connected.map(item => ({
+      slug: item.slug,
+      label: item.label,
+      snapshotId: item.snapshotId || null
+    })),
+    setupHelpOffered, setupHelpPrice, setupHelpHours, setupHelpIncludes, setupHelpDesc, sellerExpertSelfDeclared,
     contactEmail: document.getElementById('sf-contact-email').value.trim(),
     submittedAt: new Date().toISOString()
   };
@@ -8143,6 +8812,293 @@ drRenderMilestones();
     document.documentElement.setAttribute('data-theme', next);
     syncIcon(next);
   });
+})();
+</script>
+
+<script>
+/* ============================================================
+   SIDEKICK — in-app assistant. Draft-only. Never auto-submits.
+   Calls /sidekick-chat Edge Function. Renders FAB + chat panel.
+   Tool actions are interpreted client-side with a strict whitelist.
+   ============================================================ */
+(function() {
+  const MARKETPLACE = 'vibeflippers';
+  const cfg = window.V32_CONFIG || {};
+  const FN_BASE = (cfg.supabaseUrl || 'https://doxmbwizpsyqruyrmffs.supabase.co') + '/functions/v1';
+  const ANON = cfg.supabaseAnonKey || '';
+  const SESSION_KEY = 'vf_sidekick_session';
+  const HISTORY_KEY = 'vf_sidekick_history';
+
+  // ---- DOM (FAB + panel) ----
+  const css = `
+    .sk-fab { position: fixed; right: 20px; bottom: 20px; width: 56px; height: 56px; border-radius: 50%;
+      background: var(--accent, #6c3caf); color: #fff; border: none; cursor: pointer; font-size: 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3); z-index: 9998; display: flex; align-items: center; justify-content: center;
+      transition: transform 0.15s ease; }
+    .sk-fab:hover { transform: scale(1.06); }
+    .sk-fab .sk-fab-badge { position: absolute; top: -2px; right: -2px; width: 14px; height: 14px;
+      background: #34d399; border-radius: 50%; border: 2px solid var(--bg, #0c0a14); }
+    .sk-panel { position: fixed; right: 20px; bottom: 88px; width: 360px; max-width: calc(100vw - 40px);
+      max-height: 70vh; background: var(--panel-solid, #1c1840); border: 1px solid var(--line);
+      border-radius: 16px; box-shadow: 0 24px 70px rgba(0,0,0,0.5); z-index: 9999; display: none;
+      flex-direction: column; overflow: hidden; }
+    .sk-panel.open { display: flex; }
+    .sk-head { padding: 14px 16px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; background: var(--bg2, #13102a); }
+    .sk-head h4 { font-size: 14px; color: var(--ink-bright, #fff); margin: 0; display: flex; gap: 6px; align-items: center; }
+    .sk-head .sk-badge { font-size: 9px; padding: 2px 6px; background: rgba(52,211,153,0.16); color: #34d399; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .sk-head .sk-close { background: transparent; border: none; color: var(--muted, #9b93c0); cursor: pointer; font-size: 18px; padding: 0 6px; }
+    .sk-msgs { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+    .sk-msg { font-size: 13px; line-height: 1.5; padding: 10px 12px; border-radius: 12px; max-width: 95%; word-wrap: break-word; }
+    .sk-msg.user { background: var(--accent, #6c3caf); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+    .sk-msg.bot { background: var(--bg, #0c0a14); color: var(--ink, #eae6f8); border: 1px solid var(--line); align-self: flex-start; border-bottom-left-radius: 4px; }
+    .sk-msg.system { background: transparent; color: var(--muted, #9b93c0); font-size: 11px; font-style: italic; padding: 4px 0; align-self: center; }
+    .sk-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .sk-act { font-size: 11px; padding: 5px 10px; background: rgba(108,60,175,0.16); color: var(--accent, #6c3caf); border: 1px solid rgba(108,60,175,0.32); border-radius: 999px; cursor: pointer; transition: background 0.12s ease; }
+    .sk-act:hover { background: rgba(108,60,175,0.30); }
+    .sk-act.confirm { background: rgba(251,191,36,0.16); color: #fbbf24; border-color: rgba(251,191,36,0.32); font-weight: 600; }
+    .sk-act.confirm::before { content: '\\26A0\\FE0F '; }
+    .sk-input-row { padding: 10px; border-top: 1px solid var(--line); display: flex; gap: 8px; background: var(--bg2, #13102a); }
+    .sk-input-row input { flex: 1; padding: 8px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg, #0c0a14); color: var(--ink, #eae6f8); font-size: 13px; font-family: inherit; }
+    .sk-input-row button { padding: 8px 14px; background: var(--accent, #6c3caf); border: none; color: #fff; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 13px; }
+    .sk-input-row button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .sk-disclaim { font-size: 10px; color: var(--muted, #9b93c0); padding: 6px 12px; background: var(--bg2, #13102a); border-top: 1px solid var(--line); text-align: center; }
+  `;
+  const styleEl = document.createElement('style');
+  styleEl.textContent = css;
+  document.head.appendChild(styleEl);
+
+  const fab = document.createElement('button');
+  fab.className = 'sk-fab';
+  fab.title = 'Sidekick — in-app assistant';
+  fab.innerHTML = '<span>\u{1F4AC}</span><span class="sk-fab-badge"></span>';
+  fab.onclick = () => document.querySelector('.sk-panel').classList.toggle('open');
+  document.body.appendChild(fab);
+
+  const panel = document.createElement('div');
+  panel.className = 'sk-panel';
+  panel.innerHTML = `
+    <div class="sk-head">
+      <h4>\u{1F916} Sidekick <span class="sk-badge">DRAFT-ONLY</span></h4>
+      <button class="sk-close" onclick="this.closest('.sk-panel').classList.remove('open')">✕</button>
+    </div>
+    <div class="sk-msgs" id="skMsgs"></div>
+    <div class="sk-input-row">
+      <input id="skInput" placeholder="Ask anything — I draft, you confirm" onkeydown="if(event.key==='Enter')skSend()">
+      <button id="skSendBtn" onclick="skSend()">Send</button>
+    </div>
+    <div class="sk-disclaim">I never publish or send. You always click the final button.</div>
+  `;
+  document.body.appendChild(panel);
+
+  // ---- Session + history ----
+  let sessionId = localStorage.getItem(SESSION_KEY);
+  if (!sessionId) {
+    sessionId = MARKETPLACE + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    localStorage.setItem(SESSION_KEY, sessionId);
+  }
+  let history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+
+  function detectPageContext() {
+    const hash = (location.hash || '').replace('#', '');
+    if (hash) return hash;
+    const active = document.querySelector('.page-section.active');
+    return active?.id || 'home';
+  }
+
+  function esc(s) { return String(s||'').replace(/[<>&"]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c])); }
+
+  function addMsg(role, content, actions) {
+    const m = document.createElement('div');
+    m.className = 'sk-msg ' + role;
+    m.innerHTML = esc(content);
+    if (actions && actions.length) {
+      const a = document.createElement('div');
+      a.className = 'sk-actions';
+      actions.forEach(act => {
+        const btn = document.createElement('button');
+        const needsConfirm = act.type === 'propose_publish' || act.type === 'draft_email';
+        btn.className = 'sk-act' + (needsConfirm ? ' confirm' : '');
+        btn.textContent = needsConfirm ? (act.label || ('Confirm: ' + act.type)) : ('Apply: ' + (act.label || act.type));
+        btn.onclick = () => applyAction(act, btn);
+        a.appendChild(btn);
+      });
+      m.appendChild(a);
+    }
+    document.getElementById('skMsgs').appendChild(m);
+    document.getElementById('skMsgs').scrollTop = document.getElementById('skMsgs').scrollHeight;
+  }
+
+  // ---- Tool action interpreter (DRAFT-ONLY whitelist) ----
+  function applyAction(act, btn) {
+    try {
+      if (act.type === 'fill_field' || act.type === 'fill_textarea') {
+        const el = document.querySelector(act.target.startsWith('#') || act.target.startsWith('.') ? act.target : '#' + act.target);
+        if (el) { el.value = act.value || ''; el.dispatchEvent(new Event('input', {bubbles:true})); el.focus(); }
+      } else if (act.type === 'set_select') {
+        const el = document.querySelector(act.target.startsWith('#') ? act.target : '#' + act.target);
+        if (el && el.tagName === 'SELECT') { el.value = act.value; el.dispatchEvent(new Event('change', {bubbles:true})); }
+      } else if (act.type === 'check_box') {
+        const el = document.querySelector(act.target.startsWith('#') ? act.target : '#' + act.target);
+        if (el && el.type === 'checkbox') { el.checked = act.value === 'true' || act.value === true; el.dispatchEvent(new Event('change', {bubbles:true})); }
+      } else if (act.type === 'scroll_to') {
+        const el = document.getElementById(act.target) || document.querySelector(act.target);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else if (act.type === 'highlight') {
+        const el = document.querySelector(act.target);
+        if (el) { el.style.outline = '2px solid var(--accent)'; el.style.outlineOffset = '4px'; setTimeout(()=>{ el.style.outline=''; }, 2400); }
+      } else if (act.type === 'open_modal') {
+        if (typeof window[act.target] === 'function') window[act.target]();
+      } else if (act.type === 'navigate') {
+        if (typeof window.navigate === 'function') window.navigate(act.target);
+        else if (typeof window.showSection === 'function') window.showSection(act.target);
+      } else if (act.type === 'search_listings') {
+        const inp = document.getElementById('aiSmartSearchInput');
+        if (inp) { inp.value = act.value || ''; if (typeof window.runAiSmartSearch === 'function') window.runAiSmartSearch(); }
+      } else if (act.type === 'show_sop') {
+        window.open('/sop/' + (act.target ? '?type=' + encodeURIComponent(act.target) : ''), '_blank');
+      } else if (act.type === 'propose_publish') {
+        // P0 fix (Codex 031): defense-in-depth allowlist. Even if a compromised
+        // model proposes a malicious target, the client refuses to execute
+        // anything outside this set. Server-side sidekick-chat enforces the
+        // same list — both must agree.
+        var VF_PUBLISH_ALLOWLIST = ['submitSellForm', 'vfLogin', 'vfSignup', 'vfRequestMagicLink', 'vfPasswordReset', 'vfSubmitNewsletter', 'runAiSmartSearch'];
+        if (!act.target || VF_PUBLISH_ALLOWLIST.indexOf(act.target) === -1) {
+          console.warn('[sidekick] propose_publish target not in allowlist:', act.target);
+          alert('Sidekick proposed an action that is not in the publish allowlist. Ignored for safety.');
+        } else if (confirm('Sidekick proposes: ' + (act.summary || act.label) + '\\n\\nThis will run the action ' + act.target + '(). Continue?')) {
+          if (typeof window[act.target] === 'function') window[act.target]();
+        }
+      } else if (act.type === 'draft_email') {
+        // Drafts only — opens mailto: with subject + body
+        const url = 'mailto:?subject=' + encodeURIComponent(act.label || 'From VibeFlippers') + '&body=' + encodeURIComponent(act.value || '');
+        window.location.href = url;
+      }
+      if (btn) { btn.disabled = true; btn.textContent = '✓ ' + btn.textContent.replace(/^[✓⚠️ ]+/, ''); btn.style.opacity = '0.6'; }
+    } catch (e) { console.warn('[sidekick] action failed:', e); }
+  }
+
+  window.skSend = async function() {
+    const inp = document.getElementById('skInput');
+    const text = inp.value.trim();
+    if (!text) return;
+    addMsg('user', text);
+    history.push({ role: 'user', content: text });
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(-30)));
+    inp.value = '';
+    inp.disabled = true;
+    document.getElementById('skSendBtn').disabled = true;
+    addMsg('system', 'Thinking...');
+    try {
+      const r = await fetch(FN_BASE + '/sidekick-chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', apikey: ANON },
+        body: JSON.stringify({ messages: history.slice(-10), page_context: detectPageContext(), session_id: sessionId, marketplace: MARKETPLACE })
+      });
+      const data = await r.json();
+      // Remove "Thinking..."
+      const msgs = document.getElementById('skMsgs');
+      msgs.removeChild(msgs.lastChild);
+      if (!r.ok) {
+        addMsg('bot', '⚠️ ' + (data.error || 'Edge Function returned ' + r.status) + ' — Sidekick may not be deployed yet.');
+      } else {
+        addMsg('bot', data.reply, data.actions);
+        if (data.source === 'fallback') addMsg('system', 'Running in fallback mode (Ollama unreachable).');
+        history.push({ role: 'assistant', content: data.reply });
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(-30)));
+      }
+    } catch (e) {
+      const msgs = document.getElementById('skMsgs');
+      msgs.removeChild(msgs.lastChild);
+      addMsg('bot', '⚠️ Network error: ' + e.message);
+    } finally {
+      inp.disabled = false;
+      document.getElementById('skSendBtn').disabled = false;
+      inp.focus();
+    }
+  };
+
+  // Bootstrap message
+  if (!history.length) {
+    addMsg('bot', "Hi! I'm Sidekick. I can fill forms, draft listings, find SOPs, and search the marketplace. I never publish — you always click the final button. What are you working on?");
+  } else {
+    history.slice(-6).forEach(m => addMsg(m.role === 'user' ? 'user' : 'bot', m.content));
+  }
+})();
+</script>
+
+<script>
+/* ============================================================
+   ROADMAP SUPABASE SYNC — wires existing v33Vote / v33SubmitSuggest
+   to the feature-vote Edge Function so votes aggregate across users.
+   ============================================================ */
+(function() {
+  const cfg = window.V32_CONFIG || {};
+  const FN_BASE = (cfg.supabaseUrl || 'https://doxmbwizpsyqruyrmffs.supabase.co') + '/functions/v1';
+  const ANON = cfg.supabaseAnonKey || '';
+  const MARKETPLACE = 'vibeflippers';
+
+  async function hydrateLiveCounts() {
+    try {
+      const r = await fetch(FN_BASE + '/feature-vote?marketplace=' + MARKETPLACE, {
+        headers: { apikey: ANON }
+      });
+      if (!r.ok) { console.warn('[vf-roadmap] hydrate failed:', r.status); return; }
+      const data = await r.json();
+      const remote = data.features || [];
+      if (!remote.length) return;
+      // Merge remote counts into the local "vf_feature_votes" + the synthetic VF count
+      // VF uses a deterministic base + 1 per local vote — we override with real counts.
+      const votes = JSON.parse(localStorage.getItem('vf_feature_votes') || '{}');
+      remote.forEach(f => {
+        votes[f.id] = votes[f.id] || {};
+        votes[f.id]._remote_count = f.votes;
+        votes[f.id]._remote_title = f.title;
+        votes[f.id]._remote_desc = f.description;
+        votes[f.id]._remote_status = f.status;
+      });
+      localStorage.setItem('vf_feature_votes', JSON.stringify(votes));
+      // Mirror seed features into vf_v33_features if missing
+      const seed = JSON.parse(localStorage.getItem('vf_v33_features') || '[]');
+      remote.forEach(f => {
+        if (!seed.find(x => x.id === f.id)) {
+          seed.push({ id: f.id, title: f.title, desc: f.description, status: f.status === 'in_progress' ? 'progress' : f.status });
+        }
+      });
+      localStorage.setItem('vf_v33_features', JSON.stringify(seed));
+      if (typeof v33RenderRoadmapCards === 'function') v33RenderRoadmapCards();
+    } catch (e) { console.warn('[vf-roadmap] hydrate exception:', e); }
+  }
+  setTimeout(hydrateLiveCounts, 800);
+
+  const _origVote = window.v33Vote;
+  if (typeof _origVote === 'function') {
+    window.v33Vote = function(id) {
+      const votes = JSON.parse(localStorage.getItem('vf_feature_votes') || '{}');
+      const wasVoted = !!votes[id];
+      _origVote(id);
+      fetch(FN_BASE + '/feature-vote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', apikey: ANON },
+        body: JSON.stringify({ action: wasVoted ? 'unvote' : 'vote', request_id: id, marketplace: MARKETPLACE })
+      }).catch(e => console.warn('[vf-roadmap] vote sync failed:', e));
+    };
+  }
+
+  const _origSubmit = window.v33SubmitSuggest;
+  if (typeof _origSubmit === 'function') {
+    window.v33SubmitSuggest = function() {
+      const t = (document.getElementById('v33SugTitle')?.value || '').trim();
+      const d = (document.getElementById('v33SugDesc')?.value || '').trim();
+      if (t && d) {
+        fetch(FN_BASE + '/feature-vote', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', apikey: ANON },
+          body: JSON.stringify({ action: 'propose', title: t, description: d, marketplace: MARKETPLACE })
+        }).catch(e => console.warn('[vf-roadmap] suggest sync failed:', e));
+      }
+      _origSubmit();
+    };
+  }
 })();
 </script>
 

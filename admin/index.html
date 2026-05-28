@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin — Integrations Registry · VF + FW</title>
+
+  <style>
+    :root {
+      --bg: #0c0a14; --bg2: #13102a; --panel: #1c1840;
+      --ink: #eae6f8; --ink-bright: #fff; --muted: #9b93c0;
+      --line: rgba(140, 120, 200, 0.18); --accent: #6c3caf; --accent-light: #9b6dd7;
+      --green: #34d399; --yellow: #fbbf24; --red: #f87171; --blue: #60a5fa;
+      --radius: 10px; --radius-lg: 16px;
+    }
+    [data-theme="light"] {
+      --bg: #f7f5fb; --bg2: #edeaf3; --panel: #fff;
+      --ink: #1a1430; --ink-bright: #0c0820; --muted: #5a536e;
+      --line: rgba(20, 16, 40, 0.12);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--ink); font-family: -apple-system, "Segoe UI", Roboto, sans-serif; min-height: 100vh; }
+    .nav { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; border-bottom: 1px solid var(--line); background: var(--bg2); }
+    .nav a { color: var(--ink); text-decoration: none; font-weight: 600; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 32px 20px 80px; }
+    h1 { font-size: 28px; color: var(--ink-bright); margin-bottom: 4px; }
+    .sub { color: var(--muted); margin-bottom: 28px; font-size: 14px; max-width: 720px; }
+
+    .gate { padding: 28px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-lg); max-width: 480px; margin: 60px auto; text-align: center; }
+    .gate h2 { color: var(--ink-bright); margin-bottom: 8px; }
+    .gate p { color: var(--muted); margin-bottom: 20px; font-size: 14px; }
+    .gate input { width: 100%; padding: 10px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--ink); font-size: 14px; margin-bottom: 10px; }
+    .gate button { padding: 10px 18px; background: var(--accent); border: none; color: #fff; border-radius: var(--radius); cursor: pointer; font-weight: 600; }
+    .gate .err { color: var(--red); font-size: 13px; margin-top: 8px; }
+
+    .tools { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; align-items: center; }
+    .tools select, .tools input { padding: 8px 12px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); color: var(--ink); font-size: 14px; }
+    .tools button { padding: 8px 14px; background: var(--accent); border: none; color: #fff; border-radius: var(--radius); cursor: pointer; font-weight: 600; font-size: 13px; }
+    .tools button.ghost { background: transparent; border: 1px solid var(--line); color: var(--ink); }
+
+    .table { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; }
+    .table-head, .row { display: grid; grid-template-columns: 1.4fr 1fr 0.8fr 0.7fr 0.6fr 0.6fr; gap: 12px; padding: 12px 16px; align-items: center; }
+    .table-head { background: var(--bg2); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); border-bottom: 1px solid var(--line); }
+    .row { border-bottom: 1px solid var(--line); font-size: 14px; }
+    .row:last-child { border-bottom: none; }
+    .row:hover { background: var(--bg2); }
+    .row .name { display: flex; flex-direction: column; gap: 2px; }
+    .row .name strong { color: var(--ink-bright); }
+    .row .slug { color: var(--muted); font-family: ui-monospace, monospace; font-size: 11px; }
+    .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; }
+    .pill.connected { background: rgba(52,211,153,0.16); color: var(--green); }
+    .pill.planned { background: rgba(96,165,250,0.16); color: var(--blue); }
+    .pill.degraded { background: rgba(251,191,36,0.16); color: var(--yellow); }
+    .pill.sandbox { background: rgba(155,109,215,0.16); color: var(--accent-light); }
+    .pill.disabled { background: rgba(248,113,113,0.16); color: var(--red); }
+    .pill.oss { background: rgba(52,211,153,0.10); color: var(--green); border: 1px solid rgba(52,211,153,0.30); }
+    .actions button { padding: 4px 8px; background: transparent; border: 1px solid var(--line); color: var(--ink); border-radius: 6px; cursor: pointer; font-size: 11px; margin-right: 4px; }
+    .actions button:hover { border-color: var(--accent); }
+    .actions button.danger:hover { border-color: var(--red); color: var(--red); }
+
+    .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+    .modal-bg.open { display: flex; }
+    .modal { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 24px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto; }
+    .modal h2 { color: var(--ink-bright); margin-bottom: 16px; }
+    .modal .field { margin-bottom: 12px; }
+    .modal label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+    .modal input, .modal textarea, .modal select { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--ink); font-size: 14px; font-family: inherit; }
+    .modal textarea { min-height: 80px; resize: vertical; }
+    .modal .actions-row { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
+
+    .status { padding: 12px 14px; margin: 12px 0; border-radius: var(--radius); font-size: 13px; display: none; }
+    .status.show { display: block; }
+    .status.ok { background: rgba(52,211,153,0.10); color: var(--green); border: 1px solid rgba(52,211,153,0.30); }
+    .status.err { background: rgba(248,113,113,0.10); color: var(--red); border: 1px solid rgba(248,113,113,0.30); }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/">&larr; VibeFlippers</a>
+  <span style="color:var(--muted);font-size:13px;">Admin &middot; Integrations Registry</span>
+</nav>
+
+<div id="authGate" class="gate" style="display:none;">
+  <h2>Admin Sign In</h2>
+  <p>You must be logged in with a verified <strong>admin</strong> role to access this page. Integrations are sensitive — anonymous read is allowed via the public registry, but writes are admin-only.</p>
+  <input id="adminEmail" type="email" placeholder="admin@vibeflippers.com">
+  <input id="adminPassword" type="password" placeholder="password">
+  <button onclick="adminSignIn()">Sign In</button>
+  <div id="adminAuthErr" class="err"></div>
+</div>
+
+<div id="adminApp" style="display:none;">
+  <div class="container">
+    <h1>Integrations Registry</h1>
+    <p class="sub">Every external API + partner + open-source component the platform talks to. Edit here to add a new integration without touching code. <em>Secrets stay in <code>API-KEYS.env</code> + Supabase secrets &mdash; only metadata lives here.</em></p>
+
+    <div class="tools">
+      <select id="filterCategory" onchange="renderTable()">
+        <option value="">All categories</option>
+        <option value="payments">Payments</option>
+        <option value="email">Email</option>
+        <option value="registrar">Registrar</option>
+        <option value="llm">LLM</option>
+        <option value="tts">TTS</option>
+        <option value="stt">STT</option>
+        <option value="image_gen">Image Gen</option>
+        <option value="escrow">Escrow</option>
+        <option value="nft_chain">NFT Chain</option>
+        <option value="crm">CRM</option>
+        <option value="social">Social</option>
+        <option value="analytics">Analytics</option>
+        <option value="partner">Partner</option>
+        <option value="other">Other</option>
+      </select>
+      <select id="filterStatus" onchange="renderTable()">
+        <option value="">All statuses</option>
+        <option value="connected">Connected</option>
+        <option value="planned">Planned</option>
+        <option value="degraded">Degraded</option>
+        <option value="sandbox">Sandbox</option>
+        <option value="disabled">Disabled</option>
+      </select>
+      <input id="filterText" placeholder="Search name / slug" oninput="renderTable()">
+      <button class="ghost" onclick="loadIntegrations()">Refresh</button>
+      <button onclick="openModal()">+ Add Integration</button>
+    </div>
+
+    <div id="status" class="status"></div>
+
+    <div class="table">
+      <div class="table-head">
+        <div>Name</div>
+        <div>Category</div>
+        <div>Status</div>
+        <div>Secret env</div>
+        <div>OSS?</div>
+        <div>Actions</div>
+      </div>
+      <div id="tableBody"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div id="modalBg" class="modal-bg">
+  <div class="modal">
+    <h2 id="modalTitle">Add Integration</h2>
+    <input type="hidden" id="m-id">
+    <div class="field"><label>Slug (unique, lowercase, snake_case)</label><input id="m-slug" placeholder="e.g. story_protocol"></div>
+    <div class="field"><label>Display name</label><input id="m-name" placeholder="e.g. Story Protocol"></div>
+    <div class="field"><label>Category</label>
+      <select id="m-category">
+        <option value="payments">Payments</option>
+        <option value="email">Email</option>
+        <option value="registrar">Registrar</option>
+        <option value="llm">LLM</option>
+        <option value="tts">TTS</option>
+        <option value="stt">STT</option>
+        <option value="image_gen">Image Gen</option>
+        <option value="escrow">Escrow</option>
+        <option value="nft_chain">NFT Chain</option>
+        <option value="crm">CRM</option>
+        <option value="social">Social</option>
+        <option value="analytics">Analytics</option>
+        <option value="partner">Partner</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="field"><label>Status</label>
+      <select id="m-status">
+        <option value="planned">Planned</option>
+        <option value="connected">Connected</option>
+        <option value="sandbox">Sandbox</option>
+        <option value="degraded">Degraded</option>
+        <option value="disabled">Disabled</option>
+      </select>
+    </div>
+    <div class="field"><label>Secret env var name (no value)</label><input id="m-secret-env" placeholder="e.g. STORY_PRIVATE_KEY"></div>
+    <div class="field"><label><input type="checkbox" id="m-oss" style="width:auto;display:inline-block;margin-right:6px;"> Open-source component</label></div>
+    <div class="field"><label>Notes</label><textarea id="m-notes" placeholder="What this is for, who at the partner to contact, etc."></textarea></div>
+    <div class="field"><label>Config JSON (optional, non-secret)</label><textarea id="m-config" placeholder='{"endpoint": "...", "tier": "..."}'></textarea></div>
+    <div class="actions-row">
+      <button class="ghost" onclick="closeModal()" style="padding:8px 14px;background:transparent;border:1px solid var(--line);color:var(--ink);border-radius:var(--radius);cursor:pointer;">Cancel</button>
+      <button onclick="saveIntegration()" style="padding:8px 14px;background:var(--accent);border:none;color:#fff;border-radius:var(--radius);cursor:pointer;font-weight:600;">Save</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://doxmbwizpsyqruyrmffs.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRveG1id2l6cHN5cXJ1eXJtZmZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwNDUwNjMsImV4cCI6MjA5MTYyMTA2M30.o9o4UCBib6L1w3glbSi97fyxTQQH548ACZ8nut91CwI';
+const supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, { auth: { persistSession: true, autoRefreshToken: true, storageKey: 'vf_admin_auth' } });
+
+let ALL = [];
+let SESSION = null;
+let IS_ADMIN = false;
+
+function showStatus(msg, ok) {
+  const el = document.getElementById('status');
+  el.textContent = msg;
+  el.className = 'status show ' + (ok ? 'ok' : 'err');
+  setTimeout(() => el.classList.remove('show'), 4500);
+}
+
+async function init() {
+  const { data } = await supa.auth.getSession();
+  SESSION = data?.session || null;
+  if (!SESSION) { document.getElementById('authGate').style.display = 'block'; return; }
+  // Check admin role
+  const r = await fetch(SUPABASE_URL + '/rest/v1/vfw_role_assignments?user_id=eq.' + SESSION.user.id + '&role=eq.admin&active=eq.true&select=role', {
+    headers: { apikey: SUPABASE_ANON, Authorization: 'Bearer ' + SESSION.access_token }
+  });
+  const roles = r.ok ? await r.json() : [];
+  IS_ADMIN = roles.length > 0;
+  if (!IS_ADMIN) {
+    document.getElementById('authGate').style.display = 'block';
+    document.getElementById('adminAuthErr').textContent = 'Signed in as ' + SESSION.user.email + ' — but no admin role assigned. Contact Riket to grant access.';
+    return;
+  }
+  document.getElementById('adminApp').style.display = 'block';
+  loadIntegrations();
+}
+
+async function adminSignIn() {
+  const email = document.getElementById('adminEmail').value.trim();
+  const password = document.getElementById('adminPassword').value;
+  const err = document.getElementById('adminAuthErr');
+  err.textContent = '';
+  const { data, error } = await supa.auth.signInWithPassword({ email, password });
+  if (error) { err.textContent = error.message; return; }
+  SESSION = data.session;
+  init();
+}
+
+async function loadIntegrations() {
+  const r = await fetch(SUPABASE_URL + '/rest/v1/vfw_integrations?select=*&order=category,name', {
+    headers: { apikey: SUPABASE_ANON, Authorization: 'Bearer ' + (SESSION?.access_token || SUPABASE_ANON) }
+  });
+  if (!r.ok) { showStatus('Could not load (' + r.status + ')', false); return; }
+  ALL = await r.json();
+  renderTable();
+}
+
+function renderTable() {
+  const cat = document.getElementById('filterCategory').value;
+  const st = document.getElementById('filterStatus').value;
+  const q = document.getElementById('filterText').value.trim().toLowerCase();
+  const filtered = ALL.filter(i => {
+    if (cat && i.category !== cat) return false;
+    if (st && i.status !== st) return false;
+    if (q && !(i.name.toLowerCase().includes(q) || i.slug.toLowerCase().includes(q))) return false;
+    return true;
+  });
+  const body = document.getElementById('tableBody');
+  body.innerHTML = filtered.map(i => `
+    <div class="row">
+      <div class="name">
+        <strong>${esc(i.name)}</strong>
+        <span class="slug">${esc(i.slug)}</span>
+        ${i.notes ? '<span style="font-size:11px;color:var(--muted);margin-top:2px;">' + esc(i.notes.slice(0, 80)) + (i.notes.length > 80 ? '...' : '') + '</span>' : ''}
+      </div>
+      <div><span class="pill">${esc(i.category)}</span></div>
+      <div><span class="pill ${esc(i.status)}">${esc(i.status)}</span></div>
+      <div style="font-family:ui-monospace,monospace;font-size:11px;color:var(--muted);">${i.secret_env_var ? esc(i.secret_env_var) : '&mdash;'}</div>
+      <div>${i.is_oss ? '<span class="pill oss">OSS</span>' : '&mdash;'}</div>
+      <div class="actions">
+        <button onclick='openModal(${JSON.stringify(i).replace(/'/g, "&#39;")})'>Edit</button>
+        <button class="danger" onclick="toggleStatus('${i.id}', '${i.status}')">${i.status === 'disabled' ? 'Enable' : 'Disable'}</button>
+      </div>
+    </div>
+  `).join('') || '<div style="padding:24px;text-align:center;color:var(--muted);">No integrations matching filter.</div>';
+}
+
+function esc(s) { return String(s||'').replace(/[<>&"]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c])); }
+
+function openModal(integ) {
+  document.getElementById('modalBg').classList.add('open');
+  document.getElementById('modalTitle').textContent = integ ? 'Edit Integration' : 'Add Integration';
+  document.getElementById('m-id').value = integ?.id || '';
+  document.getElementById('m-slug').value = integ?.slug || '';
+  document.getElementById('m-name').value = integ?.name || '';
+  document.getElementById('m-category').value = integ?.category || 'partner';
+  document.getElementById('m-status').value = integ?.status || 'planned';
+  document.getElementById('m-secret-env').value = integ?.secret_env_var || '';
+  document.getElementById('m-oss').checked = !!integ?.is_oss;
+  document.getElementById('m-notes').value = integ?.notes || '';
+  document.getElementById('m-config').value = integ?.config ? JSON.stringify(integ.config, null, 2) : '';
+}
+function closeModal() { document.getElementById('modalBg').classList.remove('open'); }
+
+async function saveIntegration() {
+  const id = document.getElementById('m-id').value;
+  let config = {};
+  try { config = document.getElementById('m-config').value.trim() ? JSON.parse(document.getElementById('m-config').value) : {}; }
+  catch { showStatus('Config JSON is invalid', false); return; }
+  const payload = {
+    slug: document.getElementById('m-slug').value.trim().toLowerCase().replace(/[^a-z0-9_]/g, ''),
+    name: document.getElementById('m-name').value.trim(),
+    category: document.getElementById('m-category').value,
+    status: document.getElementById('m-status').value,
+    secret_env_var: document.getElementById('m-secret-env').value.trim() || null,
+    is_oss: document.getElementById('m-oss').checked,
+    notes: document.getElementById('m-notes').value.trim() || null,
+    config,
+  };
+  if (!payload.slug || !payload.name) { showStatus('Slug + name required', false); return; }
+  const url = id ? SUPABASE_URL + '/rest/v1/vfw_integrations?id=eq.' + id : SUPABASE_URL + '/rest/v1/vfw_integrations';
+  const r = await fetch(url, {
+    method: id ? 'PATCH' : 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      apikey: SUPABASE_ANON,
+      Authorization: 'Bearer ' + SESSION.access_token,
+      Prefer: 'return=minimal'
+    },
+    body: JSON.stringify(payload)
+  });
+  if (!r.ok) { showStatus('Save failed: ' + r.status + ' ' + await r.text(), false); return; }
+  showStatus('Saved.', true);
+  closeModal();
+  loadIntegrations();
+}
+
+async function toggleStatus(id, current) {
+  const next = current === 'disabled' ? 'connected' : 'disabled';
+  const r = await fetch(SUPABASE_URL + '/rest/v1/vfw_integrations?id=eq.' + id, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      apikey: SUPABASE_ANON,
+      Authorization: 'Bearer ' + SESSION.access_token,
+      Prefer: 'return=minimal'
+    },
+    body: JSON.stringify({ status: next })
+  });
+  if (!r.ok) { showStatus('Toggle failed: ' + r.status, false); return; }
+  showStatus(next === 'disabled' ? 'Disabled.' : 'Re-enabled.', true);
+  loadIntegrations();
+}
+
+// Theme toggle to match main site
+(function() {
+  const stored = localStorage.getItem('theme');
+  const os = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', stored || os);
+})();
+
+init();
+</script>
+</body>
+</html>
